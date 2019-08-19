@@ -56,6 +56,169 @@ Bean 的生命周期：
    1. Spring 通过配置,如 @ComponentScan 定义的扫描路径去找到带有@Component 的类 ,这个过程就是一个资源定位的过程 。
    2. 开始解析,并且将定义的信息保存起来 （保存到BeanDefinition实例中）。
    3. 把 Bean 定义发布到 Spring IoC 容器中 。
+
 2. Bean的初始化
+
+   ![](/home/spiko/notes/img/微信图片_20190819111122.png)
+
 3. Bean的生存期
+
 4. Bean的销毁 
+
+(@ConfigurationProperties ( ” database ” ))@ConfigurationProperties 中 配置的字符 串 database ,将与 POJO 的属性名称组成属性的全限定名去配置文件里查找 ,这样就 能将对应的属性读入到 POJO当中 。
+
+使用@PropertySource 去定义对应的属性文件.
+
+spring.profiles.active 和 spring .profiles.default 都没有 配置 的 情 况下 , 被 @Profile 标注 的 Bean 将不会被 Spring 装配到 IOC 容器 中 。
+
+把选项-Dspring.profil es.active 配置的值记为{profile },则它 会用 application- {profile} . properties 文件去代替原来默认的 application.properties 文件,如JAVA_OPTS=''-Dspring . profiles.active=dev "。
+
+装配 XML 定义的Bean：
+
+```java
+@ImportResource (value = {'’ classpath: spring-other . xml"})
+```
+
+@Value 中的${.. . .. . }代表占位符,它会读取上下文的属性值装配到属性中，#{..... }代表启用 Spring EL表达式 ,T( ..... )代表的是引入类。Java 默认加载 的包外需要写出全限定名才能引用类。
+
+```
+Value (”# { T (System) . currentTimeMillis () }”)
+private Long initTime = null;
+//赋值字符串
+@Value ( ” 们 ’ 使用 Spring EL 赋值字符串 ’ } ” )
+private String str = null;
+//科学计数法赋值
+@Value( " #(9 . 3E3 } ” )
+private double d ;
+//赋值浮点数
+@Value ( ” # ( 3 .14 } ” )
+private float pi ;
+//还可以获取其他 Spring Bean 的 属性来给当 前的 Bean 属性赋值
+@Value ( ” #( beanName . str } ” )
+private String otherBeanProp=null ;
+```
+
+# 3. AOP
+
+```java
+public class Myinterceptor implements Interceptor {
+    @Override
+    public boolean before() {......}
+    @Override
+    public boolean useAround() {......}
+    @Override
+    public boolean after() {......}
+    @Override
+    public Object around(Invocation invocaiton) {
+            ......
+            Object obj = invocation.proceed();
+            .......
+            return obj;
+    }
+    @Override
+    public boolean afterReturning() {......}
+     @Override
+    public boolean afterThrowing() {......}
+}
+
+HelloService helloService =new HelloServiceimpl();
+HelloService proxy = (HelloService) ProxyBean.getProxyBean(helloServ1ce , new Myinterceptor()) ;
+
+public class ProxyBean implements InvocationHandler {
+    private Object target = null ;
+    private Interceptor interceptor = null;
+    public static Object getProxyBean(Object target , Interceptor interceptor){
+        ProxyBean proxyBean =new ProxyBean() ;
+        proxyBean.target = target ;
+        proxyBean.interceptor =interceptor ;
+        Object proxy = Proxy.newProxyinstance (target.getClass().getClassLoader(),target.getClass().getInterfaces(),proxyBean);
+        return proxy ;
+    }
+    @Override
+    public Object invoke(Object proxy , Method method , Object [] args){
+        boolean exceptionFlag = false ;
+        Invocation invocation = new Invocation(target , method , args) ;
+        Object retObj = null ;
+        try {
+            if(this.interceptor. before () ) {
+                retObj = this .interceptor.around(invocation);
+            } else {
+                retObj = method.invoke(target, args );
+            } catch (Exception ex ) {
+                exceptionFlag = true ;
+                this . interceptor.after( );
+                if (exceptionFlag ) {
+                    this.interceptor . afterThrowing( ) ;
+                } else {
+                    this.interce pto r.afterReturning();
+                    return retObj ;
+                }
+            }
+        }
+    }
+}
+```
+
+Spring 是以@Aspect 作为切面声明的。@Pointcut 来定义切点。
+
+```java
+execution(*com.springboot.chapter4.aspect.service.impl.UserServceimpl .printUser ( . ) )
+```
+
+- execution 表示在执行的时候 ,拦截 里面的正 则匹配的方法.
+  *表示任意返回类型的方法.
+  com.spr ingboot.chapter4 .aspect.service. impl. U serServ icelmpl 指 定目标对象的全限定名称.
+   printUser 指定目标对象的方法 .
+   (.)表示任意参数进行匹配。
+
+@DeclareP缸ents , 它的作用是引入新的类来增强服务:
+
+1. value :指向你要增强功能的目标对象 
+
+2. defaultlmpl : 引入增强 功能 的 类
+
+   ```java
+   @Aspect
+   public class MyAspect {
+   @DeclareParents(
+   value= "com.springboot.chapter4.aspect.service.impl.UserServiceImpl +”,
+   defaultimpl=UserValidatorImpl.class)
+   public UserValidator userValidator;
+     ---------------------------------------------  
+   UserValidator userValidator=(UserValidator)userService ;
+   //验证用户是否为空
+   if (userValidator.validate(user) ) {
+   userService.printUser(user) ;
+   }
+   return user ;
+   ```
+
+   传递参数给通知:
+
+   ```java
+   @Before ( ” pointCut () && args(user)” )
+   public roid beforeParam (JoinPoint point ,User user){
+       Object[] args = point.getArgs ( ) ;
+   }
+   //将连接点(目标对象方法)名称为 user的参数传递进来对于非环绕通知而言, SpringAOP会自动把JoinPoint传递到通知中:对于环绕通知而言,可以使用 ProceedingJoinPoint(进行目标对象的回调)
+   ```
+
+   使用多个切面拦截时，切面的执行顺序是混乱的，可使用@Order或接口Ordered：
+
+   ```java
+   @Aspect
+   @Order (1)
+   public class MyAAspectl {
+       ......
+   }
+   
+   @Aspect
+   public class MyAspectl implements Ordered {
+       @Override
+       public int getOrder (){
+           return 1 ;
+       }
+   }
+   ```
+
+   
