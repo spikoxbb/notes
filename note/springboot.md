@@ -59,7 +59,7 @@ Bean 的生命周期：
 
 2. Bean的初始化
 
-   ![](/home/spiko/notes/img/微信图片_20190819111122.png)
+   ![](../img/微信图片_20190819111122.png)
 
 3. Bean的生存期
 
@@ -171,7 +171,7 @@ execution(*com.springboot.chapter4.aspect.service.impl.UserServceimpl .printUser
    printUser 指定目标对象的方法 .
    (.)表示任意参数进行匹配。
 
-@DeclareP缸ents , 它的作用是引入新的类来增强服务:
+@DeclareParents , 它的作用是引入新的类来增强服务:
 
 1. value :指向你要增强功能的目标对象 
 
@@ -208,7 +208,7 @@ execution(*com.springboot.chapter4.aspect.service.impl.UserServceimpl .printUser
    ```java
    @Aspect
    @Order (1)
-   public class MyAAspectl {
+   public class MyAspectl {
        ......
    }
    
@@ -221,4 +221,142 @@ execution(*com.springboot.chapter4.aspect.service.impl.UserServceimpl .printUser
    }
    ```
 
-   
+   # 数据库
+
+```java
+<dependency>
+   <groupId>org.mybatis.spring.boot</groupId>
+   <artifactId>mybatis-spring-boot-starter</artifactId>
+   <version>2.0.0</version>
+</dependency>
+```
+
+@Alias指定别名。(mapper.xml中使用)
+
+枚举是可以通过 typeHandler 进行转换.抽象类 BaseTyp空Handler<T>实现了 TypeHandler<T>.
+
+```java
+//声明jdbcType
+@MappedJdbcTypes (value=JdbcType.Integer )
+//声明JavaType
+@MappedTypes (value=SexEnum.class )
+public class SexTypeHandler extends BaseTypeHandler<SexEnum>{
+    ......
+}
+```
+
+便用 MapperFactoryBean 装配 MyBatis 接口：
+
+```java
+@Autowired
+SqlSessionFactory sqlSessionFactory = null;
+@Bean
+public MapperFactoryBean<MyBatisUserDao> initMyBatisUserDao () {
+    MapperFactoryBean<MyBatisUserDao> bean =new MapperFactoryBean<>();
+    bean.setMapperinterface(MyBatisUserDao . class) ;
+    bean.setSqlSessionFactory(sqlSessionFactory);
+    return bean;
+}
+```
+
+# 事务
+
+@Transactional可以标注在类或者方法上，标注在类上时,代表这个类所有公共( pub lic )非静态的方法都将启用事务功能。
+
+Spring IoC 容器在加载时会配置信息解析出来,然后把这些信息存到事务定义器( TransactionDefinition 接口的实现类〉
+里 , 并且记录哪些类或者方法需要启动事务功能,采取什么策 略去执行事务。
+
+```java
+@Target({E lernentType . METHOD , ElernentType . TYPE})
+@Retention(RetentionPolicy . RUNTIME)
+@Inherited
+@Documented
+public @interface Transactional {
+//通过 bean name 指定事务管理器
+@AliasFor (” transactionManager ” )
+String value() default  "";
+//同 value 属性
+@AliasFor ( ” value ” )
+String transactionManager () default "";
+//指定传播行为
+Propagation propagation() default Propagation.REQUIRED ;
+//指定隔离级别
+Isolation isolation () default Isolation.DEFAULT;
+//指定超时时间(单位秒)
+int timeout() default TransactionDefinition.TIMEOUT_DEFAULT ;
+//是否只读事务
+boolean readOnly() default false ;
+//方法在发生指定异常时回  ,默认是所有异常都回滚
+Class< ? extends Throwable > [] roll back For( ) default {);
+//方法在发生指定异常名称时回滚 , 默认是所有异常都回滚
+String[] rollbackForClassNarne() default {) ;
+//方法在发生指定异常时不回滚 , 默认是所有异常都回滚
+Class< ? extends Throwable> [] noRollbackFor () default {} ;
+//方法在发生指定异常名称时不回滚,默认是所有异常都回滚
+String[] noRollbackForClassNarne() default {} ;
+}
+```
+
+事务管理器 的顶层接口为 PlatformTransactionManager,(MyBatis 用到的事务管理器是 DataSourceTransactionManager)
+
+```java
+public interface PlatforrnTransactionManager {
+    //获取事务 , 它还会设置数据属性
+    TransactionStatus getTransaction(TransactionDefinition definition)throws TransactionException ;
+    //提交事务
+    void commit(TransactionStatus status) throws TransactionException ;
+    //回滚事务
+    void rollback(TransactionStatus status) throws TransactionException; 
+}
+```
+
+ACID:Atomic (原子性);Consistency (一致性);Isolation (隔离性);Durability (持久性)
+
+第一类丢失更新:一个事务回滚另一个事务提交而引发的数据不一致的情况.
+
+第二类丢失更新:多个事务都提交引发的丢失更新.
+
+1. 未提交读：允许一个事务读取另外一个事务没有提交的数据
+
+2. 读写提交：一个事务只能读取另外 一 个事务已经提交的数据 ,
+
+3. 可重复读：克服读写提交中出现的不可重复读的现象，直至事务 1 提交,事务 2 才能读取库存的值。
+
+   幻读不是针对 一条数据库记录而言,而是多条记录，可重复读是针对 数据库 的单 一 条记录
+
+4. 串行化：所有的 SQL 都会按照顺序执行
+
+Oracle 默认的隔离级别为读写提交, MySQL 则 是 可重复读。
+
+当前方法调用子方法的时候,让每一 个子方法 不在当前事务中执行,而是创建一个新的事务去执行子方法,我们就说 当前方法调用子方法的传播行为为新建事务。
+
+```java
+public enum Propagation {
+//需要事务,它是默认传播行为,如果当前存在事务,就沿用当前事务,否则新建一个事务运行子方
+    REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED),
+//支持事务,如果当前存在事务,就沿用当前事务 ,如果不存在 ,则继续采用无事务的方式运行子方法
+    SUPPORTS(TransactIonDefinition.PROPAGATION_SUPPORTS) ,
+//必须使用事务,如果当前没有事务,则会抛出异常,如果存在当前事务 , 就沿用当前事务
+    MANDATORY ( TransactionDefinition.PROPAGATION_MANDATORY) ,
+//无论当前事务是否存在,都会创建新事务运行方法 ,这样新事务就可以拥有新的锁和隔离级别等特性,与当前事务相互独立
+    REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW),
+//不支持事务,当前存在事务时,将挂起事务,运行方法
+    NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED ),
+//不支持事务,如果当前方法存在事务,则抛出异常,否则继续使用无事务机制运行
+    NEVER(TransactionDefinition.PROPAGATION_NEVER),
+//在当前方法调用子方法时,如果子方法发生异常,女只因滚子方法执行过的 SQL ,而不回滚当前方法的事务
+    NESTED(TransactionDefinition.PROPAGATION_NESTED);
+private final int value ;
+Propagation (int value){
+    this value = value ;
+}
+public int value(){
+    return this.value ;
+}
+)
+```
+
+在自调用的过程中 , 是类自身的调用 ,而 不是代理对象去调 用, 那么就不会产生 AOP , 这样事务就失效了。
+
+# Spring MVC
+
