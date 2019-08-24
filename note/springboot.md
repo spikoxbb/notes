@@ -360,3 +360,24 @@ public int value(){
 
 # Spring MVC
 
+1. 客户端请求提交到 DispatcherServlet。
+2. 由 DispatcherServlet 控制器查询一个或多个 HandlerMapping,找到处理请求的Controller。
+3. DispatcherServlet 将请求提交到 Controller。
+4. Controller 调用业务逻辑处理后,返回 ModelAndView。
+5. DispatcherServlet 查询一个或多个 ViewResoler 视图解析器,找到 ModelAndView 指定的视图。
+6. 视图负责将结果显示到客户端。
+
+# mybatis
+
+Mybatis 的一级缓存原理( sqlsession 级别 )：第一次发出一个查询 sql,sql 查询结果写入 sqlsession 的一级缓存中,缓存使用的数据结构是一个 map。
+
+- key:MapperID+offset+limit+Sql+所有的入参
+- value:用户信息。同一个 sqlsession 再次发出相同的 sql,就从缓存中取出数据。如果两次中间出现 commit 操作(修改、添加、删除),本 sqlsession 中的一级缓存区域全部清空,下次再去缓存中查询不到所以要从数据库查询,从数据库查询到再写入缓存。
+
+二级缓存原理( mapper 基本 )：二级缓存的范围是 mapper 级别(mapper 同一个命名空间),mapper 以命名空间为单位创建缓存数据结构,结构是 map。mybatis 的二级缓存是通过 CacheExecutor 实现的。CacheExecutor其实是 Executor 的代理对象。所有的查询操作,在 CacheExecutor 中都会先匹配缓存中是否存在,不存在则查询数据库。
+key:MapperID+offset+limit+Sql+所有的入参
+
+具体使用需要配置:
+1. Mybatis 全局配置中启用二级缓存配置
+2. 在对应的 Mapper.xml 中配置 cache 节点
+3. 在对应的 select 查询节点中添加 useCache=true

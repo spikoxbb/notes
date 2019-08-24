@@ -1,3 +1,30 @@
+## 异常
+
+Throwable 是 Java 语言中所有错误或异常的超类。下一层分为 Error 和 Exception
+
+## 内部类
+
+1. 静态内部类可以访问外部类所有的静态变量和方法,即使是 private 的也一样。
+2. 其它类使用静态内部类需要使用“外部类.静态内部类”方式,如下所示:Out.Inner inner =new Out.Inner();
+
+定义在类内部的非静态类,就是成员内部类。成员内部类不能定义静态方法和变量(final 修饰的除外)。这是因为成员内部类是非静态的,类初始化的时候先初始化静态成员,如果允许成员内部类定义静态变量,那么成员内部类的静态变量初始化顺序是有歧义的。
+
+## 泛型
+
+泛型提供了编译时类型安全检测机制，类型擦除的基本过程也比较简单,首先是找到用来替换类型参数的具体类。这个具体类一般是 Object。如果指定了类型参数的上界的话,则使用这个上界。把代码中的类型参数都替换成具体的类。
+
+## 序列化
+
+使用 Java 对象序列化,在保存对象时,会把其状态保存为一组字节,在未来,再将这些字节组装成对象。必须注意地是,对象序列化保存的是对象的”状态”,即它的成员变量。由此可知,对象序列化不会关注类中的静态变量。
+
+通过 ObjectOutputStream 和 ObjectInputStream 对对象进行序列化及反序列化。writeObject 和 readObject 自定义序列化策略在类中增加 writeObject 和 readObject 方法可以实现自定义序列化策略。
+
+1. 在变量声明前加上 Transient 关键字,可以阻止该变量被序列化到文件中,在被反序列化后,transient 变量的值被设为初始值,如 int 型的是 0,对象型的是 null。
+
+2. 服务器端给客户端发送序列化对象数据,对象中有一些数据是敏感的,比如密码字符串等,希望对该密码字段在序列化时,进行加密,而客户端如果拥有解密的密钥,只有在客户端进行反序列化时,才可以对密码进行读取,这样可以一定程度保证序列化对象的数据安全。
+
+3. #### 若实现的是Externalizable接口，则没有任何东西可以自动序列化，需要在writeExternal方法中进行手工指定所要序列化的变量，这与是否被transient修饰无关。
+
 ## IO/NIO
 
 1. 阻塞 IO 模型：在读写数据过程中会发生阻塞现象。当用户线程发出 IO 请求之后,内核会去查看数据是否就绪,如果没有就绪就会等待数据就绪,而用户线程就会处于阻塞状态,用户线程交出 CPU。当数据就绪之后,内核会将数据拷贝到用户线程,并返回结果给用户线程,用户线程才解除 block 状态。典型的阻塞 IO 模型的例子为:data = socket.read();如果数据没有就绪,就会一直阻塞在 read 方法。
@@ -670,9 +697,32 @@ Spring的事务实现也借助了ThreadLocal类。Spring会从数据库连接池
 
 synchronized 和 ReentrantLock的共同点:都是可重入锁,同一线程可以多次获得同一个锁
 
-不同点:
+不同点:synchronized 在发生异常时,会自动释放线程占有的锁,因此不会导致死锁现象发生;而 Lock 在发生异常时,如果没有主动通过 unLock()去释放锁,则很可能造成死锁现象,因此使用 Lock 时需要在 finally 块中释放锁。
 
-1. synchronized 在发生异常时,会自动释放线程占有的锁,因此不会导致死锁现象发生;而 Lock 在发生异常时,如果没有主动通过 unLock()去释放锁,则很可能造成死锁现象,因此使用 Lock 时需要在 finally 块中释放锁。
+Synchronized进过编译，会在同步块的前后分别形成monitorenter和monitorexit这个两个字节码指令。在执行monitorenter指令时，首先要尝试获取对象锁。如果这个对象没被锁定，或者当前线程已经拥有了那个对象锁，把锁的计算器加1，相应的，在执行monitorexit指令时会将锁计算器就减1，当计算器为0时，锁就被释放了。如果获取对象锁失败，那当前线程就要阻塞，直到对象锁被另一个线程释放为止。
+
+ReenTrantLock的实现是一种自旋锁，通过循环调用CAS操作来实现加锁。它的性能比较好也是因为避免了使线程进入内核态的阻塞状态。想尽办法避免线程进入内核的阻塞状态是我们去分析和理解锁设计的关键钥匙。使用链表作为队列，使用volatile变量state，作为锁状态标识位。
+
+lock():
+
+ (1)通过原子的比较并设置操作，如果成功设置，说明锁是空闲的，当前线程获得锁，并把当前线程设置为锁拥有者；
+ (2)否则，调用acquire方法；
+
+```java
+package java.util.concurrent.locks.ReentrantLock;
+final void lock() {
+            if (compareAndSetState(0, 1))//表示如果当前state=0，那么设置state=1，并返回true；否则返回false。由于未等待，所以线程不需加入到等待队列
+                setExclusiveOwnerThread(Thread.currentThread());
+            else
+                acquire(1);
+}
+ 
+ package java.util.concurrent.locks.AbstractOwnableSynchronizer  //AbstractOwnableSynchronizer是AQS的父类
+ protected final void setExclusiveOwnerThread(Thread t) {
+            exclusiveOwnerThread = t;
+}
+//如果当前锁已经被持有，那么接下来进行可重入检查，如果可重入，需要为锁状态加上请求数。如果不属于上面两种情况，那么说明锁是被其他线程持有，当前线程应该放入等待队列。在放入等待队列的过程中，首先要检查队列是否为空队列，如果为空队列，需要创建虚拟的头节点，然后把对当前线程封装的节点加入到队列尾部。由于设置尾部节点采用了CAS，为了保证尾节点能够设置成功，这里采用了无限循环的方式，直到设置成功为止。如果当前节点之前的节点的等待状态小于1，说明当前节点之前的线程处于等待状态(挂起)，那么当前节点的线程也应处于等待状态(挂起)。挂起的工作是由LockSupport类支持的，LockSupport通过JNI调用本地操作系统来完成挂起的任务(java中除了废弃的suspend等方法，没有其他的挂起操作).在当前等待的线程，被唤起后，检查中断状态，如果处于中断状态，那么需要中断当前线程。
+```
 
 ConcurrentHashMap 并发:它内部细分了若干个小的 HashMap,称之为段(Segment)。如果在 ConcurrentHashMap 中添加一个新的表项,并不是将整个 HashMap 加锁,而是首先根据 hashcode 得到该表项应该存放在哪个段中,然后对该段加锁,并完成 put 操作。ConcurrentHashMap 是由 Segment 数组结构和 HashEntry 数组结构组成。Segment 是一种可重入锁 ReentrantLock,,HashEntry 则用于存储键值对数据。每个 Segment 守护一个 HashEntry 数组里的元素,当对 HashEntry 数组的数据进行修改时,必须首先获得它对应的 Segment 锁。
 
@@ -720,3 +770,30 @@ for (;;) {
 ```
 
 ABA 问题：比如说一个线程 one 从内存位置 V 中取出 A,这时候另一个线程 two 也从内存中取出 A,并且two 进行了一些操作变成了 B,然后 two 又将 V 位置的数据变成 A,这时候线程 one 进行 CAS 操作发现内存中仍然是 A,然后 one 操作成功。尽管线程 one 的 CAS 操作成功,但是不代表这个过程就是没有问题的。部分乐观锁的实现是通过版本号(version)的方式来解决 ABA 问题,乐观锁每次在执行数据的修改操作时,都会带上一个版本号,一旦版本号和数据的版本号一致就可以执行修改操作并对版本号执行+1 操作,否则就执行失败。因为每次操作的版本号都会随之增加,所以不会出现 ABA 问题,因为版本号只会增加不会减少。
+
+什么是 AQS( 抽象的队列同步器 )：AbstractQueuedSynchronizer 类如其名,抽象的队列式的同步器,AQS 定义了一套多线程访问共享资源的同步器框架,许多同步类实现都依赖于它,如常用的ReentrantLock/Semaphore/CountDownLatch。
+
+![](../img/1566537014.png)
+
+它维护了一个 volatile int state(代表共享资源)和一个 FIFO 线程等待队列(多线程争用资源被阻塞时会进入此队列)。
+
+state 的访问方式有三种:getState()/setState()/compareAndSetState()
+
+AQS 定义两种资源共享方式
+Exclusive 独占资源 -ReentrantLock
+Share 共享资源 -Semaphore/CountDownLatch
+
+因 为 独 占 模 式 下 只 用 实 现 tryAcquire-tryRelease , 而共享模式下只用实现tryAcquireShared-tryReleaseShared。不同的自定义同步器争用共享资源的方式也不同。自定义同步器在实现时只需要实现共享资源 state 的获取与释放方式即可,至于具体线程等待队列的维护(如获取资源失败入队/唤醒出队等),AQS 已经在顶层实现好了。自定义同步器实现时主要实现以下几种方法:
+
+1. isHeldExclusively():该线程是否正在独占资源。只有用到 condition 才需要去实现它。
+2. tryAcquire(int):独占方式。尝试获取资源,成功则返回 true,失败则返回 false。
+3. tryRelease(int):独占方式。尝试释放资源,成功则返回 true,失败则返回 false。
+4. tryAcquireShared(int):共享方式。尝试获取资源。负数表示失败;0 表示成功,但没有剩余可用资源;正数表示成功,且有剩余资源。
+5. tryReleaseShared(int):共享方式。尝试释放资源,如果释放后允许唤醒后续等待结点返回true,否则返回 false。
+
+同步器的实现是 ABS 核心
+
+1. 以 ReentrantLock 为例,state 初始化为 0,表示未锁定状态。A 线程lock()时,会调用 tryAcquire()独占该锁并将 state+1。此后,其他线程再 tryAcquire()时就会失败,直到 A 线程 unlock()到 state=0(即释放锁)为止,其它线程才有机会获取该锁。当然,释放锁之前,A 线程自己是可以重复获取此锁的(state 会累加),这就是可重入的概念。但要注意,
+   获取多少次就要释放多么次,这样才能保证 state 是能回到零态的。
+2. 以 CountDownLatch 以例,任务分为 N 个子线程去执行,state 也初始化为 N(注意 N 要与线程个数一致)。这 N 个子线程是并行执行的,每个子线程执行完后 countDown()一次,state会 CAS 减 1。等到所有子线程都执行完后(即 state=0),会 unpark()主调用线程,然后主调用线程就会从 await()函数返回,继续后余动作。
+3. 但 AQS 也支持自定义同步器同时实现独占和共享两种方式,如 ReentrantReadWriteLock。
