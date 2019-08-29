@@ -1,5 +1,7 @@
 
 
+
+
 ## 基础
 
 消息引擎能够有效地对抗上游的流量冲击，真正做到将上游的“峰”填满到“谷”中，避免了流量的震荡。消息引擎系统的另一大好处在于发送方和接收方的松耦合，这也在一定程度上简化了应用的开发，减少了系统间不必要的交互。
@@ -153,7 +155,7 @@ int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] va
 **随机策略**:也称 Randomness 策略。所谓随机就是我们随意地将消息放置到任意一个分区上。随机策略是老版本生产者使用的分区策略，在新版本中已经改为轮询策略。
 
 ```java
-List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
+List<PartitionInfo> partitions = cluster.partitions ForTopic(topic);
 return ThreadLocalRandom.current().nextInt(partitions.size());
 ```
 
@@ -703,13 +705,494 @@ Broker 在启动时，会尝试去 ZooKeeper 中创建/controller 节点。Kafka
   ```java
    //查询所有主题的列表
    bin/kafka-topics.sh --bootstrap-server broker_host:port --list
+   
    //查询单个主题的详细数据
    bin/kafka-topics.sh --bootstrap-server broker_host:port --describe --topic <topic_name>
+   
    //修改主题分区。目前 Kafka 不允许减少某个主题的分区数。
    bin/kafka-topics.sh --bootstrap-server broker_host:port --alter --topic <topic_name> --partitions < 新分区数 >
+       
     //设置常规的主题级别参数，还是使用 --zookeeper。
    //设置主题级别参数 max.message.bytes
 	bin/kafka-configs.sh --zookeeper zookeeper_host:port --entity-type topics --entity-name <topic_name> --alter --add-config max.message.bytes=10485760
-   //删除主题
+        
+    //修改主题限速。该主题各个分区的 Leader 副本和 Follower 副本在处理副本同步时，不得占用超过 100MBps 的带宽。
+bin/kafka-configs.sh --zookeeper zookeeper_host:port --alter --add-config 'leader.replication.throttled.rate=104857600,follower.replication.throttled.rate=104857600' --entity-type brokers --entity-name 0
+    //为所有副本设置限速
+    bin/kafka-configs.sh --zookeeper zookeeper_host:port --alter --add-config 'leader.replication.throttled.replicas=*,follower.replication.throttled.replicas=*' --entity-type topics --entity-name test
+    
+   //删除主题，删除操作是异步的，执行完这条命令不代表主题立即就被删除了。它仅仅是被标记成“已删除”状态而已。Kafka 会在后台默默地开启主题删除操作。
    bin/kafka-topics.sh --bootstrap-server broker_host:port --delete  --topic <topic_name>
   ```
+
+将主题的副本值从1增加到 3 ：
+
+```java
+//broker 排列顺序不同，目的是将 Leader 副本均匀地分散在 Broker 上。
+{"version":1, "partitions":[
+ {"topic":"__consumer_offsets","partition":0,"replicas":[0,1,2]}, 
+  {"topic":"__consumer_offsets","partition":1,"replicas":[0,2,1]},
+  {"topic":"__consumer_offsets","partition":2,"replicas":[1,0,2]},
+  {"topic":"__consumer_offsets","partition":3,"replicas":[1,2,0]},
+  ...
+  {"topic":"__consumer_offsets","partition":49,"replicas":[0,1,2]}
+]}`
+bin/kafka-reassign-partitions.sh --zookeeper zookeeper_host:port --reassignment-json-file reassign.json --execute
+
+//查看消费者组提交的位移数据。
+bin/kafka-console-consumer.sh --bootstrap-server kafka_host:port --topic __consumer_offsets --formatter "kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter" --from-beginning
+
+//读取该主题消息，查看消费者组的状态信息。
+bin/kafka-console-consumer.sh --bootstrap-server kafka_host:port --topic __consumer_offsets --formatter "kafka.coordinator.group.GroupMetadataManager\$GroupMetadataMessageFormatter" --from-beginning
+
+```
+
+碰到主题无法删除的问题:
+
+1. 首先手动删除 ZooKeeper 节点 /admin/delete_topics 下以待删除主题为名的 znode。
+2. 其次手动删除该主题在磁盘上的分区目录。
+3. 在 ZooKeeper 中执行 rmr /controller，触发 Controller 重选举，刷新 Controller 缓存。
+
+如果出现_consumer_offsets主题消耗了过多的磁盘空间，用jstack 命令查看一下 kafka-log-clean-thread 前缀的线程状态。通常情况下，这都是因为该线程挂掉了，无法及时清理此内部主题。
+
+```
+为什么不允许减少分区？
+
+因为多个broker节点都冗余有分区的数据，减少分区数需要操作多个broker且需要迁移该分区数据到其他分区。如果是按消息key hash选的分区，那么迁移就不知道迁到哪里了。
+```
+
+----
+
+1.1 版本之后（含 1.1）的 Kafka 官网，Broker Configs表中增加了 Dynamic Update Mode 列。该列有 3 类值，分别是 read-only、per-broker 和 cluster-wide.
+
+- read-only。被标记为 read-only 的参数和原来的参数行为一样，只有重启 Broker，才能令修改生效。
+- per-broker。被标记为 per-broker 的参数属于动态参数，修改它之后，只会在对应的 Broker 上生效.如listeners。
+- cluster-wide。被标记为 cluster-wide的参数也属于动态参数，修改它之后，会在整个集群范围内生效，也就是对所有 Broker 都生效。如log.retention.ms。
+
+Kafka 将动态 Broker 参数保存在 ZooKeeper中。
+
+![](../img/67125a22a27028e18bab9f03a6664859.png)
+
+changes 是用来实时监测动态参数变更的，不会保存参数值；topics 是用来保存 Kafka 主题级别参数的。虽然它们不属于动态 Broker 端参数，但其实它们也是能够动态变更的。
+
+users 和 clients 则是用于动态调整客户端配额（Quota）的 znode 节点。配额，是指 Kafka 运维人员限制连入集群的客户端的吞吐量或者是限定它们使用的 CPU 资源。
+
+/config/brokers znode 才是真正保存动态Broker 参数的地方。<default>，保存的是cluster-wide 范围的动态参数；broker.id 为名，保存的是特定 Broker 的per-broker 范围参数。由于是 per-broker范围，因此这类子节点可能存在多个。
+
+![](../img/c4154989775023afb619f2fdb07f6f7c.png)
+
+ephemeralOwner 字段的值都是 0表示这些 znode 都是持久化节点。
+
+```java
+//如果要设置 cluster-wide 范围的动态参数，需要显式指定 entity-default。
+bin/kafka-configs.sh --bootstrap-server kafka-host:port --entity-type brokers --entity-default --alter --add-config unclean.leader.election.enable=true
+//删除 cluster-wide 范围参数
+bin/kafka-configs.sh --bootstrap-server kafka-host:port --entity-type brokers --entity-default --alter --delete-config unclean.leader.election.enable
+
+//设置 per-broker 范围参数。
+bin/kafka-configs.sh --bootstrap-server kafka-host:port --entity-type brokers --entity-name 1 --alter --add-config unclean.leader.election.enable=false
+//删除 per-broker 范围参数
+bin/kafka-configs.sh --bootstrap-server kafka-host:port --entity-type brokers --entity-name 1 --alter --delete-config unclean.leader.election.enable
+```
+
+常用动态参数值
+
+1. log.retention.ms
+
+2. num.io.threads 和 num.network.threads。
+
+   在前面提到的两组线程池。
+
+3. 与 SSL 相关的参数。
+
+   主要是 4 个参数（ssl.keystore.type、ssl.keystore.location、ssl.keystore.password 和 ssl.key.password）。允许动态实时调整它们之后，我们就能创建那些过期时间很短的 SSL 证书。每当我们调整时，Kafka 底层会重新配置 Socket 连接通道并更新 Keystore。新的连接会使用新的 Keystore，阶段性地调整这组参数,有利于增加安全性。
+
+4. num.replica.fetchers。
+
+   Follower 副本拉取速度慢，增加该参数值，确保有充足的线程可以执行副本向 Leader 副本的拉取。
+
+-----
+
+如果消息处理逻辑非常复杂，处理代价很高，又不关心消息之间的顺序，那么传统的消息中间件是比较合适的；如果需要较高的吞吐量，但每条消息的处理时间很短，同时又很在意消息的顺序，此时，Kafka 就是首选。
+
+重设位移策略:
+
+![](../img/eb469122e5af2c9f6baebb173b56bed5.jpeg)
+
+- Earliest 策略表示将位移调整到主题当前最早位移处。因为很久远的消息会被 Kafka 自动删除，所以当前最早位移很可能是一个大于 0 的值。如果你想要重新消费主题的所有消息，那么可以使用 Earliest 策略。
+- Latest 策略表示把位移重设成最新末端位移。如果你想跳过所有历史消息，打算从最新的消息处开始消费的话，可以使用 Latest 策略。
+- Current 策略表示将位移调整成消费者当前提交的最新位移。有时候修改了消费者程序代码，并重启了消费者，结果发现代码有问题，需要回滚之前的代码变更，同时也要把位移重设到消费者重启时的位置，那么使用Current 策略。
+- Specified-Offset 策略表示消费者把位移值调整到你指定的位移处。典型使用场景是，消费者程序在处理某条错误消息时，你可以手动地跳过”此消息的处理。出现 corrupted 消息无法被消费的情形，此时消费者程序会抛出异常，无法继续工作。一旦碰到这个问题，你就可以尝试使用 Specified-Offset 策略来规避。
+- Shift-By-N 策略指定的就是位移的相对数值，给出要跳过的一段消息的距离即可，可以为负数。
+- DateTime 允许指定一个时间，然后将位移重置到该时间之后的最早位移处。常见的使用场景是，如重新消费昨天的数据，可以使用该策略重设位移到昨天 0 点。
+- Duration 策略则是指给定相对的时间间隔，它就是一个符合 ISO-8601 规范的 Duration格式，以字母 P 开头，后面由 4 部分组成，即 D、H、M 和 S，想将位移调回到 15 分钟前，那么你就可以指定 PT0H15M0S。
+
+重设消费者组位移的方式有两种：
+
+1. 消费者 API 方式设置
+
+   ```java
+   void seek(TopicPartition partition, long offset);
+   //OffsetAndMetadata类是一个封装了Long型的位移和自定义元数据的复合类，只是一般情况下，自定义元数据为空
+   void seek(TopicPartition partition, OffsetAndMetadata offsetAndMetadata);
+   //seekToBeginning 和 seekToEnd 可一次重设多个分区。
+   void seekToBeginning(Collection<TopicPartition> partitions);
+   void seekToEnd(Collection<TopicPartition> partitions);
+   
+   //Earliest
+   Properties consumerProperties = new Properties();
+   //要禁止自动提交位移。
+   consumerProperties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+   //组 ID 要设置成你要重设的消费者组的组 ID。
+   consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, groupID);
+   consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+   consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+   consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+   consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerList);
+   
+   String topic = "test";  // 要重设位移的 Kafka 主题 
+   try (final KafkaConsumer<String, String> consumer = 
+   	new KafkaConsumer<>(consumerProperties)) {
+            consumer.subscribe(Collections.singleton(topic));
+       	//要调用带长整型的 poll 方法，而不要调用 consumer.poll(Duration.ofSecond(0))。在poll(0)中consumer会一直阻塞直到它成功获取了所需的元数据信息，之后它才会发起fetch请求去获取数据。虽然poll可以指定超时时间，但这个超时时间只适用于后面的消息获取，前面更新元数据信息不计入这个超时时间。poll(Duration)这个版本修改了这样的设计，会把元数据获取也计入整个超时时间。由于本例中使用的是0，即瞬时超时，因此consumer根本无法在这么短的时间内连接上coordinator，所以只能赶在超时前返回一个空集合。这就是为什么使用不同版本的poll命令assignment不同的原因。poll(0)这种设计的一个问题在于如果远端的broker不可用了， 那么consumer程序会被无限阻塞下去。用户指定了超时时间但却被无限阻塞，显然这样的设计时有欠缺的。
+            consumer.poll(0);
+            consumer.seekToBeginning(
+   	consumer.partitionsFor(topic).stream().map(partitionIno ->          
+   	new TopicPartition(topic, partitionInfo.partition()))
+   	.collect(Collectors.toList()));
+   } 
+   
+   //Latest 策略和 Earliest 是类似的，只需要使用 seekToEnd 方法即可
+   consumer.seekToEnd(
+   	consumer.partitionsFor(topic).stream().map(partitionInfo ->          
+   	new TopicPartition(topic, partitionInfo.partition()))
+   	.collect(Collectors.toList()));
+   
+   //current策略
+   consumer.partitionsFor(topic).stream().map(info -> 
+   	new TopicPartition(topic, info.partition()))
+   	.forEach(tp -> {
+        //借助 KafkaConsumer 的 committed 方法来获取当前提交的最新位移，
+   	long committedOffset = consumer.committed(tp).offset();
+   	consumer.seek(tp, committedOffset);
+   });
+   
+   //Specified-Offset
+   long targetOffset = 1234L;
+   for (PartitionInfo info : consumer.partitionsFor(topic)) {
+   	TopicPartition tp = new TopicPartition(topic, info.partition());
+   	consumer.seek(tp, targetOffset);
+   }
+   
+   //Shift-By-N 策略
+   for (PartitionInfo info : consumer.partitionsFor(topic)) {
+            TopicPartition tp = new TopicPartition(topic, info.partition());
+   	    // 假设向前跳 123 条消息
+            long targetOffset = consumer.committed(tp).offset() + 123L; 
+            consumer.seek(tp, targetOffset);
+   }
+   
+   //DateTime 策略
+   long ts = LocalDateTime.of(
+       //重设位移到 2019 年 6 月 20 日晚上 8 点
+   	2019, 6, 20, 20, 0).toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
+   Map<TopicPartition, Long> timeToSearch = 
+            consumer.partitionsFor(topic).stream().map(info -> 
+   	new TopicPartition(topic, info.partition()))
+   	.collect(Collectors.toMap(Function.identity(), tp -> ts));
+   
+   for (Map.Entry<TopicPartition, OffsetAndTimestamp> entry : 
+   	consumer.offsetsForTimes(timeToSearch).entrySet()) {
+   consumer.seek(entry.getKey(), entry.getValue().offset());
+   }
+   
+   //Duration 策略,将位移调回 30分钟前
+   Map<TopicPartition, Long> timeToSearch = consumer.partitionsFor(topic).stream()
+            .map(info -> new TopicPartition(topic, info.partition()))
+            .collect(Collectors.toMap(Function.identity(), tp -> System.currentTimeMillis() - 30 * 1000  * 60));
+   
+   for (Map.Entry<TopicPartition, OffsetAndTimestamp> entry : 
+            consumer.offsetsForTimes(timeToSearch).entrySet()) {
+            consumer.seek(entry.getKey(), entry.getValue().offset());
+   }
+   ```
+
+2. 命令行方式设置
+
+   ```java
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --all-topics --to-earliest –execute
+   
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --all-topics --to-latest --execute
+   
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --all-topics --to-current --execute
+   
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --all-topics --to-offset <offset> --execute
+   
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --shift-by <offset_N> --execute
+   
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --to-datetime 2019-06-20T20:00:00.000 --execute
+   
+   bin/kafka-consumer-groups.sh --bootstrap-server kafka-host:port --group test-group --reset-offsets --by-duration PT0H30M0S --execute
+   ```
+
+----
+
+生产信息：
+
+```java
+bin/kafka-console-producer.sh --broker-list kafka-host:port --topic test-topic --request-required-acks -1 --producer-property compression.type=lz4
+```
+
+消费信息：
+
+```java
+//没有指定group话，每次运行 Console Consumer都会自动生成一个新的消费者组来消费。
+//from-beginning 等同于将 Consumer 端参数 auto.offset.reset 设置成设置成 earliest
+bin/kafka-console-consumer.sh --bootstrap-server kafka-host:port --topic test-topic --group test-group --from-beginning --consumer-property enable.auto.commit=false 
+```
+
+测试性能:
+
+```java
+//测试生产者性能
+bin/kafka-producer-perf-test.sh --topic test-topic --num-records 10000000 --throughput -1 --record-size 1024 --producer-props bootstrap.servers=kafka-host:port acks=-1 linger.ms=2000 compression.type=lz4
+//有 99% 消息的延时都在 604ms 以内。
+2175479 records sent, 435095.8 records/sec (424.90 MB/sec), 131.1 ms avg latency, 681.0 ms max latency.
+4190124 records sent, 838024.8 records/sec (818.38 MB/sec), 4.4 ms avg latency, 73.0 ms max latency.
+10000000 records sent, 737463.126844 records/sec (720.18 MB/sec), 31.81 ms avg latency, 681.00 ms max latency, 4 ms 50th, 126 ms 95th, 604 ms 99th, 672 ms 99.9th.
+
+//测试消费者性能
+bin/kafka-consumer-perf-test.sh --broker-list kafka-host:port --messages 10000000 --topic test-topic
+start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+2019-06-26 15:24:18:138, 2019-06-26 15:24:23:805, 9765.6202, 1723.2434, 10000000, 1764602.0822, 16, 5651, 1728.1225, 1769598.3012
+```
+
+查看主题消息总数:
+
+```java
+bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list kafka-host:port --time -2 --topic test-topic
+
+test-topic:0:0
+test-topic:1:0
+
+$ bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list kafka-host:port --time -1 --topic test-topic
+
+test-topic:0:5500000
+test-topic:1:5500000
+```
+
+查看消息文件数据:
+
+```java
+bin/kafka-dump-log.sh --files ../data_dir/kafka_1/test-topic-1/00000000000000000000.log 
+Dumping ../data_dir/kafka_1/test-topic-1/00000000000000000000.log
+Starting offset: 0
+baseOffset: 0 lastOffset: 14 count: 15 baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: 0 isTransactional: false isControl: false position: 0 CreateTime: 1561597044933 size: 1237 magic: 2 compresscodec: LZ4 crc: 646766737 isvalid: true
+baseOffset: 15 lastOffset: 29 count: 15 baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: 0 isTransactional: false isControl: false position: 1237 CreateTime: 1561597044934 size: 1237 magic: 2 compresscodec: LZ4 crc: 3751986433 isvalid: true
+......
+```
+
+----
+
+```
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>2.3.0</version>
+</dependency>
+```
+
+AdminClient 提供的功能: 
+
+1. 主题管理：包括主题的创建、删除和查询。
+
+2. 权限管理：包括具体权限的配置与删除。
+
+3. 配置参数管理：包括 Kafka 各种资源的参数设置、详情查询。所谓的 Kafka 资源，主要有 Broker、主题、用户、Client-id 等。
+
+4.  副本日志管理：包括副本底层日志路径的变更和详情查询。
+
+5. 分区管理：即创建额外的主题分区。
+
+6. 消息删除：即删除指定位移之前的分区消息。
+
+7. Delegation Token 管理：包括 Delegation Token 的创建、更新、过期和详情查询。
+
+8. 消费者组管理：包括消费者组的查询、位移查询和删除。
+
+9. Preferred 领导者选举：推选指定主题分区的Preferred Broker 为领导者。
+
+   AdminClient 是一个双线程的设计：前端主线程和后端I/O 线程。前端线程负责将用户要执行的操作转换成对应的请求，然后再将请求发送到后端 I/O 线程的队列中；而后端 I/O 线程从队列中读取相应的请求，然后发送到对应的 Broker 节点上，之后把执行结果保存起来，以便等待前端线程的获取.
+
+![](../img/4b520345918d0429801589217270d1eb.png)
+
+前端主线程会创建名为 Call 的请求对象实例。该实例有两个任务：
+
+1. 构建对应的请求对象。比如，如果要创建主题，那么就创建 CreateTopicsRequest；如果是查询消费者组位移，就创建 OffsetFetchRequest。
+2. 指定响应的回调逻辑。比如从 Broker 端接收到 CreateTopicsResponse 之后要执行的动作。一旦创建好 Call 实例，前端主线程会将其放入到新请求队列（NewCall Queue）中，此时，前端主线程的任务就算完成了。它只需要等待结果返回即可。
+
+新请求队列的线程安全是由 Java 的 monitor 锁来保证的。为了确保前端主线程不会因为 monitor 锁被阻塞后端 I/O 线程会定期地将新请求队列中的所有 Call 实例全部搬移到待发送请求队列中进行处理。
+
+I/O 线程会通知前端主线程说结果已经准备完毕，是使用 Java Object 对象的 wait 和 notify 实现的这种通知机制。
+
+切记它的完整类路径是 org.apache.kafka.clients.admin.AdminClient，而不是 kafka.admin.AdminClient。后者就是服务器端的 AdminClient（是之前的老运维工具类，提供的功能也比较有限）。
+
+```java 
+//创建主题
+String newTopicName = "test-topic";
+try (AdminClient client = AdminClient.create(props)) {
+         NewTopic newTopic = new NewTopic(newTopicName, 10, (short) 3);
+         CreateTopicsResult result = client.createTopics(Arrays.asList(newTopic));
+         result.all().get(10, TimeUnit.SECONDS);
+}
+//查询位移
+String groupID = "test-group";
+try (AdminClient client = AdminClient.create(props)) {
+         ListConsumerGroupOffsetsResult result = client.listConsumerGroupOffsets(groupID);
+         Map<TopicPartition, OffsetAndMetadata> offsets = 
+                  result.partitionsToOffsetAndMetadata().get(10, TimeUnit.SECONDS);
+         System.out.println(offsets);
+}
+//获取 Broker 磁盘占用
+//取指定 Broker 上所有分区主题的日志路径信息，然后把它们累积在一起，得出总的磁盘占用量。
+try (AdminClient client = AdminClient.create(props)) {
+         DescribeLogDirsResult ret = client.describeLogDirs(Collections.singletonList(targetBrokerId)); // 指定 Broker id
+         long size = 0L;
+         for (Map<String, DescribeLogDirsResponse.LogDirInfo> logDirInfoMap : ret.all().get().values()) {
+                  size += logDirInfoMap.values().stream().map(logDirInfo -> logDirInfo.replicaInfos).flatMap(
+                           topicPartitionReplicaInfoMap ->
+                           topicPartitionReplicaInfoMap.values().stream().map(replicaInfo -> replicaInfo.size))
+                           .mapToLong(Long::longValue).sum();
+         }
+         System.out.println(size);
+}
+```
+
+----
+
+把数据在单个集群下不同节点之间的拷贝称为备份，而把数据在集群间的拷贝称为镜像（Mirroring）。
+
+Apache Kafka 社区提供的 MirrorMaker工具，它可以帮我们实现消息或数据从一个集群到另一个集群的拷贝.
+
+irrorMaker 就是一个消费者 + 生产者的程序。消费者负责从源集群（Source Cluster）消费数据，生产者负责向目标集群（Target Cluster）发送消息。
+
+![](../img/63fb620532337fcfdfd1ca2df351a378.png)
+
+```java
+bin/kafka-mirror-maker.sh --consumer.config ./config/consumer.properties --producer.config ./config/producer.properties --num.streams 8 --whitelist ".*"
+```
+
+- consumer.config 参数。它指定了 MirrorMaker 中消费者的配置文件地址，最主要的配置项是bootstrap.servers，也就是该 MirrorMaker从哪个 Kafka 集群读取消息。因为 MirrorMaker 有可能在内部创建多个消费者实例并使用消费者组机制，因此你还需要设置 group.id 参数。建议额外配置 auto.offset.reset=earliest，否则的话，MirrorMaker 只会拷贝那些在它启动之后到达源集群的消息。
+- producer.config 参数。它指定了 MirrorMaker 内部生产者组件的配置文件地址。bootstrap.servers，必须显式地指定这个参数，配置拷贝的消息要发送到的目标集群。
+- num.streams 参数。MirrorMaker 要创建多少个 KafkaConsumer 实例。每个线程维护专属的消费者实例。
+- whitelist 参数。接收一个正则表达式。所有匹配该正则表达式的主题都会被自动地执行镜像。“.*”，这表明我要同步源集群上的所有主题。
+
+```java
+consumer.properties：
+bootstrap.servers=localhost:9092
+group.id=mirrormaker
+auto.offset.reset=earliest
+
+producer.properties:
+bootstrap.servers=localhost:9093
+
+bin/kafka-mirror-maker.sh --producer.config ../producer.config --consumer.config ../consumer.config --num.streams 4 --whitelist ".*"
+WARNING: The default partition assignment strategy of the mirror maker will change from 'range' to 'roundrobin' in an upcoming release (so that better load balancing can be achieved). If you prefer to make this switch in advance of that release add the following to the corresponding config: 'partition.assignment.strategy=org.apache.kafka.clients.consumer.RoundRobinAssignor'
+//MirrorMaker 内部消费者会使用轮询策略（Round-robin）来为消费者实例分配分区，现阶段使用的默认策略依然是基于范围的分区策略（Range）。Range 策略的思想很朴素，它是将所有分区根据一定的顺序排列在一起，每个消费者依次顺序拿走各个分区。如果想提前“享用”轮询策略，需要手动地在 consumer.properties 文件中增加 partition.assignment.strategy 的设置。
+```
+
+验证消息是否拷贝成功.假设在源集群上创建了一个 4 分区的主题 test，随后使用 kafka-producer-perf-test 脚本模拟发送了 500 万条消息。
+
+```java
+bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9093 --topic test --time -2
+test:0:0
+    
+bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9093 --topic test --time -1
+test:0:5000000
+//-1 和 -2 分别表示获取某分区最新的位移和最早的位移
+```
+
+MirrorMaker 在执行消息镜像的过程中，如果发现要同步的主题在目标集群上不存在的话，它就会根据 Broker 端参数 num.partitions 和 default.replication.factor的默认值，自动将主题创建出来。因此最好提前把要同步的所有主题按照源集群上的规格在目标集群上等价地创建出来。
+
+MirrorMaker 默认还会同步内部主题
+
+但是但也有运维成本高、性能差等劣势。
+
+---
+
+主机监控:监控 Kafka 集群 Broker 所在的所在的节点机器的性能。
+
+JVM 监控:
+
+1. Full GC 发生频率和时长。这个指标帮助评估Full GC 对 Broker 进程的影响。长时间的停顿会令 Broker 端抛出各种超时异常。
+2. 活跃对象大小。这个指标是设定堆大小的重要依据。
+3. 应用线程总数。这个指标帮助了解 Broker 进程对 CPU 的使用情况。
+
+集群监控：
+
+1. 查看 Broker 进程是否启动，端口是否建立。
+
+2. 查看 Broker 端关键日志。Broker 端服务器日志 server.log，控制器日志 controller.log 以及主题分区状态变更日志state-change.log。
+
+3. 查看 Broker 端关键线程的运行状态。
+
+   - Log Compaction 线程，这类线程是以这类线程是以 kafka-log-cleaner-thread 开头的。
+   - 副本拉取消息的线程，通常以 ReplicaFetcherThread 开头。这类线程执行 Follower 副本向 Leder 副本拉取消息的逻辑。如果它们挂掉了，系统会表现为Follower 副本的 Lag 会越来越大。
+
+4. 查看 Broker 端的关键 JMX 指标。
+
+   - BytesIn/BytesOut：即 Broker 端每秒入站和出站字节数。你要确保这组值不要接近你的网络带宽，否则这通常都表示网卡已被“打满”，很容易出现网络丢包的情形。
+
+   - NetworkProcessorAvgIdlePercent：即网络线程池线程平均的空闲比例。通常来说，你应该确保这个值长期大于 30%。如果小于这个值，就表明你的网络线程池非常繁忙，需要通过增加网络线程数或将负载转移给其他服务器的方式，来给该 Broker 减负。
+
+   - RequestHandlerAvgIdlePercent：即I/O 线程池线程平均的空闲比例。同样地，如果该值长期小于30%，需要调整 I/O 线程池的数量，或者减少 Broker 端的负载。
+
+   - UnderReplicatedPartitions：即未充分备份的分区数。所谓未充分备份，是指并非所有的 Follower 副本都和 Leader 副本保持同步。一旦出现了这种情况，通常都表明该分区有可能会出现数据丢失。
+
+   - ISRShrink/ISRExpand：即 ISR 收缩和扩容的频次指标。如果环境中出现 ISR 中副本频繁进出的情形，那么这组值一定是很高的。这时要诊断下副本频繁进出 ISR 的原因。
+
+   - ActiveControllerCount：即当前处于激活状态的控制器的数量。正常情况下，Controller 所在 Broker 上的这个 JMX 指标值应该是 1，其他 Broker 上的这个值是 0。如果发现存在多台 Broker 上该值都是 1 的情况，处理方式主要是查看网络连通性。这种情况通常表明集群出现了脑裂。脑裂问题是非常严重的分布式故障，Kafka 目前依托 ZvooKeeper 来防止脑裂。但一旦出现脑裂，Kafka 是无法保证正常工作的。
+
+5. 监控 Kafka 客户端。
+
+   首先要关心的是客户端所在的机器与 Kafka Broker 机器之间的网络往返时延（Round-Trip Time，RTT)。
+
+   对于生产者而言，有一个以 kafka-producer-network-thread 开头的线程是你要实时监控的。它是负责实际消息发送的线程。request-latency，即消息生产请求的延时。这个JMX 最直接地表征了 Producer 程序的 TPS；
+
+   对于消费者而言，心跳线程事关 Rebalance，也是必须要监控的一个线程。它的名字以 kafka-coordinator-heartbeat-thread 开头。records-lag 和 records-lead 是两个重要的 JMX 指标。
+
+   -----
+
+   操作系统调优:
+
+   1. 将 swappiness 设置成一个很小的值，比如 1～10以防止 Linux 的 OOM Killer 开启随意杀掉进程。修改 /etc/sysctl.conf 文件，增加 vm.swappiness=N。
+   2. 给 Kafka 预留的页缓存越大越好，最小值至少要容纳一个日志段的大小，也就是 Broker 端参数 log.segment.bytes 的值。该参数的默认值是 1GB。预留出一个日志段大小，至少能保证 Kafka 可以将整个日志段全部放入页缓存，这样，消费者程序在消费时能直接命中页缓存，从而避免昂贵的物理磁盘 I/O 操作。
+
+   JVM 层调优：
+
+   1. 设置堆大小。将你的 JVM 堆大小设置成 6～8GB。查看 GC log，特别是关注 Full GC 之后堆上存活对象的总大小，然后把堆大小设置为该值的 1.5～2 倍。如果Full GC 没有被执行过，手动运行 jmap -histo:live < pid > 就能人为触发 Full GC。
+
+   Broker 端调优：
+
+   尽力保持客户端版本和 Broker 端版本一致。一个低版本的 Consumer 程序想要与 Producer、Broker 交互的话，就只能依靠 JVM 堆中转一下，丢掉了快捷通道(ZERO COPY)，就只能走慢速通道了。
+
+   应用层调优:
+
+   1. 不要频繁地创建 Producer 和 Consumer 对象实例。构造这些对象的开销很大，尽量复用它们。
+   2. 用完及时关闭。这些对象底层会创建很多物理资源，如 Socket 连接、ByteBuffer 缓冲区等。不及时关闭的话，势必造成资源泄露。
+
+   调优吞吐量:
+
+   1. 配置了 acks=all 的 Producer 程序吞吐量被拖累的首要因素，就是副本同步性能。增加Broker 端参数 num.replica.fetchers 表示的是 Follower 副本用多少个线程来拉取消息，默认使用 1 个线程。
+
+   2. 在 Producer 端，如果要改善吞吐量，通常的标配是增加消息批次的大小以及批次缓存时间，即 batch.size 和linger.ms。
+
+   3. 最好不要设置 acks=all 以及开启重试。
+
+   4. 倘若频繁地遭遇 TimeoutException：Failed to allocate memory within the configured max blockingtime 这样的异常，那么你就必须显式地增加buffer.memory参数值，确保缓冲区总是有空间可以申请的。
+
+   5. 可以增加 fetch.min.bytes 参数值。默认是 1字节，表示只要 Kafka Broker 端积攒了 1字节的数据，就可以返回给 Consumer 端，这实在是太小了。还是让 Broker 端一次性多返回点数据吧。
+
+      极客时间版权所有: https://time.geekbang.org/column/article/128184
+
+   极客时间版权所有: https://time.geekbang.org/column/article/128184
