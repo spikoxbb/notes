@@ -38,8 +38,6 @@ Kafka 使用消息日志（Log）来保存数据，一个日志就是磁盘上�
 1. kafka的分区已经让读是从多个broker读从而负载均衡，不是MySQL的主从，压力都在主上。
 2. 如果从kafka的follower读，消费端offset控制更复杂。
 
-极客时间版权所有: https://time.geekbang.org/column/article/99318
-
 ## 常用版本
 
 Apache Kafka:版本迭代速度最快,劣势在于它仅仅提供最最基础的组件，社区版 Kafka 只提供一种连接器，即读写磁盘文件的连接器,而没有与其他外部系统交互的连接器,没有提供任何监控框架或工具。目前有一些开源的监控框架可以帮助用于监控 Kafka（比如 Kafka manager）。总而言之，如果仅仅需要一个消息引擎系统亦或是简单的流处理应用场景，同时需要对系统有较大把控度，那么推荐使用Apache Kafka.迭代速度快，社区响应度高，使用它可以让你有更高的把控度；缺陷在于仅提供基础核心组件，缺失一些高级的特性。
@@ -1192,7 +1190,3 @@ JVM 监控:
    4. 倘若频繁地遭遇 TimeoutException：Failed to allocate memory within the configured max blockingtime 这样的异常，那么你就必须显式地增加buffer.memory参数值，确保缓冲区总是有空间可以申请的。
 
    5. 可以增加 fetch.min.bytes 参数值。默认是 1字节，表示只要 Kafka Broker 端积攒了 1字节的数据，就可以返回给 Consumer 端，这实在是太小了。还是让 Broker 端一次性多返回点数据吧。
-
-      极客时间版权所有: https://time.geekbang.org/column/article/128184
-
-   极客时间版权所有: https://time.geekbang.org/column/article/128184
