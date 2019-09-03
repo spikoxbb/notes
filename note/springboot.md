@@ -38,7 +38,7 @@ String[] getAliases(String name);
 
 ApplicationContext 接口通过继承HierarchicaBeanFactory接口,进而继承 BeanFactory 接口 ,还扩展了消息国际化接口( MessageSource )、环境可配置接口 ( EnvironmentCapable )、应用事件发布接口( ApplicationEventPublisher ) 和 资源模式解析接口( ResourcePatternResolver ).
 
-@Component 是标明哪个类被扫描进入 Spring IoC 容器,而@ComponentScan是标明采用何种策略去扫描装配 Bean(只会扫描Config类所在的当前包和子包).
+@Component 是标明哪个类被扫描进入 Spring IoC 容器,而@ComponentScan是标明采用何种策略去扫描装配 Bean(只会扫描标注类所在的当前包和子包).
 
 @ SpringBootApplication 也注入了@ComponentScan。
 
@@ -223,6 +223,163 @@ execution(*com.springboot.chapter4.aspect.service.impl.UserServceimpl .printUser
 
    # 数据库
 
+   ----------
+
+   在配置数据源后, Spring Boot 通过其自动配置机制配置好了 JdbcTemplate
+
+   ```java
+   //获取映射关系
+   private RowMapper<User> getUserMapper (){
+       //使用 Lambda 表达式创建用户映射关系
+       RowMapper<User> userRowMapper = (ResultSet rs, int rownum)->{
+            User user= new User() ;
+   		user.setid(rs.getLong( " id "));
+            user.setUserName(rs.getString ("user name"));
+   		int sexId = rs.getint ("sex") ;
+            SexEnum sex= SexEnum.getEnumByid(sexid) ;
+   		user.setSex(sex);
+   		user.setNote(rs.getString ("note"));
+   		return user;
+       }
+   	return userRowMapper;
+   }
+   
+   public User getUser (Long id){
+       String sql = "select id , user name , sex , note from t user where id = ?";
+       Object[] params =new Object[] {id);
+       User user= jdbcTemplate.queryForObject{sql , params , getUserMapper()) ;
+       return user ;
+       //List<User> userList =jdbcTemplate.query(sql, params , getUserMapper());return userList;   
+   }
+   
+   //插入数据库
+   public int insertUser (User user){
+   	String sql = "insert into t_user (user_name , sex , note) values ( ? , ?, ?)";
+   	return jdbcTemplate.update(sql, user.getUserName(),                              user.getSex(), user.getid(), user.getNote ());
+       
+       //更新数据库
+       //String sql = "update t_user set user name = ? ,sex = ? , note = ?where id =? "
+       //return jdbcTemplate.update(sql, user.getUserName(),                              user.getSex(), user.getid(), user.getNote (), user.getid ());
+       
+       //删除数据
+       //String sql = ” delete from t_user where id = ?” J
+       //return jdbcTemplate.update(sql , id);
+   }
+   ```
+
+   JdbcTemplate是每调用一次便会生成一个数据库连接,有时候希望在一个连接里面执行多条 SQL , 对此可以使用 StatementCallback 或者 ConnectionCallback 接口实现回调 :
+
+   ```java
+   public User getUser2 (Long id){
+       //通过 Lambda表达式使用 StatementCallback
+       User result= this.jdbcTemplate.execute((Statement stmt) -> {
+           String sql1 ="select count(*) total from t_user where id = "+ id ;
+           ResultSet rsl = stmt.executeQuery(sql1) ;
+           while (rsl.next()) {
+               int total= rsl.getint ("total") ;
+               System.out.println(total) ;
+           }
+           //执行的 SQL
+           String sql2 = "select id, user name, sex, note from t_user where id = " + id;
+           ResultSet rs2 = stmt.executeQuery ( sql2) ;
+           User user = null ;
+           while (rs2.next()) {
+               int rowNum = rs2.getRow();
+               user= getUserMapper().mapRow(rs2, rowNum) ;
+           }
+           return user;
+       });
+       return result ;
+   }
+   ```
+
+   ------
+
+   JPA(Hibernate )
+
+   ```java
+   //@Entity 标明这是一个实体类
+   @ Entity(name="user"}
+   //定义映射的表
+   @ Table(name = "t_user")
+    public class User {
+        //标明主键
+   	@Id
+   	//主键策略,递增
+   	@GeneratedValue (strategy= GenerationType.IDENTITY)
+   	private Long id = null;
+       @colume(name="user_name") 
+       private String userName = null;
+       private String note = null;
+       @convert(converter = SexConverter . class)
+       private SexEnum sex = null;
+    }
+            
+    public class SexConverter implements AttributeConverter<SexEnum , Integer>{
+        //将枚举转换为数据库列
+        @Override
+        public Integer convert ToDatabaseColumn (SexEnum sex){
+            return sex. getId () ;
+        }
+        //将数据库列转换为枚举
+   	@Override
+        public SexEnum convertToEntityAttribute ( Integer id){
+            return SexEnum.getEnumByid (id );
+        }
+    }
+   ```
+
+   ![](../img/1567165654.png)
+
+   JPA 最顶级的接口是 Repository ,而它没有定义任何方法,定义方法的是它的子接口 CrudRepository , 其定义实体最基本 的 增删改的操作,功能性还不足够强大 , 为此PagingAndSortingRepository 则 继承了它并且提供了分页和排序的功能 , 最后 JpaRepository 扩展了PagingAndSortingRepository ,而且扩展了 Query By ExampleExecutor 接 口, 这样就可 以 拥有按例子CExample )查询的功能。一般只需要定义 JPA 接口扩展 JpaRepository 便可以获得 JPA 提供的方法了 。
+
+   ```java
+   //不需要提供任何实现类,这些 Spring会根据 JPA 接口规范完成
+   public interface JpaUserRepository extends JpaRepository<User , Long> {}
+   //测试
+   User user =jpaUserRepository.findByid(id)
+   ```
+
+   Spring 提供了两个注解用来扫描对应的 JPA接口和实体类,它们是@EnableJpaRepositories 和@EntityScan
+
+   ```java
+   //定义 Spring Boot 扫描包路径
+   @SpringBootApplication(scanBasePackages={"com.springboot.chapter5"})
+   //定义 JPA 接口扫描包路径
+   @EnableJpaRepositories(basePackages="com.springboot.chapter5.dao"}
+   //定义实体 Bean 扫描包路径
+   @EntityScan(basePackages ="com.springboot.chapter5.pojo")
+   public class ChapterSApplication {
+       public static void main(String[] args) throws Exception {
+           SpringApplication.run(ChapterSApplication.class, args) ;
+       }
+   }
+   //即使没有使用注解@EnableJpaRepositories和@EntityScan,只要依赖了spring-boot-starter-data-jpa SpringBoot2.x也会对项目进行扫描,这样JPA的实体和接口都会被扫描,只是使用它们可以更进一步配置 JPA的相关信息而己。
+                          
+   //使用 JPA 查询语言(JPQL) 
+   @Query("from user where user_name like concat('%’,?1,’%’) and note like concat('',?2,’%’)")
+   //user 是实体类(@Entity注解的),所以才能这样定义一条 JPQL
+   public List<User> findUsers(String userName, String note);
+   ```
+
+   按照一定规则命名的方法也可以在不写任何代码的情况下完成逻辑。
+
+   ```java
+   //在JpaUserRepository加入以下方法
+   //以动词( get/find )开始的,而以 by 代表按照什么内容进行查询
+   //like代表采用模糊查询
+   List <User> findByUserNameLike(String userName);
+   User getUserByid(Long id);
+   //使用Or
+   List <User> findByUserNameLikeOrNoteLike(String userName, String note);
+   ```
+
+   
+
+   -----
+
+   My Batis 是 一个基于 SqlSessionFactory (它的作用是生成 SqISession 接口对象)构建的框架 。
+
 ```java
 <dependency>
    <groupId>org.mybatis.spring.boot</groupId>
@@ -231,33 +388,598 @@ execution(*com.springboot.chapter4.aspect.service.impl.UserServceimpl .printUser
 </dependency>
 ```
 
-@Alias指定别名。(mapper.xml中使用)
+MyBatis 可配置的内容 ：
 
-枚举是可以通过 typeHandler 进行转换.抽象类 BaseTyp空Handler<T>实现了 TypeHandler<T>.
+1. properties (属性)
+2. settings (设置):它的 配置将改变 MyBatis 的底层行为 ,可以配置 映射规则,如自动映射和驼峰映射、执行器( Executor )类型、缓存等内容.
+3. typeAliases (类型别名):因为使用类全限定名会比较长,所以 MyBatis 会对常用的类提供默认的别名,此外还允许通过 typeAliases 配置自定义的别名 。
+4. typeHandlers (类型处理器):在 MyBatis 写入和读取数据库的过程中对于不同类型的数据(对于 Java 是 JavaType ,对于数据库则是 JdbcType )进行自定义转换,在大部分的情况下不需要使用自定义的 typeHandler ,因为在 MyBatis 自 身就已经定义 了比较多 的 typeHandler, MyBatis 会 自 动 识别 javaTyp巳和 jdbcType ,从而 实现各种类型的转换。一般 typeHandler 的使用集中在枚举类型上 。
+5. objectFactory (对象工厂):这是一个在 MyBatis 生成返回的 POJO 时会调用的 工 厂类 。一般使用 MyBatis 默认提供的对 象工厂类 ( DefaultObjectFactory ).
+6. plugins ( 插件):有时候也称为拦截器 , 是 MyBatis 最 强大也是最危险的组件,它通过动态代理和 责 任链模式来完成,可以修改 MyBatis 底层 的 实现功能 。
+7. mappers (映射器): 是 MyBatis 最核 心的组件,它提供 SQL 和 POJO 映射关系.
+
+枚举是可以通过 typeHandler 进行转换.抽象类 BaseTyeHandler<T>实现了 TypeHandler<T>.
 
 ```java
-//声明jdbcType
-@MappedJdbcTypes (value=JdbcType.Integer )
-//声明JavaType
-@MappedTypes (value=SexEnum.class )
-public class SexTypeHandler extends BaseTypeHandler<SexEnum>{
+@Alias(value = "user")// MyBatis 指定别名
+public class User {
     ......
+}
+
+//声明jdbcType为整型
+@MappedJdbcTypes (value=JdbcType.Integer )
+//声明JavaType为SexEnum
+@MappedTypes (value=SexEnum.class )
+//BaseTypeHandler<T>实现了 TypeHandler<T>接 口,
+public class SexTypeHandler extends BaseTypeHandler<SexEnum>{
+    //通过列名读取性别
+    ＠Override
+    public SexEnum getNullableResult(ResultSet rs , String col)throws SQLException {
+        int sex= rs.getint(col);
+        if (sex != 1 && sex != 2) {
+            return null ;
+        }
+        return SexEnum . getEnumByid(sex);
+    }
+    //通过存储过程读取性别
+    @Override
+    public SexEnum getNullableResult(CallableStatement cs, int idx)throws SQLException {
+        int sex= cs.getint(idx);
+        if (sex != 1 && sex != 2 ) {
+            return null;
+        }
+        return SexEnum.getEnumByid(sex);
+    }
+    //设置非空性别参数
+    @Override
+    public void setNonNullParameter(PreparedStatement ps , int idx ,SexEnum sex, JdbcType jdbcType) throws SQLException {
+        ps.setint(idx , sex.getid()) ;
+    }
 }
 ```
 
-便用 MapperFactoryBean 装配 MyBatis 接口：
+```java
+<mapper namespace ="com.springboot.chapter5.dao.MyBatisUserDao">
+    // user ,这是一个别名,也可以使用全限定名
+	<select id = "getUser" parameterType = "long" resultType = "user">
+		select id , user name as userName , sex , note from t_user where id= #{id}
+	</select>
+< /mapper>
+
+@Repository
+public interface MyBatisUserDao {
+	public User getUser (Long id) ;
+}
+
+//MyBatis 映射文件通配
+mybatis.mapper-locations=classpath:com/springboot/chapter5/mapper/*.xml
+#MyBatis扫描别名包,和@Alias 联用
+mybatis.type-aliases-package=com.springboot.chapter5.pojo
+#配置typeHandler的扫描包
+mybatis.type-handlers-package=com.springboot.chapter5.typehandler
+```
 
 ```java
+//便用 MapperFactoryBean 装配 MyBatis 接口
+//SqlSessionFactory 是 Spring Boot 自动生成的
 @Autowired
 SqlSessionFactory sqlSessionFactory = null;
 @Bean
 public MapperFactoryBean<MyBatisUserDao> initMyBatisUserDao () {
     MapperFactoryBean<MyBatisUserDao> bean =new MapperFactoryBean<>();
-    bean.setMapperinterface(MyBatisUserDao . class) ;
+    bean.setMapperinterface(MyBatisUserDao.class) ;
     bean.setSqlSessionFactory(sqlSessionFactory);
     return bean;
 }
+//使用
+myBatisUserDao.getUser(id);
+
+//使用MapperScannerConfigurer扫描装配 MyBatis接口
+@Bean
+public MapperScannerConfigurer mapperScannerConfig (){
+    MapperScannerConfigurer mapperScannerConfigurer=new MapperScannerConfigurer();
+    //加载 SqlSessionFactory , Spring Boot 会自动生产, SqlSessionFactory 实例
+    mapperScannerConfigurer.setSqlSessionFactoryBeanName ( "sqlSessionFactory " );
+    //定义扫描的包
+    mapperScannerConfigurer.setBasePackage("com.springboot.chapter5.*") ;
+    //限定被标注@Repository的接口才被扫描
+    mapperScannerConfigurer.setAnnotationClass(Repository.class) ;
+    //通过继承某个接口限制扫描 , 一般使用不多
+    //mapperScannerConfigurer.setMarkerinterface( .. .... );
+    return mapperScannerConfigurer;
+}
+
+//使用@ MapperScan 定义扫描
+//定义 Spring Boot 扫描包路径
+@SpringBootApplication(scanBasePackages = { "com.springboot.chapter5"})
+//定义 JPA 接口扫描包路径
+@EnableJpaRepositories(basePackages="com.springboot.chapter5.dao")
+//定义实体 Bean 扫描包路径
+@EntityScan(basePackages="com.springboot.chapter5. pojo")
+//定义 MyBatis的扫描
+@MapperScan(
+//指定扫描包
+basePackages = "com.springboot.chapter5.*",
+//指定 SqlSessionFactoy,如果 sqlSessionTemplate 被指定 , 则作废
+sqlSessionFactoryRef = "sqlSessionFactory",
+//指定 sqlSessionTemplate ,将忽 略 sqlSessionFactoy的 配置
+sqlSessionTemplateRef="sqlSesionTemplate",
+//markerinterface =Class.class ,//限定扫 描接口,不常用
+annotationClass= Repository.class
+)
+public class Chapter5Application {
+    .......
+}
+//如果项目中不存在多个 SqlSessionFactory (或者 SqlSessionTemplate ) ,那么可以不配置sqlSessionFactoryRef (或者 sqlSessionTemplateRef) ,sqlSessionTemplateRef 的优先权是大于 sqlSessionFactoryRef的,MyBatis 也提供了一个对 Mapper 的 注解@Mapper ,和@Repository可以二选其一。
 ```
+
+Mybatis 的一级缓存原理( sqlsession 级别 )：第一次发出一个查询 sql,sql 查询结果写入 sqlsession 的一级缓存中,缓存使用的数据结构是一个 map。
+
+- key:MapperID+offset+limit+Sql+所有的入参
+- value:用户信息。同一个 sqlsession 再次发出相同的 sql,就从缓存中取出数据。如果两次中间出现 commit 操作(修改、添加、删除),本 sqlsession 中的一级缓存区域全部清空,下次再去缓存中查询不到所以要从数据库查询,从数据库查询到再写入缓存。
+
+二级缓存原理( mapper 基本 )：二级缓存的范围是 mapper 级别(mapper 同一个命名空间),mapper 以命名空间为单位创建缓存数据结构,结构是 map。mybatis 的二级缓存是通过 CacheExecutor 实现的。CacheExecutor其实是 Executor 的代理对象。所有的查询操作,在 CacheExecutor 中都会先匹配缓存中是否存在,不存在则查询数据库。
+key:MapperID+offset+limit+Sql+所有的入参
+
+具体使用需要配置:
+
+1. Mybatis 全局配置中启用二级缓存配置
+2. 在对应的 Mapper.xml 中配置 cache 节点
+3. 在对应的 select 查询节点中添加 useCache=true
+
+# redis
+
+Spring 提供了一个RedisConnectionFactory 接口, 通过它可以生成一个RedisConnection 接口 对象 , RedisConnection 接口对象是对 Redis 底层接口的封装 。 例如 , 本章使用的 Jedis 驱动,那么 Spring就会提供 RedisConnection 接口的实现类  JedisConnection 去封装原有的 Jedis ( redis.clients.jedis.Jedis )对象 。![](../img/1567187075.png)
+
+首先要创建工厂对象，在使用一条连接时, 要先 从 RedisConnectionFactory 工厂获取,然后在使用完成后还要自己关闭它。 Spring 为了进一步简化开发,提供了 RedisTemplate。它会自动从 RedisConnectionFactory 工厂中获取连接,然后执行对应的 Redis命令,在最后还会关闭 Redis 的连接。
+
+Spring 提供了 RedisSerializer 接口,主要两个实现类StringRedisSerializer 和 JdkSerializationRedisSerializer,其中 JdkSerializationRedisSerializer 是 RedisTemplate 默认的序列化器 ,![](../img/1567189310(1).png)
+
+默认使用 JdkSerial izationRedisSerializer 对对象进行序列 化和反序列 化这也就是得到那些复杂字符串的原因 ,会给查询 Redis数据带来很大的困难 ，因此希望RedisTemplate 可以将 Redis 的键以普通字符串保存 。
+
+```java
+@Bean(name="redisTemplate”)
+public RedisTemplate<Object , Object> initRedisTemplate() {
+    RedisTemplate<Object , Object> redisTemplate =new RedisTemplate<> ( );
+    //RedisTemplate 会自动初始化 StringRedisSerializer ,所以这里直接获取
+	RedisSerializer stringRedisSerializer = redisTemplate.getStringSerializer ();
+	//设置字符串序列化器,这样 Spring 就会把 Redis 的 key 当作字符串处理了
+	redisTemplate.setKeySerializer (stringRedisSerializer);
+    redisTemplate.setHashKeySerializer(stringRedisSerializer) ;
+	redisTemplate.setHashValueSerializer(stringRedisSerializer) ;
+	redisTemplate.setConnectionFactory( initConnectionFactory ());
+    return redisTemplate;
+}
+```
+
+Spring 针对每一种数据结构的操作都提供了对应的操作接口：
+
+```java
+//获取地理位置操作接口
+redisTemplate.opsForGeo() ;
+//获取散列操作接口
+redisTemplate.opsForHash();
+//获取基数操作接口
+redisTemplate.opsForHyperLogLog() ;
+//获取列表操作接口
+redisTemplate.opsForList() ;
+//获取集合操作接口
+redisTemplate.opsForSet();
+//获取字符串操作接口
+redisTemplate.opsForValue() ;
+//获取有序集合操作接口
+redisTemplate.opsForZSet();
+```
+
+希望在同 一条连接中就执行两个命令 。可以使用 RedisCallback 和 Session Callback两个接口 。
+
+```java
+//需要处理底层的转换规则,如果不考虑改写底层,尽量不使用它
+public void useRedisCallback(RedisTemplate redisTemplate ) {
+    redisTemplate.execute (new RedisCallback () {
+        @Override
+        public Object doinRedis (RedisConn ection rc )throws DataAccessException {
+            rc.set ("keyl".getBytes () , "valuel".getBytes()) ;
+            rc.hSet ("hash".getBytes () ,"field".getBytes ( ),"hvalue".getBytes());
+            return null ;
+        }
+    });
+}
+//高级接口,比较友好, 一般情况下优先使用它
+public void useSessionCallback(RedisTemplate redisTemplate ) {
+    redisTemplate.execute (new SessionCallback () {
+        @Override
+        public Object execute(RedisOperations ro) throws DataAccessException {
+            ro.opsForValue().set("keyl","valuel") ;
+            ro.opsForHash().put("hash", "field","hvalue") ;
+            return null;
+        }
+    });
+}
+```
+
+在 Spring Boot 中 集成 Redis 更为简单,只需要在配置文件 application.properties 中简单配置下即可，它会自动生成 RedisConnectionFactory 、RedisTemplate 、 StringRedisTemplate 等常用的Redis对象。
+
+修改 RedisTemplate 的序列化器：
+
+```java
+@SpringBootApplication(scanBasePackages ="com.springboot.chapter7")
+public class Chapter7Application {
+    @Autowired
+    private RedisTemplate redisTemplate=null ;
+    //定义自定义后初始化方法
+    @PostConstruct
+    public void init (){
+        initRedisTemplate();
+    }
+    //设置 RedisTemplate 的序列化器
+    private void initRedisTemplate () {
+        RedisSerializer stringSerializer=redisTemplate.getStringSerializer();
+        redisTemplate.setKeySerializer ( stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+    }
+}
+
+//操作
+//这里使用了 JDK 的序列化器 , 所以 Redis 保存时不是整数 , 不能运算
+redisTemplate . opsForValue() .set ("int_key ", " 1");
+stringRedisTemplate.opsForValue().set (" int ", "l " ) ;
+//使用运算
+stringRedisTemplate . opsForValue () . increment ( " int", 1);
+//获取底层 Jedis 连接
+Jedis jedis=(Jedis)StringRedisTemplate.getConnectionFactory().getConnection().getNativeConnection();
+//减 l 操作 ,这个命令 RedisTemplate 不支持,先获取底层的连接再操作
+jedis. decr( " int ");
+Map<String , String> hash= new HashMap <String , String>() ;
+//存入一个散列数据类型
+stringRedisTemplate. opsForHa sh() . putAll ( ” hash ”, hash) ;
+//新增一个字段
+stringRedisTemplate . opsForHash () . put ("hash " , "field3" , " value3 ");
+//绑定散列操作的 key , 这样可 以连续对同 一个散列数据类型进行操作
+BoundHashOperations hashOps =stringRedisTemplate.boundHashOps ( "hash " );
+//删除两个字段
+hashOps.delete ( ” fieldl ” , ” field2 ” ) ;
+//新增一个字段
+hashOps.put (” filed4 ” , ” values ” );
+stringRedisTemplate . opsForList() . leftPushAll(” listl ”,"v2" ,” v4 ”,” v6 ”,” v8”,” v10” ) ;
+// 从右边弹出 一 个成 员
+Object resultl = listOps . rightPop ();
+//从左边插入链表
+listOps . leftPush( " v0" ) ,
+//求链表长度
+Long size= listOps . size() ;
+//求链表下标区间成员,整个链表下标范围为 0 到 size - 1 ,这里 不取最后 一个元素
+List elements= listOps.range(O ,size-2);//基于StringRedisTemplate 的,所以保存到Redis的都是字符串类型
+stringRedisTemplate.opsForSet().add (” set2 ” , ”v2 ”,” v4 ”,” v6 ”,” v8” );
+//绑定 setl 集合操作
+BoundSetOperations setOps = stringRedisTemplate . boundSetOps (” set1 ”);
+//增加两个元素
+setOps.add ( ” v6 ” , ” v7 ” );
+//删除两个元素
+setOps.remove ( ” vl ” , ” v7 ” );
+//返回所有元素
+Set setl = setOps.members() ;
+//求交集
+Set inter= setOps.intersect ( ” set2 ”);
+//求交集 ,并且用新集合 inter 保存
+setOps .intersectAndStore ( ” set2 ”, ” inter ”) ;
+//求差集
+Set diff = setOps.diff ( ” set2 ”);
+//求差集,并且用新集合 diff 保存
+setOps . diffAndStore ( ” set2 ” , ” diff ” );
+//求并集
+Set union=setOps.union ( ” set2 ”);
+//求并集,并且用新集合 union 保存
+setOps . unionAndStore( " set2 ",” union ”);
+//有序集合( zset )的有序性只是靠它在数据结构中增 加 一个属性--score (分数)得以支持。为了支持这个变化, Spring 提供了 TypedTupl e 接口,它定义了两个方法,并且 S pring 还提供了其默认的实现类DefaultTypedTuple 
+Set<TypedTuple<String > typedTupleSet =new HashSet<>( ) ;
+TypedTuple<String> typedTuple= new DefaultTypedTuple<String >( "value1" , 2.7) ;
+typedTupleSet.add(typedTuple);
+stringRedisTemplate.opsForZSet() .add (” zsetl ”, typedTupleSet );
+//绑定 zsetl 有序集合操作
+BoundZSetOperations<String, String> zsetOps=StringRedisTemplate.boundZSetOps ( "zsetl") ;
+//增加一个元素
+zsetOps . add (” value1 ”, 0.26 );
+Set<String> setRange = zsetOps . range (1 ,6 );
+//按分数排序获取有序 集合
+Set<String> setScore = zsetOps .rangeByScore(0 . 2 , 0.6);
+//按值排序,请注意这个排序是按字符串排序
+Set<String> setLex =zsetOps . rangeByLex(range);
+//在分数区间下,按分数排序,同时返回 value 和 score
+Set<TypedTuple<String >scoreSet = zsetOps.rangeByScoreWithScores(l ,6);
+//按从大到小排序
+Set<String> reverseS et = zsetOps . reverseRange(2 ,8);
+```
+
+在 Redis 中使用 事务 ,通 常的命令组合是 watch ...multi .. . exec.watch 命令是可以监控 Redis 的 一 些键: multi 命令是开始事务,开始事务后 , 该客户端 的命 令不会马上被执行 ,而 是存放在一个队列里.exec命令的意义在于执行事务,只是它在队列命令执行前会判断被 watch 监控的 Redis 的 键的数据是否发生过变化 ( 即使赋予与之前相同的值也会被认为是变化过〉,如果它认为发生了变化,那 么 Redis 就会取消事务 , 否 则 就会执行事务, Redis 在执行事务时,要么全部执行 , 要么全部不执行 ,而且不会被其他客户端打断。
+
+```java
+List list= (List)redisTemplate.execute((RedisOperations operations) - > {
+    //设置要监控 keyl
+    operations.watch ( ” keyl ”);
+    //开启事务,在 exec 命令执行前,全部都只是进入队列
+    operations.multi();
+    operations.opsForValue() . set ( ” key2 ” , ” value2 ” );
+    //operations.opsForValue () .increment ( ” keyl ”, 1);
+    //获取值将为 null , 因为只是把命令放入队列
+    Object value2 = operations.opsForValue() . get ( ” key2 ” );
+    System.out . println ( ” 命令在队列,所以 value 为 null <”+ value2 + ”>” );
+    operations.opsForValue() .set ( ” key3 ”, " value3");
+    Object value3 = operations.opsForValue() .get (” key3 ”);
+} );
+//执行 exec 命令,将先判别 keyl 是否在监控后被修改过,如果是则不执行事务,否则就执行事务
+return operations.exec();
+//并没有检测这个加一命令是否能够成功,只有在 exec 命令执行的时候,才能发现错误,对于出错的命令 Redis 只是报出错误,而错误后面的命令依旧被执行.
+```
+
+默认的情况下, Redis 客户端是一条条命令发送给 Redis 服务器的只有需要执行 SQL 时,才一次性地发送所有的 SQL 去执行,这样性能就提高了许多。使用 Red is 流水线:
+
+```java
+List list= (List)redisTemplate . executePipelined ( (RedisOperations operations ) > {
+for (int i=l; i <=lO OOOO ; i++) {
+operations . opsForValue() .set ( "pipeline " +i,” value ” + i);
+String value = (String) operations. opsForValue () .get ( ” pipeline ”+ i) ;
+i f (i == 100000 ) {
+System.out . println ( ” 命令只是进入队列,所以值为空【 ” + value + ”>”) ;
+} );
+return null ;
+```
+
+-----
+
+Redis 消息监昕器:
+
+```java
+@Component
+public class RedisMessageListener implements MessageListener {
+    @Override
+    public void onMessage (Message message , byte [] pattern){
+        //消息体
+        String body= new String(message . getBody()) ;
+        //渠道名称
+        String topic= new String(pattern) ;
+        System.out.println(body) ;
+        System.out.println(topic) ;
+    }
+}
+
+@Bean
+public RedisMessageListenerContainer initRedisContainer (){
+    RedisMessageListenerContainer container= new RedisMessageListenerContainer() ;
+    //Redis 连接工厂
+    container.setConnectionFactory(connectionFactory);
+    //设置运行任务池
+	container.setTaskExecutor(initTaskScheduler()) ;
+	//定义监听渠道,名称为 topic1
+	Topic topic= new ChannelTopic( "topic1");
+    //使用监听器监听 Redis 的消息
+    container.addMessageListener(redisMsgListener topic) ;
+    return container ;
+}
+
+//启用 Spring Boot 项目后 , 在 Redis 的 客户端输入命令 :
+publish topicl msg
+//在 Spring 中可以 使用 RedisTemplate 来发送消息 ,例如:
+redisTemplate . convertAndSend (channel , message );
+```
+
+Spring 可以 支持多种缓存 的使用,因此它存在多种缓存处理器 , 并提供了缓存处理器的接口 CacheManager 和 与之相关的类 .Redis 主要就是使用 类 RedisCacheManager 。配置 Red is 缓存管理器:
+
+```java
+spring.cache.type =REDIS//缓存类型 , 在默认的情况下, Spring 会自动根据上下文探测,SpringBoot 会自动生成 RedisCacheManager对象
+spring.cache.cache-names=redisCache//配置缓存名称,多个名称可以使用逗号分隔,以便于缓存注解的引用 。
+spring.cache.redis.cache-null-values=true //是否允许 Redis 缓存空值
+spring.cache.redis.key-prefix= //Redis 的键前缀
+spring.cache.redis.time-to-live=0ms //缓存超 时时间 戳,配置为 0 则不设置超时时间
+spring.cache.redis.use-key-prefix=true //是否启用 Redis 的键前缀
+    
+@SpringBootApplication(scanBasePackages= "com .springboot . chapter7")
+@MapperScan(basePackages = " com . springboot . chapter7 ", annotationClass =Repository . class )
+//加入驱动缓存的注解@EnableCaching
+    @EnableCaching
+public class Chapter7Application {
+    ......
+}
+
+//mapper
+//将通过数据库生成主键,而将 keyPrope即 设置为 POJO 的 id 属性
+<insert id = "insert User" useGeneratedKeys = "true" parameterType =  "uses">
+	insert into t_user(user_name, note) values(#{userName} , #{note})
+</insert>
+
+//插入用户 , 最后 MyBatis 会回填 id ,取结果工d 缓存用户
+@Transactional
+@CachePut(value="redisCache", key ="'redis_user_' +#result. id")
+public User insertUser (User user) {
+    userDao.insertUser(user);
+	return user ;
+}
+//获取 id ,取参数工 d 缓存用户
+@Transactional
+@Cacheable(value="redisCache", key="'redis_user _'+# id ")
+public User getUser (Long id ) {
+    return userDao.getUser(id);
+}
+//键配置项是一个Spring EL.还可以这样引用参数,如#a[O]或#p[O]代表第一个参数,#a[1]或#p[1]代表第二个参数
+@CacheEvict(value="redisCache", key ="'redis_user_'+#id",beforeInvocation= false)
+public int deleteUser (Long id) {
+    return userDao.deleteUser(id);
+}
+@Transactional
+@CachePut(value="redisCache",condition ="#result!='null;", key ="'redis_user'+# id")
+public User updateUserName (Long id, String userName){
+    //此处调用 getUser 方法,该方法缓存注解失效 
+    //所以这里还会执行 SQL ,将查询到数据库最新数据
+    //Spring的缓存制也是基于Spring AOP原理 ,调用 getUser方法是类内部的自调用, 并不存在代理对象的调用 , 这样便不会出现 AOP ,要克服这个 问题,可以用两个服务类相互调用,或者直接从 Spring IoC 容器中获取代理对象来操作.
+    User user =this. getUser (id) ;
+    if (user == null) {
+        return null;
+    }
+    user.setUserName(userName);
+    userDao.updateUser(user);
+    return user;
+}
+//Redis缓存机制会使用#{cacheName}:#{key}的形式作为键保存数据,可以通过spring.cache.redis.use-key-prefix=false 的 配置,消除了前缀的配置。
+```
+
+- @CachePut 表示将方法结果返回存放到 缓存中。
+-  @Cacheable 表示先从缓存中通过定义的键查询,如果可以查询到数据,则返回,否则执行该方法,返回数据,并且将返回结果保存到缓存中。
+- @CacheEvict 通过定义的键移除缓存,它有 一个 Boolean 类型的配置项 beforelnvocation ,表示在方法之前或者之后移除缓存。因为其默认值为也lse ,所以默认为方法之后将缓存移除 。
+
+# mongoDB
+
+引入依赖：
+
+```java
+<dependency>
+	<groupid>org . springfrarnework . boot</groupid>
+	<artifactid>spring-boot-starter data - rnongodb</artifactid>
+</dependency>
+<dependency>
+	<groupid>corn . alibaba</groupid>
+	<artifactid>fastjson</artifactid>
+	<version>l.2.39</version>
+</dependency>
+
+spring.data.mongodb.host=127.0.0.1
+spring.data.mongodb.usernarne=spring
+spring.data.mongodb.password=123456
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=springboot
+```
+
+Spring Data MongoDB 主要是通过 MongoTemplate 进行操作数据 的 。Spring Boot 会根据配置自动生成这个对象.
+
+```java
+@Document//说明它将作为 MangoDB 的文档存在
+public class User implements Serializable {
+	private static final long serialVersionUID=-7895435231819517614L;
+	//MongoDB 文档编号,主键
+	@Id
+	private Long id;
+	//在 MongoDB 中使用 user name 保存属性
+	@Field ("user name")
+	private String userName=null ;
+    private String note;
+    //角色列表
+    private List<Role> roles = null ;
+}
+//@Document 标明可以把角色 POJO 当作一个 MongoDB的文档单独使用。如果只是在User中使用角色,没有别的场景使用了 ,那么可以不使用@Document标明,而@Field 依旧做字段之间命名规则的转换。
+@Document
+public class Role implements Serializable {
+    private static final long serialVersionUID = - 6843667995895038741L;
+    private Long id ;
+    @Field {"role_name")
+    private String roleName = null ;
+    private String note = null ;
+}
+    
+//使用
+public User getUser (Long id) {
+    return mongoTmpl.findByid(id , User.class) ;
+    //如果只需要获取第一个 ,也可以采用如下查询方法
+　　// Criteria criteriaid =Criteria.where ("id").is(id);
+   //Query queryid = Query.query(criteriaid);
+   //return mongoTmpl.findOne(queryid, User.class) ;
+}
+    
+public List<User> findUser(String userName, String note , int skip , int limit){
+	//将用户名称和备注设置为模糊查询准则
+	Criteria criteria= Criteria.where ("userName") .regex(userName).and{"note") .regex(note);
+    //构建查询条件,并设置分页跳过前 skip 个, 至多返回 limit 个
+	Query query= Query.query(criteria).limit(limit).skip(skip);
+	//执行
+	List<User> userList = mongoTmpl.find(query, User . class);
+	return userList;
+}
+//使用名称为 user 文档保存用户信息
+//如果 MongoDB 存在 id 相同的 对象,那么就更新其属性
+mongoTmpl.save(user , "user");
+//如果文档采用类名首字符小写则可以这样保存
+//mongoTmpl.save(user) ;
+    
+Criteria criteriaid=Criteria.where( "id").is(id);
+//查询对象
+Query queryid = Query.query(criteriaid) ;
+//删除用户,result中的deletedCount 代表删除文档 的条数。
+DeleteResult result=mongoTmpl.remove(queryid,User.class);
+
+//更新
+//确定要更新的对象
+Criteria criteriaid= Criteria.where ("id").is(id) ;
+Query query= Query.query (criteriaid )
+Update update= Update.update ("userName", userName);
+update.set ("note", note );
+//更新第一个文档
+UpdateResult result= mongoTmpl.updateFirst(query,update, User.class);
+//更新多个对象
+//UpdateResult result = mongoTmpl.updateMulti (query, update , User.class) ;
+//UpdateResult对象有3个属性,分别是 matchedCount 、modifiedCount和upsertedId , 其中 matchedCount代表与 Query 对象 匹配的文档数, modifiedCount 代表被更新的文档数, upsertedld 表示如果存在因为更新而插入文挡的情况会返回插入文档的信息 。
+```
+
+----
+
+使用 JPA操作mongoDB,与关系数据库不一样的是提供的接口不是 JpaRepository<T, ID>, 而是 MongoRepository<T, ID>:
+
+```java
+@Repository
+//它 指 定了 两个类型, 一个是实体类型 , 这个实体类型要求标注@Document,另 一个 是其主键 的 类型, 这个类型要求标注@Id 
+public interface UserRepository extends MongoRepository<User, Long> {
+    //符合JPA命名方式
+	List<User> findByUserNameLike(String userName);
+}
+
+@SpringBootApplication(scanBasePackages ="com.springboot.chapter8")
+// 指 定 扫描的 包 , 用 于扫描继承了 MongoRepository 的接口
+@ EnableMongoRepositories(basePackages="com.springboot.chapterB.repository")
+public class Chapter8Application {
+    public static void main (String [] args ) {
+        SprngApplication.run(Chapter8Application.class , args) ;
+    }
+}
+```
+
+使用@ Query 自定义查询:
+
+```java
+//?O 代表方法的第一个参数 id , ?l代表方法 的 第 二个参数 userName ,
+@Query("{'id':?0,'userName':?1}")
+User find (Long id , String userName) ;
+//UserRepository 接口 扩展了 MongoRepository ,如果实现这个接口就要实现其定义的诸多方法 ,在 Spring 中 只要定义 一个 “ 接口名 称+Impl ” 的 类并且提供与 接 口 定义相同的方法, Spring 就会自动 找到这个类对 应 的 方法作 为 JPA 接 口 定 义的 实 现 。
+@Repository
+//注意这里类名称 ,默 认要求是接口名称( UserRepository)+ ” impl"
+//这里 Spring JPA 会自动找到这个类作为接口方法实现
+public class UserRepositoryimpl {
+    @Autowired //注入 MongoTemplate
+    private MongoTemplate mongoTmpl=null ;
+    //注 意方法名称与接口定义也需要保持一致
+    public User findUserByIdOrUserName(Long id, String userName){
+        Criteria criteriaid=Criteria.where (” id ”) . is (id);
+        //构造用户名查询准则
+        Criteria  criteriaUserName = Criteria.where (” userName ”) . i s (userName);
+        Criteria criteria = new Criteria ();
+        //使用or操作符关联两个条件,形成或关系
+        criteria.orOperator(criteriaid, criteriaUserName);
+        Query query = Query.query(criteria );
+        //执行查询返回结果
+        return mongoTmpl.findOne(query,User.class) ;
+    }
+}
+
+@SpringBootApplication ( scanBasePackages = ” com.springboot .chaptr8 ”)
+@EnableMongoRepositories(//扫描包
+    basePackages = ” com . springboot . chapter8.repository ”,
+	//使用自定义后缀 ,其默 认值为工mpl
+	//此时需要修改类名 2 UserRepositoryimpl 一>UserRepositoryStuff
+	repositoryImplementationPostfix="Stuff"
+    public class Chapter8Application {
+        public static void main (String [] args){
+            SpringApplication.run (Chapter8Applicati on.class ,args);
+        }
+    }
+```
+
+
 
 # 事务
 
@@ -267,7 +989,7 @@ Spring IoC 容器在加载时会配置信息解析出来,然后把这些信息�
 里 , 并且记录哪些类或者方法需要启动事务功能,采取什么策 略去执行事务。
 
 ```java
-@Target({E lernentType . METHOD , ElernentType . TYPE})
+@Target({ElernentType . METHOD , ElernentType . TYPE})
 @Retention(RetentionPolicy . RUNTIME)
 @Inherited
 @Documented
@@ -332,7 +1054,7 @@ Oracle 默认的隔离级别为读写提交, MySQL 则 是 可重复读。
 
 ```java
 public enum Propagation {
-//需要事务,它是默认传播行为,如果当前存在事务,就沿用当前事务,否则新建一个事务运行子方
+//需要事务,它是默认传播行为,如果当前存在事务,就沿用当前事务,否则新建一个事务运行子方法
     REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED),
 //支持事务,如果当前存在事务,就沿用当前事务 ,如果不存在 ,则继续采用无事务的方式运行子方法
     SUPPORTS(TransactIonDefinition.PROPAGATION_SUPPORTS) ,
@@ -344,7 +1066,7 @@ public enum Propagation {
     NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED ),
 //不支持事务,如果当前方法存在事务,则抛出异常,否则继续使用无事务机制运行
     NEVER(TransactionDefinition.PROPAGATION_NEVER),
-//在当前方法调用子方法时,如果子方法发生异常,女只因滚子方法执行过的 SQL ,而不回滚当前方法的事务
+//在当前方法调用子方法时,如果子方法发生异常,只回滚子方法执行过的 SQL ,而不回滚当前方法的事务
     NESTED(TransactionDefinition.PROPAGATION_NESTED);
 private final int value ;
 Propagation (int value){
@@ -903,21 +1625,75 @@ ResponseEntity<User> userEntity=restTmpl.exchange(url, HttpMethod.POST, request,
 
 在 Web 工程中可以使用@EnableWebSecurity 来驱动 Spring Security 的启动,如果属于非Web 工程,可以使用@EnableGlobalAuthentication ,而 事实上@EnableWebSecurity 上已 经标注了@EnableGlobalAuthentication 并且依据自己的需要加入了许多 Web 的特性 。
 
-# 异步
+#　异步
 
+S pri ng 中存在 一 个 AsyncCo nfi gurer 接口,它是一个可以配置异步线程池的接口：
 
+```java
+public interface AsyncConfigurer {
+    //返回的是一个自定义线程池,这样在开启异步时,线程池就会提供空闲线程来执行异步任务 。
+    @Nullable
+    default Executor getAsyncExecutor (){
+        return null;
+    }
+    //异步异常处理器
+    @Nullable
+    default AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler (){
+        return null;
+    }
+}
 
-# mybatis
+@Configuration
+//@EnableAsync 代表开启 Spring 异步
+@EnableAsync
+public class AsyncConfig implements AsyncConfigurer{
+    //定义线程池
+    @Override
+    public Executor getAsyncExecutor (){
+        //定义线程池
+        ThreadPoolTaskExecutor taskExecutor =new ThreadPoolTaskExecutor();
+        //核心线程数
+        taskExecutor.setCorePoolSize (10);
+        //线程池最大线程数
+        taskExecutor.setMaxPoolSize(30) ;
+        //线程队列最大线程数
+        taskExecutor.setQueueCapacity(2000) ;
+        //初始化
+        taskExecutor.initialize();
+        return taskExecutor;
+    }
+}
 
-Mybatis 的一级缓存原理( sqlsession 级别 )：第一次发出一个查询 sql,sql 查询结果写入 sqlsession 的一级缓存中,缓存使用的数据结构是一个 map。
+public interface AsyncService {
+    //模拟报表生成的异步方法
+    public void generateReport();
+}
 
-- key:MapperID+offset+limit+Sql+所有的入参
-- value:用户信息。同一个 sqlsession 再次发出相同的 sql,就从缓存中取出数据。如果两次中间出现 commit 操作(修改、添加、删除),本 sqlsession 中的一级缓存区域全部清空,下次再去缓存中查询不到所以要从数据库查询,从数据库查询到再写入缓存。
+@Service
+public class AsyncServiceimpl implements AsyncService {
+    @Override
+    @Async //声明使用异步调用
+	public void generateReport (){
+        //打印异步线程名称
+        System.out.println ( "报表线程名称: "+ "["+ Thread.currentThread().getName() +"]");
+    }
+}
 
-二级缓存原理( mapper 基本 )：二级缓存的范围是 mapper 级别(mapper 同一个命名空间),mapper 以命名空间为单位创建缓存数据结构,结构是 map。mybatis 的二级缓存是通过 CacheExecutor 实现的。CacheExecutor其实是 Executor 的代理对象。所有的查询操作,在 CacheExecutor 中都会先匹配缓存中是否存在,不存在则查询数据库。
-key:MapperID+offset+limit+Sql+所有的入参
+public String asyncPage (){
+    System.out.println ( "请求线程名称 :"+ "[" + Thread.currentThread().getName() +"]");
+    //调用异步服务
+    asyncService.generateReport();
+    ......
+}
+```
 
-具体使用需要配置:
-1. Mybatis 全局配置中启用二级缓存配置
-2. 在对应的 Mapper.xml 中配置 cache 节点
-3. 在对应的 select 查询节点中添加 useCache=true
+在配置文件中加入@EnableS cheduling ,就能够使用注解驱动定时任务的机制, 然后可 以通过注解@ Scheduled 去配置 如何定 时 。
+
+//每隔一秒执行一次
+@Scheduled(fixedRate = 1000)
+
+//Spring IoC 容器初始化后,第一 次延迟 3 秒 , 每隔 1 秒执行一 次
+@Scheduled(initia lDelay = 3000, fixedRate = 1000)
+
+//11 : 00 到 11 : 59 点每分钟执行一 次
+@Scheduled(cron = ”。* 11 * * ?”)

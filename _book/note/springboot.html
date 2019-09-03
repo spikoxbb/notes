@@ -154,6 +154,58 @@
             
         </li>
     
+        <li class="chapter " data-level="1.6" data-path="redis.html">
+            
+                <a href="redis.html">
+            
+                    
+                    redis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="mongoDB.html">
+            
+                <a href="mongoDB.html">
+            
+                    
+                    mongoDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="dubbo.html">
+            
+                <a href="dubbo.html">
+            
+                    
+                    dubbo
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="zookeeper.html">
+            
+                <a href="zookeeper.html">
+            
+                    
+                    zookeeper
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -385,8 +437,140 @@ return user ;
 }
 </code></pre>
 <h1 id="&#x6570;&#x636E;&#x5E93;">&#x6570;&#x636E;&#x5E93;</h1>
+<hr>
+<p>&#x5728;&#x914D;&#x7F6E;&#x6570;&#x636E;&#x6E90;&#x540E;, Spring Boot &#x901A;&#x8FC7;&#x5176;&#x81EA;&#x52A8;&#x914D;&#x7F6E;&#x673A;&#x5236;&#x914D;&#x7F6E;&#x597D;&#x4E86; JdbcTemplate</p>
+<pre><code class="lang-java"><span class="hljs-comment">//&#x83B7;&#x53D6;&#x6620;&#x5C04;&#x5173;&#x7CFB;</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> RowMapper&lt;User&gt; <span class="hljs-title">getUserMapper</span> <span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">//&#x4F7F;&#x7528; Lambda &#x8868;&#x8FBE;&#x5F0F;&#x521B;&#x5EFA;&#x7528;&#x6237;&#x6620;&#x5C04;&#x5173;&#x7CFB;</span>
+    RowMapper&lt;User&gt; userRowMapper = (ResultSet rs, <span class="hljs-keyword">int</span> rownum)-&gt;{
+         User user= <span class="hljs-keyword">new</span> User() ;
+        user.setid(rs.getLong( <span class="hljs-string">&quot; id &quot;</span>));
+         user.setUserName(rs.getString (<span class="hljs-string">&quot;user name&quot;</span>));
+        <span class="hljs-keyword">int</span> sexId = rs.getint (<span class="hljs-string">&quot;sex&quot;</span>) ;
+         SexEnum sex= SexEnum.getEnumByid(sexid) ;
+        user.setSex(sex);
+        user.setNote(rs.getString (<span class="hljs-string">&quot;note&quot;</span>));
+        <span class="hljs-keyword">return</span> user;
+    }
+    <span class="hljs-keyword">return</span> userRowMapper;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">getUser</span> <span class="hljs-params">(Long id)</span></span>{
+    String sql = <span class="hljs-string">&quot;select id , user name , sex , note from t user where id = ?&quot;</span>;
+    Object[] params =<span class="hljs-keyword">new</span> Object[] {id);
+    User user= jdbcTemplate.queryForObject{sql , params , getUserMapper()) ;
+    <span class="hljs-keyword">return</span> user ;
+    <span class="hljs-comment">//List&lt;User&gt; userList =jdbcTemplate.query(sql, params , getUserMapper());return userList;   </span>
+}
+
+<span class="hljs-comment">//&#x63D2;&#x5165;&#x6570;&#x636E;&#x5E93;</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">insertUser</span> <span class="hljs-params">(User user)</span></span>{
+    String sql = <span class="hljs-string">&quot;insert into t_user (user_name , sex , note) values ( ? , ?, ?)&quot;</span>;
+    <span class="hljs-keyword">return</span> jdbcTemplate.update(sql, user.getUserName(),                              user.getSex(), user.getid(), user.getNote ());
+
+    <span class="hljs-comment">//&#x66F4;&#x65B0;&#x6570;&#x636E;&#x5E93;</span>
+    <span class="hljs-comment">//String sql = &quot;update t_user set user name = ? ,sex = ? , note = ?where id =? &quot;</span>
+    <span class="hljs-comment">//return jdbcTemplate.update(sql, user.getUserName(),                              user.getSex(), user.getid(), user.getNote (), user.getid ());</span>
+
+    <span class="hljs-comment">//&#x5220;&#x9664;&#x6570;&#x636E;</span>
+    <span class="hljs-comment">//String sql = &#x201D; delete from t_user where id = ?&#x201D; J</span>
+    <span class="hljs-comment">//return jdbcTemplate.update(sql , id);</span>
+}
+</code></pre>
+<p>JdbcTemplate&#x662F;&#x6BCF;&#x8C03;&#x7528;&#x4E00;&#x6B21;&#x4FBF;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x6570;&#x636E;&#x5E93;&#x8FDE;&#x63A5;,&#x6709;&#x65F6;&#x5019;&#x5E0C;&#x671B;&#x5728;&#x4E00;&#x4E2A;&#x8FDE;&#x63A5;&#x91CC;&#x9762;&#x6267;&#x884C;&#x591A;&#x6761; SQL , &#x5BF9;&#x6B64;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; StatementCallback &#x6216;&#x8005; ConnectionCallback &#x63A5;&#x53E3;&#x5B9E;&#x73B0;&#x56DE;&#x8C03; :</p>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">getUser2</span> <span class="hljs-params">(Long id)</span></span>{
+    <span class="hljs-comment">//&#x901A;&#x8FC7; Lambda&#x8868;&#x8FBE;&#x5F0F;&#x4F7F;&#x7528; StatementCallback</span>
+    User result= <span class="hljs-keyword">this</span>.jdbcTemplate.execute((Statement stmt) -&gt; {
+        String sql1 =<span class="hljs-string">&quot;select count(*) total from t_user where id = &quot;</span>+ id ;
+        ResultSet rsl = stmt.executeQuery(sql1) ;
+        <span class="hljs-keyword">while</span> (rsl.next()) {
+            <span class="hljs-keyword">int</span> total= rsl.getint (<span class="hljs-string">&quot;total&quot;</span>) ;
+            System.out.println(total) ;
+        }
+        <span class="hljs-comment">//&#x6267;&#x884C;&#x7684; SQL</span>
+        String sql2 = <span class="hljs-string">&quot;select id, user name, sex, note from t_user where id = &quot;</span> + id;
+        ResultSet rs2 = stmt.executeQuery ( sql2) ;
+        User user = <span class="hljs-keyword">null</span> ;
+        <span class="hljs-keyword">while</span> (rs2.next()) {
+            <span class="hljs-keyword">int</span> rowNum = rs2.getRow();
+            user= getUserMapper().mapRow(rs2, rowNum) ;
+        }
+        <span class="hljs-keyword">return</span> user;
+    });
+    <span class="hljs-keyword">return</span> result ;
+}
+</code></pre>
+<hr>
+<p>JPA(Hibernate )</p>
+<pre><code class="lang-java"><span class="hljs-comment">//@Entity &#x6807;&#x660E;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x5B9E;&#x4F53;&#x7C7B;</span>
+@ Entity(name=<span class="hljs-string">&quot;user&quot;</span>}
+<span class="hljs-comment">//&#x5B9A;&#x4E49;&#x6620;&#x5C04;&#x7684;&#x8868;</span>
+@ Table(name = <span class="hljs-string">&quot;t_user&quot;</span>)
+ <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> </span>{
+     <span class="hljs-comment">//&#x6807;&#x660E;&#x4E3B;&#x952E;</span>
+    <span class="hljs-meta">@Id</span>
+    <span class="hljs-comment">//&#x4E3B;&#x952E;&#x7B56;&#x7565;,&#x9012;&#x589E;</span>
+    <span class="hljs-meta">@GeneratedValue</span> (strategy= GenerationType.IDENTITY)
+    <span class="hljs-keyword">private</span> Long id = <span class="hljs-keyword">null</span>;
+    <span class="hljs-meta">@colume</span>(name=<span class="hljs-string">&quot;user_name&quot;</span>) 
+    <span class="hljs-keyword">private</span> String userName = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">private</span> String note = <span class="hljs-keyword">null</span>;
+    <span class="hljs-meta">@convert</span>(converter = SexConverter . <span class="hljs-class"><span class="hljs-keyword">class</span>)
+    <span class="hljs-title">private</span> <span class="hljs-title">SexEnum</span> <span class="hljs-title">sex</span> </span>= <span class="hljs-keyword">null</span>;
+ }
+
+ <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SexConverter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">AttributeConverter</span>&lt;<span class="hljs-title">SexEnum</span> , <span class="hljs-title">Integer</span>&gt;</span>{
+     <span class="hljs-comment">//&#x5C06;&#x679A;&#x4E3E;&#x8F6C;&#x6362;&#x4E3A;&#x6570;&#x636E;&#x5E93;&#x5217;</span>
+     <span class="hljs-meta">@Override</span>
+     <span class="hljs-function"><span class="hljs-keyword">public</span> Integer convert <span class="hljs-title">ToDatabaseColumn</span> <span class="hljs-params">(SexEnum sex)</span></span>{
+         <span class="hljs-keyword">return</span> sex. getId () ;
+     }
+     <span class="hljs-comment">//&#x5C06;&#x6570;&#x636E;&#x5E93;&#x5217;&#x8F6C;&#x6362;&#x4E3A;&#x679A;&#x4E3E;</span>
+    <span class="hljs-meta">@Override</span>
+     <span class="hljs-function"><span class="hljs-keyword">public</span> SexEnum <span class="hljs-title">convertToEntityAttribute</span> <span class="hljs-params">( Integer id)</span></span>{
+         <span class="hljs-keyword">return</span> SexEnum.getEnumByid (id );
+     }
+ }
+</code></pre>
+<p><img src="../img/1567165654.png" alt=""></p>
+<p>JPA &#x6700;&#x9876;&#x7EA7;&#x7684;&#x63A5;&#x53E3;&#x662F; Repository ,&#x800C;&#x5B83;&#x6CA1;&#x6709;&#x5B9A;&#x4E49;&#x4EFB;&#x4F55;&#x65B9;&#x6CD5;,&#x5B9A;&#x4E49;&#x65B9;&#x6CD5;&#x7684;&#x662F;&#x5B83;&#x7684;&#x5B50;&#x63A5;&#x53E3; CrudRepository , &#x5176;&#x5B9A;&#x4E49;&#x5B9E;&#x4F53;&#x6700;&#x57FA;&#x672C; &#x7684; &#x589E;&#x5220;&#x6539;&#x7684;&#x64CD;&#x4F5C;,&#x529F;&#x80FD;&#x6027;&#x8FD8;&#x4E0D;&#x8DB3;&#x591F;&#x5F3A;&#x5927; , &#x4E3A;&#x6B64;PagingAndSortingRepository &#x5219; &#x7EE7;&#x627F;&#x4E86;&#x5B83;&#x5E76;&#x4E14;&#x63D0;&#x4F9B;&#x4E86;&#x5206;&#x9875;&#x548C;&#x6392;&#x5E8F;&#x7684;&#x529F;&#x80FD; , &#x6700;&#x540E; JpaRepository &#x6269;&#x5C55;&#x4E86;PagingAndSortingRepository ,&#x800C;&#x4E14;&#x6269;&#x5C55;&#x4E86; Query By ExampleExecutor &#x63A5; &#x53E3;, &#x8FD9;&#x6837;&#x5C31;&#x53EF; &#x4EE5; &#x62E5;&#x6709;&#x6309;&#x4F8B;&#x5B50;CExample )&#x67E5;&#x8BE2;&#x7684;&#x529F;&#x80FD;&#x3002;&#x4E00;&#x822C;&#x53EA;&#x9700;&#x8981;&#x5B9A;&#x4E49; JPA &#x63A5;&#x53E3;&#x6269;&#x5C55; JpaRepository &#x4FBF;&#x53EF;&#x4EE5;&#x83B7;&#x5F97; JPA &#x63D0;&#x4F9B;&#x7684;&#x65B9;&#x6CD5;&#x4E86; &#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-comment">//&#x4E0D;&#x9700;&#x8981;&#x63D0;&#x4F9B;&#x4EFB;&#x4F55;&#x5B9E;&#x73B0;&#x7C7B;,&#x8FD9;&#x4E9B; Spring&#x4F1A;&#x6839;&#x636E; JPA &#x63A5;&#x53E3;&#x89C4;&#x8303;&#x5B8C;&#x6210;</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">JpaUserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">JpaRepository</span>&lt;<span class="hljs-title">User</span> , <span class="hljs-title">Long</span>&gt; </span>{}
+<span class="hljs-comment">//&#x6D4B;&#x8BD5;</span>
+User user =jpaUserRepository.findByid(id)
+</code></pre>
+<p>Spring &#x63D0;&#x4F9B;&#x4E86;&#x4E24;&#x4E2A;&#x6CE8;&#x89E3;&#x7528;&#x6765;&#x626B;&#x63CF;&#x5BF9;&#x5E94;&#x7684; JPA&#x63A5;&#x53E3;&#x548C;&#x5B9E;&#x4F53;&#x7C7B;,&#x5B83;&#x4EEC;&#x662F;@EnableJpaRepositories &#x548C;@EntityScan</p>
+<pre><code class="lang-java"><span class="hljs-comment">//&#x5B9A;&#x4E49; Spring Boot &#x626B;&#x63CF;&#x5305;&#x8DEF;&#x5F84;</span>
+<span class="hljs-meta">@SpringBootApplication</span>(scanBasePackages={<span class="hljs-string">&quot;com.springboot.chapter5&quot;</span>})
+<span class="hljs-comment">//&#x5B9A;&#x4E49; JPA &#x63A5;&#x53E3;&#x626B;&#x63CF;&#x5305;&#x8DEF;&#x5F84;</span>
+<span class="hljs-meta">@EnableJpaRepositories</span>(basePackages=<span class="hljs-string">&quot;com.springboot.chapter5.dao&quot;</span>}
+<span class="hljs-comment">//&#x5B9A;&#x4E49;&#x5B9E;&#x4F53; Bean &#x626B;&#x63CF;&#x5305;&#x8DEF;&#x5F84;</span>
+<span class="hljs-meta">@EntityScan</span>(basePackages =<span class="hljs-string">&quot;com.springboot.chapter5.pojo&quot;</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChapterSApplication</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        SpringApplication.run(ChapterSApplication.class, args) ;
+    }
+}
+<span class="hljs-comment">//&#x5373;&#x4F7F;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x6CE8;&#x89E3;@EnableJpaRepositories&#x548C;@EntityScan,&#x53EA;&#x8981;&#x4F9D;&#x8D56;&#x4E86;spring-boot-starter-data-jpa SpringBoot2.x&#x4E5F;&#x4F1A;&#x5BF9;&#x9879;&#x76EE;&#x8FDB;&#x884C;&#x626B;&#x63CF;,&#x8FD9;&#x6837;JPA&#x7684;&#x5B9E;&#x4F53;&#x548C;&#x63A5;&#x53E3;&#x90FD;&#x4F1A;&#x88AB;&#x626B;&#x63CF;,&#x53EA;&#x662F;&#x4F7F;&#x7528;&#x5B83;&#x4EEC;&#x53EF;&#x4EE5;&#x66F4;&#x8FDB;&#x4E00;&#x6B65;&#x914D;&#x7F6E; JPA&#x7684;&#x76F8;&#x5173;&#x4FE1;&#x606F;&#x800C;&#x5DF1;&#x3002;</span>
+
+<span class="hljs-comment">//&#x4F7F;&#x7528; JPA &#x67E5;&#x8BE2;&#x8BED;&#x8A00;(JPQL) </span>
+<span class="hljs-meta">@Query</span>(<span class="hljs-string">&quot;from user where user_name like concat(&apos;%&#x2019;,?1,&#x2019;%&#x2019;) and note like concat(&apos;&apos;,?2,&#x2019;%&#x2019;)&quot;</span>)
+<span class="hljs-comment">//user &#x662F;&#x5B9E;&#x4F53;&#x7C7B;(@Entity&#x6CE8;&#x89E3;&#x7684;),&#x6240;&#x4EE5;&#x624D;&#x80FD;&#x8FD9;&#x6837;&#x5B9A;&#x4E49;&#x4E00;&#x6761; JPQL</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;User&gt; <span class="hljs-title">findUsers</span><span class="hljs-params">(String userName, String note)</span></span>;
+</code></pre>
+<p>&#x6309;&#x7167;&#x4E00;&#x5B9A;&#x89C4;&#x5219;&#x547D;&#x540D;&#x7684;&#x65B9;&#x6CD5;&#x4E5F;&#x53EF;&#x4EE5;&#x5728;&#x4E0D;&#x5199;&#x4EFB;&#x4F55;&#x4EE3;&#x7801;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x5B8C;&#x6210;&#x903B;&#x8F91;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-comment">//&#x5728;JpaUserRepository&#x52A0;&#x5165;&#x4EE5;&#x4E0B;&#x65B9;&#x6CD5;</span>
+<span class="hljs-comment">//&#x4EE5;&#x52A8;&#x8BCD;( get/find )&#x5F00;&#x59CB;&#x7684;,&#x800C;&#x4EE5; by &#x4EE3;&#x8868;&#x6309;&#x7167;&#x4EC0;&#x4E48;&#x5185;&#x5BB9;&#x8FDB;&#x884C;&#x67E5;&#x8BE2;</span>
+<span class="hljs-comment">//like&#x4EE3;&#x8868;&#x91C7;&#x7528;&#x6A21;&#x7CCA;&#x67E5;&#x8BE2;</span>
+List &lt;User&gt; findByUserNameLike(String userName);
+<span class="hljs-function">User <span class="hljs-title">getUserByid</span><span class="hljs-params">(Long id)</span></span>;
+<span class="hljs-comment">//&#x4F7F;&#x7528;Or</span>
+List &lt;User&gt; findByUserNameLikeOrNoteLike(String userName, String note);
+</code></pre>
 </li>
 </ol>
+<hr>
+<p>   mybatis</p>
 <pre><code class="lang-java">&lt;dependency&gt;
    &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
    &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
@@ -1006,7 +1190,7 @@ key:MapperID+offset+limit+Sql+&#x6240;&#x6709;&#x7684;&#x5165;&#x53C2;</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"springboot","level":"1.2","depth":1,"next":{"title":"java","level":"1.3","depth":1,"path":"note/java.md","ref":"note/java.md","articles":[]},"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"note/springboot.md","mtime":"2019-08-27T11:46:04.777Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-28T16:33:14.926Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"springboot","level":"1.2","depth":1,"next":{"title":"java","level":"1.3","depth":1,"path":"note/java.md","ref":"note/java.md","articles":[]},"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"note/springboot.md","mtime":"2019-08-30T12:23:36.775Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-30T14:14:53.616Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
