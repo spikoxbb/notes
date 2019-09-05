@@ -882,3 +882,31 @@ Dubbo 处理服务暴露的关键就在Invoker转换到Exporter的过程，以 D
 首先 `ReferenceConfig` 类的 `init` 方法调用 `Protocol` 的 `refer` 方法生成 `Invoker` 实例。接下来把 `Invoker` 转换为客户端需要的接口(如：HelloWorld)。每种协议如 RMI/Dubbo/Web service 等它们在调用 `refer` 方法生成 `Invoker` 实例的细节和上面所描述的类似。
 
 服务提供 `Invoker` 和服务消费 `Invoker`：![](../img/dubbo_rpc_invoke.jpg)
+
+服务消费者代码：
+
+```java
+public class DemoClientAction {
+    //服务消费端的 proxy，用户代码通过这个 proxy 调用其对应的 Invoker，而该 Invoker 实现了真正的远程服务调用。
+    private DemoService demoService;
+ 
+    public void setDemoService(DemoService demoService) {
+        this.demoService = demoService;
+    }
+ 
+    public void start() {
+        String hello = demoService.sayHello("world" + i);
+    }
+}
+```
+
+服务提供者代码：
+
+```java
+//上面这个类会被封装成为一个 AbstractProxyInvoker 实例，并新生成一个 Exporter 实例。这样当网络通讯层收到一个请求后，会找到对应的 Exporter 实例，并调用它所对应的 AbstractProxyInvoker 实例，从而真正调用了服务提供者的代码。
+public class DemoServiceImpl implements DemoService {
+    public String sayHello(String name) throws RemoteException {
+        return "Hello " + name;
+    }
+}
+```

@@ -20,5 +20,12 @@
 
 * [mysql](note/mysql.md)
 
-  
+* [SPI](note/SPI.md)
+
+* [RMI](note/RMI.md)
+
+* [dubbo_spi源码](note/dubbo_code/RMI.md)
+
+
+
 
