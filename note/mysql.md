@@ -243,3 +243,17 @@
     **从**：io线程——在使用start slave 之后，负责从master上拉取 binlog 内容，放进 自己的relay log中；
 
     **从**：sql执行线程——执行relay log中的语句；
+
+    MySQL主从复制涉及到三个线程，一个运行在主节点（log dump thread），其余两个(I/O thread, SQL thread)运行在从节点.
+
+    **主节点 binary log dump 线程**
+
+    当从节点连接主节点时，主节点会创建一个log dump 线程，用于发送bin-log的内容。在读取bin-log中的操作时，此线程会对主节点上的bin-log加锁，当读取完成，甚至在发动给从节点之前，锁会被释放。
+
+    **从节点I/O线程**
+
+    当从节点上执行`start slave`命令之后，从节点会创建一个I/O线程用来连接主节点，请求主库中更新的bin-log。I/O线程接收到主节点binlog dump 发来的更新之后，保存在本地relay-log中。
+
+    **从节点SQL线程**
+
+    SQL线程负责读取relay log中的内容，解析成具体的操作并执行，最终保证主从数据的一致性
