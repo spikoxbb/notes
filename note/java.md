@@ -1,3 +1,57 @@
+[TOC]
+
+## 面向对象
+
+1. 继承.
+2. 封装:通常认为封装是把数据和操作数据的方法绑定起来,对数据的访问只能通过已定义的接口。
+3. 多态性:多态性是指允许不同子类型的对象对同一消息作出不同的响应。就是用同样的对象引用调用同样的方法但是做了不同的事情。多态性分为编译时的多态性和运行时的多态性。方法重载(overload)实现的是编译时的多态性(也称为前绑定),而方法重写(override)实现的是运行时的多态性(也称为后绑定)。
+
+## 基础
+
+### 重写
+
+1. 构造方法不能被重写,声明为 final 的方法不能被重写,声明为 static 的方法不能被重写,但是能够被再次声明。
+2. 访问权限不能比父类中被重写的方法的访问权限更低。
+3. 重写的方法能够抛出任何非强制异常(UncheckedException,也叫非运行时异常),无论被重写的方法是否抛出异常。但是,重写的方法不能抛出新的强制性异常,或者比被重写方法声明的更广泛的强制性异常.
+
+### 字符串
+
+1. StringBuilder 是 Java5 中引入的,它和 StringBuffer 的方法完全相同,区别在于它是在单线程环境下使用的,因为它的所有方法都没有被 synchronized 修饰,因此它的效率理论上也比 StringBuffer 要高。StringBuffer:是线程安全的(对调用方法加入同步锁),执行效率较慢,适用于多线程下操作字符串缓冲区大量数据。
+2. Java 编译器将"+"编译成了 StringBuilder.
+
+### 日期
+
+```java
+//取得年月日、小时分钟秒
+Calendar cal = Calendar.getInstance();
+System.out.println(cal.get(Calendar.YEAR));
+System.out.println(cal.get(Calendar.MONTH)); // 0 - 11
+System.out.println(cal.get(Calendar.DATE));
+System.out.println(cal.get(Calendar.HOUR_OF_DAY));
+System.out.println(cal.get(Calendar.MINUTE));
+System.out.println(cal.get(Calendar.SECOND));
+// Java 8
+LocalDateTime dt = LocalDateTime.now();
+System.out.println(dt.getYear());
+System.out.println(dt.getMonthValue()); // 1 - 12
+System.out.println(dt.getDayOfMonth());
+System.out.println(dt.getHour());
+System.out.println(dt.getMinute());
+System.out.println(dt.getSecond());
+
+SimpleDateFormat oldFormatter = new SimpleDateFormat("yyyy/MM/dd");
+Date date1 = new Date();
+System.out.println(oldFormatter.format(date1));
+// Java 8
+DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+LocalDate date2 = LocalDate.now();
+System.out.println(date2.format(newFormatter));
+```
+
+## 注解
+
+Annatation(注解)是一个接口,程序可以通过反射来获取指定程序中元素的 Annotation对象,然后通过该 Annotation 对象来获取注解中的元数据信息。
+
 ## 异常
 
 Throwable 是 Java 语言中所有错误或异常的超类。下一层分为 Error 和 Exception
@@ -19,13 +73,15 @@ Throwable 是 Java 语言中所有错误或异常的超类。下一层分为 Err
 
 通过 ObjectOutputStream 和 ObjectInputStream 对对象进行序列化及反序列化。writeObject 和 readObject 自定义序列化策略在类中增加 writeObject 和 readObject 方法可以实现自定义序列化策略。
 
-1. 在变量声明前加上 Transient 关键字,可以阻止该变量被序列化到文件中,在被反序列化后,transient 变量的值被设为初始值,如 int 型的是 0,对象型的是 null。
+1. 在变量声明前加上 Transient 关键字,可以阻止该变量　被序列化到文件中,在被反序列化后,transient 变量的值被设为初始值,如 int 型的是 0,对象型的是 null。
 
 2. 服务器端给客户端发送序列化对象数据,对象中有一些数据是敏感的,比如密码字符串等,希望对该密码字段在序列化时,进行加密,而客户端如果拥有解密的密钥,只有在客户端进行反序列化时,才可以对密码进行读取,这样可以一定程度保证序列化对象的数据安全。
 
 3. #### 若实现的是Externalizable接口，则没有任何东西可以自动序列化，需要在writeExternal方法中进行手工指定所要序列化的变量，这与是否被transient修饰无关。
 
 ## IO/NIO
+
+字节流读取的时候,读到一个字节就返回一个字节; 字符流使用了字节流读到一个或多个字节(中文对应的字节数是两个,在 UTF-8 码表中是 3 个字节)时。先去查指定的编码表,将查到的字符返回。 字节流可以处理所有类型数据,如:图片,MP3,AVI 视频文件,而字符流只能处理字符数据。
 
 1. 阻塞 IO 模型：在读写数据过程中会发生阻塞现象。当用户线程发出 IO 请求之后,内核会去查看数据是否就绪,如果没有就绪就会等待数据就绪,而用户线程就会处于阻塞状态,用户线程交出 CPU。当数据就绪之后,内核会将数据拷贝到用户线程,并返回结果给用户线程,用户线程才解除 block 状态。典型的阻塞 IO 模型的例子为:data = socket.read();如果数据没有就绪,就会一直阻塞在 read 方法。
 
@@ -47,7 +103,7 @@ Throwable 是 Java 语言中所有错误或异常的超类。下一层分为 Err
 4. 信号驱动 IO 模型:当用户线程发起一个 IO 请求操作,会给对应的 socket 注册一个信号函数,然后用户线程会继续执行,当内核数据就绪时会发送一个信号给用户线程,用户线程接收到信号之后,便在信号函数中调用 IO 读写操作来进行实际的 IO 请求操作。
 
 5. 异步 IO 模型:当用户线程发起 read 操作之后,立刻就可以开始去做其它的事。而另一方面,从内核的角度,当它受到一个 asynchronous read 之后,它会立刻返回,说明 read 请求已经成功发起了,因此不会对用户线程产生任何 block。然后,内
-   核会等待数据准备完成,然后将数据拷贝到用户线程,当这一切都完成之后,内核会给用户线程发送一个信号,告诉它 read 操作完成了。也就说用户线程完全不需要实际的整个 IO 操作是如何进行的,只需要先发起一个请求,当接收内核返回的成功信号时表示 IO 操作已经完成,可以直接去使用数据了。**在信号驱动模型中,当用户线程接收到信号表示数据已经就绪,然后需要用户线程调用 IO 函数进行实际的读写操作;而在异步 IO 模型中,收到信号表示 IO 操作已经完成,不需要再在用户线程中调用 IO 函数进行实际的读写操作。**
+   核会等待数据准备完成,然后将数据拷贝到用户线程,当这一切都完成之后,内 核会给用户线程发送一个信号,告诉它 read 操作完成了。也就说用户线程完全不需要实际的整个 IO 操作是如何进行的,只需要先发起一个请求,当接收内核返回的成功信号时表示 IO 操作已经完成,可以直接去使用数据了。**在信号驱动模型中,当用户线程接收到信号表示数据已经就绪,然后需要用户线程调用 IO 函数进行实际的读写操作;而在异步 IO 模型中,收到信号表示 IO 操作已经完成,不需要再在用户线程中调用 IO 函数进行实际的读写操作。**
 
    异步 IO 是需要操作系统的底层支持,在 Java 7 中,提供了 Asynchronous IO。
 
@@ -118,23 +174,31 @@ InvocationHandler 接口:invoke(Object proxy, Method method, Object[] args),这�
 
 ## 集合
 
-ArrayList(数组)：内部是通过数组实现的,它允许对元素进行快速随机访问。当数组大小不满足时需要增加存储能力,就要将已经有数组的数据复制到新的存储空间中。当从 ArrayList 的中间位置插入或者删除元素时,需要对数组进行复制、移动、代价比较高。因此,它适合随机查找和遍历,不适合插入和删除。
+### List
+
+ArrayList(数组)：内部是通过数组实现的（内部是用 Object[]实现的）,它允许对元素进行快速随机访问。当数组大小不满足时需要增加存储能力,就要将已经有数组的数据复制到新的存储空间中。当从 ArrayList 的中间位置插入或者删除元素时,需要对数组进行复制、移动、代价比较高。因此,它适合随机查找和遍历,不适合插入和删除。
+
+[ArrayList源码分析](../集合源码分析/ArrayList.md)
 
 Vector(数组实现、线程同步)：支持线程的同步,即某一时刻只有一个线程能够写 Vector,避免多线程同时写而引起的不一致性,但实现同步需要很高的花费,因此,访问它比访问 ArrayList 慢。
 
-LinkList(链表)：是用链表结构存储数据的,很适合数据的动态插入和删除,随机访问和遍历速度比较慢。另外,他还提供了 List 接口中没有定义的方法,专门用于操作表头和表尾元素,可以当作堆栈、队列和双向队列使用。
+LinkedList(链表)：使用了循环双向链表数据结构。,很适合数据的动态插入和删除,随机访问和遍历速度比较慢。另外,他还提供了 List 接口中没有定义的方法,专门用于操作表头和表尾元素,可以当作堆栈、队列和双向队列使用。链表内部都有一个 header 表项,它既表示链表的开始,也表示链表的结尾。表项 header 的后驱表项便是链表中第一个元素,表项 header 的前驱表项便是链表中最后一个元素。
 
----------
+[LinkedList源码分析](../集合源码分析/LinkedList.md)
 
-HashSet(Hash 表)：HashSet 首先判断两个元素的哈希值,如果哈希值一样,接着会比较equals 方法 如果 equls 结果为 true ,HashSet 就视为同一个元素。
+### Set
+
+HashSet(Hash 表)：底层是由 HashMap 实现.HashSet 首先判断两个元素的哈希值,如果哈希值一样,接着会比较equals 方法 如果 equls 结果为 true ,HashSet 就视为同一个元素。
+
+[HashSet源码分析](../集合源码分析/HashSet.md)
 
 TreeSet(二叉树)：使用二叉树的原理对新 add()的对象按照指定的顺序排序(升序、降序),每增加一个对象都会进行排序,将对象插入的二叉树指定的位置。（自定义的类必须实现 Comparable 接口,并且覆写相应的 compareTo()函数）
 
-LinkHashSet( HashSet+LinkedHashMap )：继 承 与 HashSet 、 又 基 于 LinkedHashMap 来 实 现 的 。底层使用 LinkedHashMap 来保存所有元素。底层构造一个 LinkedHashMap 来实现,在相关操作上与父类 HashSet 的操作相同,直接调用父类 HashSet 的方法即可。
+LinkHashSet( HashSet+LinkedHashMap )：继 承于HashSet 、 又 基 于 LinkedHashMap 来 实 现 的 。底层使用 LinkedHashMap 来保存所有元素。底层构造一个 LinkedHashMap 来实现,在相关操作上与父类 HashSet 的操作相同,直接调用父类 HashSet 的方法即可。
 
--------
+### Map
 
-HashMap(数组+链表+红黑树)：HashMap 最多只允许一条记录的键为 null,允许多条记录的值为 null。
+HashMap(数组+链表)：HashMap 最多只允许一条记录的键为 null,允许多条记录的值为 null。
 
 **java7:**
 
@@ -152,7 +216,9 @@ HashMap(数组+链表+红黑树)：HashMap 最多只允许一条记录的键为 
 
 ![](../img/1566458572(1).png)
 
-------
+[HashMap源码分析](../集合源码分析/HashMap.md)
+
+----
 
 ConcurrentHashMap:由一个个 Segment 组成,Segment 代表”部分“或”一段“的意思,所以很多地方都会将其描述为分段锁。注意,行文中,我很多地方用了“槽”来代表一个segment。ConcurrentHashMap 是一个 Segment 数组,Segment 通过继承
 ReentrantLock 来进行加锁,所以每次需要加锁的操作锁住的是一个 segment,这样只要保证每个 Segment 是线程安全的,也就实现了全局的线程安全。
@@ -161,11 +227,21 @@ ReentrantLock 来进行加锁,所以每次需要加锁的操作锁住的是一�
 
 并行度(默认 16):concurrencyLevel:并行级别、并发数、Segment 数,怎么翻译不重要,理解它。默认是 16,也就是有 16 个 Segments,所以理论上,这个时候,最多可以同时支持 16 个线程并发写,只要它们的操作分别分布在不同的 Segment 上。这个值可以在初始化的时候设置为其他值,但是一旦初始化以后,它是不可以扩容的。
 
-HashTable(线程安全):承自 Dictionary 类,任一时间只有一个线程能写 Hashtable.
+Java8 对 ConcurrentHashMap 进行了比较大的改动,Java8 也引入了红黑树:
+
+![](../img/1566458572(1).png)
+
+[ConcurrentHashMap源码分析](../集合源码分析/ConcurrentHashMap.md)
+
+----
+
+HashTable(线程安全):承自 Dictionary 类,任一时间只有一个线程能写 Hashtable.不支持 null 值和 null 键;
 
 TreeMap(可排序): 实现 SortedMap 接口,根据键排序,默认是按键值的升序排序,也可以指定排序的比较器,key 必须实现 Comparable 接口或者在构造 TreeMap 传入自定义的Comparator,否则会在运行时抛出 java.lang.ClassCastException .
 
 LinkHashMap(记录插入顺序):LinkedHashMap 是 HashMap 的 一 个 子 类 , 保 存 了 记 录 的 插 入 顺 序 , 在 用 Iterator 遍 历LinkedHashMap 时,先得到的记录肯定是先插入的,也可以在构造时带参数,按照访问次序排序。
+
+[ConcurrentHashMap源码分析](../集合源码分析/ConcurrentHashMaps.md)
 
 ## 线程
 
