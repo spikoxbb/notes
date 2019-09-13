@@ -42,6 +42,8 @@
 
 * [dubbo_process源码](note/dubbo_code/process.md)
 
+* [设计模式](note/设计模式.md)
+
 
 
 

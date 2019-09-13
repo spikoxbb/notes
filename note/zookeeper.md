@@ -1,12 +1,24 @@
+[TOC]
+
+
+
+# Zookeeper
+
 顺序一致性
 从同一个客户端发起的事务请求，最终将会严格按照其发起顺序被应用到ZooKeeper中。
 在ZooKeeper中，有三种角色：
+
 * Leader
+
 * Follower
+
+  Follower 可直接处理并返回客户端的读请求,同时会将写请求转发给 Leader 处理,并且负责在 Leader 处理写请求时对请求进行投票。
+
 * Observer
-  zookeeper-server status 可以看当前节点的ZooKeeper是什么角色
-  ZooKeeper默认只有Leader和Follower两种角色，没有Observer角色。
-  为了使用Observer模式，在任何想变成Observer的节点的配置文件中加入：peerType=observer
+
+  Observers 接受客户端的连接,并将写请求转发给 leader 节点;
+
+  zookeeper-server status 可以看当前节点的ZooKeeper是什么角色,ZooKeeper默认只有Leader和Follower两种角色，没有Observer角色。为了使用Observer模式，在任何想变成Observer的节点的配置文件中加入：peerType=observer
   并在所有server的配置文件中，配置成observer模式的server的那行配置追加:observer，例如：
   server.1:localhost:2888:3888:observer
 
@@ -71,13 +83,13 @@ ZooKeeper会为每一个事务生成一个唯一且递增长度为64位的ZXID,Z
 4. follower节点将收到的事务请求加入到历史队列(history queue)中,并发送ack给ack给leader
 5. 当leader收到大多数follower（超过法定数量）的ack消息，leader会发送commit请求
 6. 当follower收到commit请求时，会判断该事务的ZXID是不是比历史队列中的任何事务的ZXID都小，如果是则提交，如果不是则等待比它更小的事务的commit
-  恢复过程的步骤大致可分为
+    恢复过程的步骤大致可分为
 7. 当leader崩溃后，集群进入选举阶段，开始选举出潜在的新leader(一般为集群中拥有最大ZXID的节点)
 8. 进入发现阶段，follower与潜在的新leader进行沟通，如果发现超过法定人数的follower同意，则潜在的新leader将epoch加1，进入新的纪元。新的leader产生
 9. 集群间进行数据同步，保证集群中各个节点的事务一致
 10. 集群恢复到广播模式，开始接受客户端的写请求
-  当 leader在commit之后但在发出commit消息之前宕机，即只有老leader自己commit了，而其它follower都没有收到commit消息 新的leader也必须保证这个proposal被提交.(新的leader会重新发送该proprosal的commit消息)
-  当 leader产生某个proprosal之后但在发出消息之前宕机，即只有老leader自己有这个proproal，当老的leader重启后(此时左右follower),新的leader必须保证老的leader必须丢弃这个proprosal.(新的leader会通知上线后的老leader截断其epoch对应的最后一个commit的位置)
+    当 leader在commit之后但在发出commit消息之前宕机，即只有老leader自己commit了，而其它follower都没有收到commit消息 新的leader也必须保证这个proposal被提交.(新的leader会重新发送该proprosal的commit消息)
+    当 leader产生某个proprosal之后但在发出消息之前宕机，即只有老leader自己有这个proproal，当老的leader重启后(此时左右follower),新的leader必须保证老的leader必须丢弃这个proprosal.(新的leader会通知上线后的老leader截断其epoch对应的最后一个commit的位置)
 
 客户端想服务端注册自己需要关注的节点，一旦该节点的数据发生变更，那么服务端就会向相应的客户端发送Watcher事件通知，客户端接收到这个消息通知后，需要主动到服务端获取最新的数据。
 
@@ -192,37 +204,22 @@ Paxos如何在分布式存储系统中应用？
 确定不可变变量取值 —— 方案一
 先考虑整个系统由单个acceptor组成，通过类似互斥锁的机制，来管理并发的proposal运行。Proposal首先向acceptor申请互斥访问权，然后才能请求acceptor接受自己的取值。而acceptor给proposal发放互斥访问权，谁申请到互斥访问权，就接受谁提交的取值。
 
-第一阶段：通过Acceptor.prepare()获取互斥访问权和当前var取值，如果无法获取，返回<error>（锁被别人占用）。
-第二阶段：根据当前var的取值f，选择执行：
-	•	如果f为null（以前没有proposal设置过var的值），则通过Acceptor.accept(var, V)提交数据；
-	•	如果f不为null（接受某个proposal设置过var的值f），则通过Acceptor.release()释放访问权，返回<ok, f>。
+- 第一阶段：通过Acceptor.prepare()获取互斥访问权和当前var取值，如果无法获取，返回<error>（锁被别人占用）。
+- 第二阶段：根据当前var的取值f，选择执行,如果f为null（以前没有proposal设置过var的值），则通过Acceptor.accept(var, V)提交数据,如果f不为null（接受某个proposal设置过var的值f），则通过Acceptor.release()释放访问权，返回<ok, f>。
 
 但不足的是，Proposal在获取到互斥访问权后，并且还没有释放互斥访问权之前发生了故障，则会导致其他所有Proposal无法获取互斥访问权进入第二阶段运行，此时会导致系统陷入“死锁”的状态。即，方案一无法容忍任意Proposal机器出现故障。
 
 引入抢占式访问权 —— 方案二
-对Proposal来说，Proposal向Acceptor申请访问权时会指定编号epoch（越大的epoch越新）。获取到访问权以后，才能向Acceptor提交取值。
-对Acceptor来说，采用“喜新厌旧”的原则。即一旦收到更大的新epoch的申请，马上让旧epoch的访问权失效，不再接受他们提交的取值，然后给新的epoch发放访问权限，只接受新的epoch提交的取值。
 
-第一阶段：获取epoch轮次的访问权和当前var的取值，我们可以简单获取当前时间戳为epoch：
-	•	通过Acceptor.prepare(epoch)，获取epoch轮次的访问权和当前var的取值；
-	•	如果不能获取，返回<error>。
-	•	第二阶段：采用“后者认同前者”的原则执行。
-	•	如果var取值为null，则肯定旧epoch无法生成确定性取值，则通过Acceptor.accept(var, prepared_epoch, V)提交数据V。
-	•	成功后返回<ok, V>；
-	•	若accept失败，则说明被更新的epoch抢占或Acceptor故障，返回<error>。
-	•	如果var取值存在，则此取值肯定是确定性取值，此时认同它不再更改，直接返回<ok, accepted_value>。
-但方案二中只有一个Acceptor，单机模块的Acceptor故障时会导致整个系统宕机，无法提供服务，所以我们仍需要引入多个Acceptor。
-Paxos是在方案二的基础上引入多个Acceptor，在paxos方案里面，Acceptor的实现保持不变，仍然采用“喜新厌旧”的原则运行。由于引进多个Acceptor，所以采用“少数服从多数”的思路。一旦某个epoch的取值f被半数以上Acceptor接受，我们就认为这个var的取值被确定为f，不再更改。
-第一阶段：选定epoch，获取epoch访问权和对应的var取值，在paxos中需要获取半数以上Acceptor的访问权和对应一组var取值。
+1. **对Proposal来说，Proposal向Acceptor申请访问权时会指定编号epoch（越大的epoch越新）。获取到访问权以后，才能向Acceptor提交取值。**
+2. **对Acceptor来说，采用“喜新厌旧”的原则。即一旦收到更大的新epoch的申请，马上让旧epoch的访问权失效，不再接受他们提交的取值，然后给新的epoch发放访问权限，只接受新的epoch提交的取值。**
 
-第二阶段：采用“后者认同前者”的原则执行。
-	•	如果获取的var取值都为null，则旧的epoch无法形成确定性取值，此时努力使<epoch, V>成为确定性取值：
-	•	向epoch对应的所有Acceptor提交取值<epoch, V>；
-	•	如果收到半数以上成功，则返回<ok, V>；
-	•	否则返回<error>（被新的epoch抢占或Acceptor故障）。
-	•	如果var的取值存在，认同最大的accepted_epoch对应的取值f，努力使<epoch, f>成为确定性取值。
-	•	如果f出现半数以上，则说明f已经是确定性取值，直接返回ok, f<>；
-	•	否则，向epoch对应的所有Acceptor提交取值<epoch, f>。
+- 第一阶段：获取epoch轮次的访问权和当前var的取值，我们可以简单获取当前时间戳为epoch：通过Acceptor.prepare(epoch)，获取epoch轮次的访问权和当前var的取值；如果不能获取，返回<error>。
+- 第二阶段：采用“后者认同前者”的原则执行。如果var取值为null，则肯定旧epoch无法生成确定性取值，则通过Acceptor.accept(var, prepared_epoch, V)提交数据V。成功后返回<ok, V>；若accept失败，则说明被更新的epoch抢占或Acceptor故障，返回<error>。如果var取值存在，则此取值肯定是确定性取值，此时认同它不再更改，直接返回<ok, accepted_value>。
+  但方案二中只有一个Acceptor，单机模块的Acceptor故障时会导致整个系统宕机，无法提供服务，所以我们仍需要引入多个Acceptor。
+  Paxos是在方案二的基础上引入多个Acceptor，在paxos方案里面，Acceptor的实现保持不变，仍然采用“喜新厌旧”的原则运行。由于引进多个Acceptor，所以采用“少数服从多数”的思路。一旦某个epoch的取值f被半数以上Acceptor接受，我们就认为这个var的取值被确定为f，不再更改。
+- 第一阶段：选定epoch，获取epoch访问权和对应的var取值，在paxos中需要获取半数以上Acceptor的访问权和对应一组var取值。
+- 第二阶段：采用“后者认同前者”的原则执行。如果获取的var取值都为null，则旧的epoch无法形成确定性取值，此时努力使<epoch, V>成为确定性取值,向epoch对应的所有Acceptor提交取值<epoch, V>；如果收到半数以上成功，则返回<ok, V>；否则返回<error>（被新的epoch抢占或Acceptor故障）。如果var的取值存在，认同最大的accepted_epoch对应的取值f，努力使<epoch, f>成为确定性取值。如果f出现半数以上，则说明f已经是确定性取值，直接返回<ok, f>；否则，向epoch对应的所有Acceptor提交取值<epoch, f>。
 
 ## multi-poxos
 
@@ -232,48 +229,80 @@ Mulit-Paxos基于Basic-Paxos做了优化，在Paxos集群中利用Paxos协议选
 
 这里强化了协议的假设：即leader有效期内不会有其他server提出的议案。因此，对于后续的提案，我们可以简化掉产生log ID阶段和Prepare阶段，而是由唯一的leader产生log ID，然后直接执行Accept，得到多数派确认即表示提案达成一致（每条redo log可对应一个提案）。
 
-----
-
-Paxos和raft都是一旦一个entries（raft协议叫日志，paxos叫提案，叫法而已）得到多数派的赞成，这个entries就会定下来，不丢失，值不更改，最终所有节点都会赞成它。Paxos中称为提案被决定，Raft,ZAB,VR称为日志被提交，**Multi-paxos和Raft都用一个数字来标识leader的合法性**，multi-paxos中叫proposer-id，Raft叫term，意义是一样的，**multi-paxos proposer-id最大的Leader提出的决议才是有效的，raft协议中term最大的leader才是合法的**。
-
-raft协议在leader选举阶段，由于老leader可能也还存活，也会存在不只一个leader的情形，**只是不存在term一样的两个leader**，因为选举算法要求leader得到同一个term的多数派的同意，同时赞同的成员会承诺不接受term更小的任何消息。这样可以根据term大小来区分谁是合法的leader。Multi-paxos的区分leader的合法性策略其实是一样的，谁的proproser-id大谁合法，而proposer-id是唯一的。**因此它们其实在同一个时刻，都只会存在一个合法的leader。**
-
-multi-paxos原本的意思是，即使形成了多数派，仍然需要使用新的proposalID走一遍prepare-accept过程，工程上做了优化之后，对于明确标记了已形成多数派的entry可以不重新投票，但是未确认是否形成多数派的entry，则要求新任leader使用新的proposalID重新投票。
-
-因为multi-paxos并不假设日志间有连续确认的关系，每条日志之间相互独立，没有关系，1号日志尚未确认时，2号日志就可以确认形成多数派备份.
-
-----
-
-
-
 ## Raft
 
-如果 follower 宕机或者运行缓慢或者丢包，领导人会不断的重试，知道所有的 follower 最终都存储了所有的日志条目。
+### 角色
 
-当 leader 和 follower 日志冲突的时候，leader 将校验 follower 最后一条日志是否和 leader 匹配，如果不匹配，将递减查询，直到匹配，匹配后，删除冲突的日志。这样就实现了主从日志的一致性。
+1. Leader (领导者 - 日志管理):负责日志的同步管理,处理来自客户端的请求,与 Follower 保持这 heartBeat 的联系;
+2. Follower (追随者 - 日志同步):刚启动时所有节点为 Follower 状态,响应 Leader 的日志同步请求,响应 Candidate 的请求,把请求到 Follower 的事务转发给 Leader;
+3. Candidate (候选者 - 负责选票):负责选举投票,Raft 刚启动时由一个节点从 Follower 转为 Candidate 发起选举,选举出
+   Leader 后从 Candidate 转为 Leader 状态;
 
-1. raft协议的Leader选举算法，新选举出的Leader已经拥有全部的可以被提交的日志，而multi-paxos择不需要保证这一点，这也意味multi-paxos需要额外的流程从其它节点获取已经被提交的日志。因此raft协议日志可以简单的只从leader流向follower在raft协议中，而multi-paxos则需要额外的流程补全已提交的日志。
-2. **Raft协议强调日志的连续性，multi-paxos则允许日志有空洞**。**日志的连续性蕴含了这样一条性质：如果两个不同节点上相同序号的日志，term相同，那么这和这之前的日志必然也相同的。**raft协议利用日志的连续性，leader可以很方便的得知自己的follower拥有的日志的情况，Follower只要告诉Leader自己本地日志文件的最后一个日志的序号和term就可以了；
-3. raft协议在leader选举的时候，只需要从一个多数集中选择最后出最后一条日志term最大并且日志数目最多的节点，新leader同样必定拥有所有的已commit的日志。**这是由于任意一条commit的日志，至少被多数派记录，而由于日志的连续性，拥有最后一条commit的日志也就意味着拥有全部的commit日志，因此raft协议中一个多数派必然存在一个节点拥有全部的已提交的日志**。而对于multi-paxos每个日志需要单独被确认是否可以提交，因此当新leader产生后，它只好重新对每个日志进行确认，已确定它们是否可以被提交，甚至于新leader可能缺失可以被提交的日志，需要向其它节点学习到缺失的可以被提交的日志，当然这都可以通过向一个多数派询问完成
+### Term(任期)
+
+​     在 Raft 中使用了一个可以理解为周期(第几届、任期)的概念,用 Term 作为一个周期,每个 Term 都是一个连续递增的编号,每一轮选举都是一个 Term 周期,在一个 Term 中只能产生一个 Leader;当某节点收到的请求中 Term 比当前 Term 小时则拒绝该请求。
+
+### 选举(Election)
+​    Raft 的选举由定时器来触发,每个节点的选举定时器时间都是不一样的,开始时状态都为Follower 某个节点定时器触发选举后 Term 递增,状态由 Follower 转为 Candidate,向其他节点发起 RequestVote RPC 请求,这时候有三种可能的情况发生:
+
+1. 该 RequestVote 请求接收到 n/2+1(过半数)个节点的投票,从 Candidate 转为 Leader,
+   向其他节点发送 heartBeat 以保持 Leader 的正常运转。
+2. 在此期间如果收到其他节点发送过来的 AppendEntries RPC 请求,如该节点的 Term 大
+   则当前节点转为 Follower,否则保持 Candidate 拒绝该请求。
+3. Election timeout 发生则 Term 递增,重新发起选举
+
+在一个 Term 期间每个节点只能投票一次,所以当有多个 Candidate 存在时就会出现每个Candidate 发起的选举都存在接收到的投票数都不过半的问题,这时每个 Candidate 都将 Term递增、重启定时器并重新发起选举,由于每个节点中定时器的时间都是随机的,所以就不会多次存在有多个 Candidate 同时发起投票的问题。
+
+在 Raft 中当接收到客户端的日志(事务请求)后先把该日志追加到本地的 Log 中,然后通过heartbeat 把该 Entry 同步给其他 Follower,Follower 接收到日志后记录日志然后向 Leader 发送ACK,当 Leader 收到大多数(n/2+1)Follower 的 ACK 信息后将该日志设置为已提交并追加到本地磁盘中,通知客户端并在下个 heartbeat 中 Leader 将通知所有的 Follower 将该日志存储在自己的本地磁盘中。
 
 ## ZAB
 
-leader周期成为epoch,raft为term
+## 事务编号 Zxid (事务请求计数器 + epoch )
+在 ZAB ( ZooKeeper Atomic Broadcast , ZooKeeper 原子消息广播协议) 协议的事务编号 Zxid设计中,Zxid 是一个 64 位的数字,其中低 32 位是一个简单的单调递增的计数器,针对客户端每一个事务请求,计数器加 1;而高 32 位则代表 Leader 周期 epoch 的编号,每个当选产生一个新的 Leader 服务器,就会从这个 Leader 服务器上取出其本地日志中最大事务的 ZXID,并从中读取epoch 值,然后加 1,以此作为新的 epoch,并将低 32 位从 0 开始计数。Zxid(Transaction id)类似于 RDBMS 中的事务 ID,用于标识一次更新操作的 Proposal(提议)ID。为了保证顺序性,该 zkid 必须单调递增.
 
-raft心跳方向leader->follower,ZAB相反。
+## ZAB 协议 4 阶段
+### Leader election (选举阶段 - 选出准 Leader )
 
-- Zk中的读请求，直接由连接的Node处理，不需要和leader汇报，也就是Consul中的stale模式。这种模式可能导致读取到的数据是过时的，但是可以保证一定是半数节点之前确认过的数据
-- 为了避免Follower的数据过时，Zk有sync()方法，可以保证读取到最新的数据。可以调用sync()之后，再查询，确保所有的数据一致后再返回结果
+Leader election(选举阶段):节点在一开始都处于选举阶段,只要有一个节点得到超半数节点的票数,它就可以当选准 leader。只有到达 广播阶段(broadcast) 准 leader 才会成为真正的 leader。这一阶段的目的是就是为了选出一个准 leader,然后进入下一个阶段.
 
-1. 角色Zk引入了 Observer的角色来提升性能，既可以大幅提升读取的性能，也可以不影响写的速度和选举的速度，同时一定程度上增加了容错的能力。
+### Discovery (发现阶段 - 接受提议、生成 epoch 、接受 epoch )
 
-Zk集群之间投票消息是单向、网状的，类似于广播，比如A广播A投票给自己，广播出去，然后B接收到A的这个消息之后，会PK A的数据，如果B更适合当leader（数据更新或者myid更大），B会归档A的这个投票，但是不会更新自己的数据，也不会广播任何消息。除非发现A的数据比B当前存储的数据更适合当leader，就更新自己的数据，且广播自己的最新的投票消息。
-而Raft集群之间的所有消息都是双向的，发起一个RPC，会有个回复结果。比如A向B发起投票，B要么反馈投票成功，要么反馈投票不成功。
+Discovery(发现阶段):在这个阶段,followers 跟准 leader 进行通信,**同步 followers最近接收的事务提议。**这个一阶段的主要目的是发现当前大多数节点接收的最新提议,并且准 leader 生成新的 epoch,让 followers 接受,更新它们的 accepted Epoch
+一个 follower 只会连接一个 leader,如果有一个节点 f 认为另一个 follower p 是 leader,f在尝试连接 p 时会被拒绝,f 被拒绝之后,就会进入重新选举阶段。
 
-ZK集群中，因为引入了myid的概念，系统倾向让数据最新和myid最大的节点当leader，所以即使有半数节点都投票给同一个Node当leader，这个Node也不一定能成为leader，需要等待200ms，看是不是有更适合的leader产生，
+### Synchronization (同步阶段 - 同步 follower 副本)
 
-1. Raft的集群模式下：
-   Leader创建日志，广播日志，半数节点复制成功后，自己commit日志，运用到状态机中，反馈客户端，并且在下一个心跳包中，通知小弟们commit
+Synchronization(同步阶段):同步阶段主要是**利用 leader 前一阶段获得的最新提议历史,同步集群中所有的副本。**只有当 大多数节点都同步完成,准 leader 才会成为真正的 leader。follower 只会接收 zxid 比自己的 lastZxid 大的提议。
 
-Zab的集群模式下：
-leader创建Proposal，广播之后，半数节点复制成功后，广播commit。同时自己也commit，commit完之后再运用到内存树，反馈客户端
+协议的 Java 版本实现跟上面的定义有些不同,选举阶段使用的是 Fast Leader Election(FLE),它包含了 选举的发现职责。因为 FLE 会选举拥有最新提议历史的节点作为 leader,这样就省去了发现最新提议的步骤。实际的实现将 发现阶段 和 同步合并为 Recovery Phase(恢复阶段)。所以,ZAB 的实现只有三个阶段:Fast Leader Election;Recovery Phase;Broadcast Phase。
+
+## 投票机制
+每个 sever 首先给自己投票,然后用自己的选票和其他 sever 选票对比,权重大的胜出,使用权重较大的更新自身选票箱.
+
+1. 每个 Server 启动以后都询问其它的 Server 它要投票给谁。对于其他 server 的询问,server 每次根据自己的状态都回复自己推荐的 leader 的 id 和上一次处理事务的 zxid(系统启动时每个 server 都会推荐自己).
+2. 收到所有 Server 回复以后,就计算出 zxid 最大的哪个 Server,并将这个 Server 相关信息设置成下一次要投票的 Server。
+3. 计算这过程中获得票数最多的的 sever 为获胜者,如果获胜者的票数超过半数,则改server 被选为 leader。否则,继续这个过程,直到 leader 被选举出来.
+4. leader 就会开始等待 server 连接.
+5. Follower 连接 leader,将最大的 zxid 发送给 leader.
+6. Leader 根据 follower 的 zxid 确定同步点,至此选举阶段完成。
+7. 选举阶段完成 Leader 同步后通知 follower 已经成为 uptodate 状态.
+8. Follower 收到 uptodate 消息后,又可以重新接受 client 的请求进行服务了.
+
+```xml
+<!--目前有 5 台服务器,每台服务器均没有数据,它们的编号分别是 1,2,3,4,5,按编号依次启动,选举过程如下-->
+1. 服务器 1 启动,给自己投票,然后发投票信息,由于其它机器还没有启动所以它收不到反馈信息,服务器 1 的状态一直属于 Looking。
+2. 服务器 2 启动,给自己投票,同时与之前启动的服务器 1 交换结果,由于服务器 2 的编号大所以服务器 2 胜出,但此时投票数没有大于半数,所以两个服务器的状态依然是LOOKING。
+3. 服务器 3 启动,给自己投票,同时与之前启动的服务器 1,2 交换信息,由于服务器 3 的编号最大所以服务器 3 胜出,此时投票数正好大于半数,所以服务器 3 成为领导者,服务器1,2 成为小弟。
+4. 服务器 4 启动,给自己投票,同时与之前启动的服务器 1,2,3 交换信息,尽管服务器 4 的编号大,但之前服务器 3 已经胜出,所以服务器 4 只能成为小弟。
+5. 服务器 5 启动,后面的逻辑同服务器 4 成为小弟。
+```
+
+## Zookeeper 工作原理(原子广播)
+
+1. Zookeeper 的核心是原子广播,这个机制保证了各个 server 之间的同步。实现这个机制的协议叫做 Zab 协议。Zab 协议有两种模式,它们分别是恢复模式和广播模式。
+2. 当服务启动或者在领导者崩溃后,Zab 就进入了恢复模式,当领导者被选举出来,且大多数 server 的完成了和 leader 的状态同步以后,恢复模式就结束了。
+3. 状态同步保证了 leader 和 server 具有相同的系统状态
+4. 一旦 leader 已经和多数的 follower 进行了状态同步后,他就可以开始广播消息了,即进入广播状态。这时候当一个 server 加入 zookeeper 服务中,它会在恢复模式下启动,发现 leader,并和 leader 进行状态同步。待到同步结束,它也参与消息广播。Zookeeper服务一直维持在 Broadcast 状态,直到 leader 崩溃了或者 leader 失去了大部分的followers 支持。
+5. 广播模式需要保证 proposal 被按顺序处理,因此 zk 采用了递增的事务 id 号(zxid)来保证。所有的提议(proposal)都在被提出的时候加上了 zxid。
+6. 实现中 zxid 是一个 64 为的数字,它高 32 位是 epoch 用来标识 leader 关系是否改变,每次一个 leader 被选出来,它都会有一个新的 epoch。低 32 位是个递增计数。
+7. 当 leader 崩溃或者 leader 失去大多数的 follower,这时候 zk 进入恢复模式,恢复模式需要重新选举出一个新的 leader,让所有的 server 都恢复到一个正确的状态。

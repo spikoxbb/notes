@@ -1,18 +1,20 @@
-java8
+**java8实战**
 
-高性能mysql
+**深入浅出java虚拟机**
+
+**高性能mysql**
 
 zookeeper
 
 elasticsearchs
 
-spring源码深度解析
+**spring源码深度解析**
 
-Java Persistence with MyBatis 3
+**Java Persistence with MyBatis 3**
 
 **Java并发编程实战**
 
-Java并发编程的艺术
+**Java并发编程的艺术**
 
 **从Paxos到ZooKeeper 分布式一致性原理与实践**
 
@@ -22,6 +24,6 @@ Java并发编程的艺术
 
 **深入分析Java Web技术内幕**
 
-netty
+**netty实战**
 
 jetty/tomcat

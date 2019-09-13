@@ -1,6 +1,6 @@
-<Java 源文件—->编译器—->字节码文件
+[TOC]
 
-字节码文件—->JVM的解释器—->机器码
+## 内存模型
 
 ![](../img/1566372915(1).png)
 
@@ -18,6 +18,30 @@ Java 堆从 GC 的角度还可以细分为: 新生代( Eden 区 、 From Survivo
 
 Eden是Java 新对象的出生地(如果新创建的对象占用内存很大,则直接分配到老年代)。当 Eden 区内存不够的时候就会触发 MinorGC,对新生代区进行一次垃圾回收。
 
+## GC
+
+### 定位对象
+
+- 引用计数器算法(废弃)
+  引用计数器算法是给每个对象设置一个计数器,当有地方引用这个对象的时候,计数器+1,当引用失效的时候,
+  计数器-1,当计数器为 0 的时候,JVM 就认为对象不再被使用,是“垃圾”了。
+  引用计数器实现简单,效率高;但是不能解决循环引用问问题(A 对象引用 B 对象,B 对象又引用 A 对象,但是
+  A,B 对象已不被任何其他对象引用),同时每次计数器的增加和减少都带来了很多额外的开销,所以在 JDK1.1 之后,
+  这个算法已经不再使用了。
+
+- 根搜索算法(使用)
+  根搜索算法是通过一些“GC Roots”对象作为起点,从这些节点开始往下搜索,搜索通过的路径成为引用链
+  (Reference Chain),当一个对象没有被 GC Roots 的引用链连接的时候,说明这个对象是不可用的。
+
+  GC Roots 对象包括:
+
+  1. 虚拟机栈(栈帧中的本地变量表)中的引用的对象。
+  2.  方法区域中的类静态属性引用的对象。
+  3.  方法区域中常量引用的对象。
+  4.  本地方法栈中 JNI(Native 方法)的引用的对象。
+
+### GC类型
+
 MinorGC：把 Eden 和 ServivorFrom 区域中存活的对象复制到 ServicorTo 区域(如果有对象的年龄以及达到了老年的标准,则赋值到老年代区),同时把这些对象的年龄+1(如果 ServicorTo 不够位置了就放到老年区)。
 
 老年代在进行 MajorGC 前一般都先进行了一次 MinorGC,使得有新生代的对象晋身入老年代,导致空间不够用时才触发。当无法找到足够大的连续空间分配给新创建的较大对象时也会提前触发一次 MajorGC 进行垃圾回收腾出空间。
@@ -27,6 +51,8 @@ MajorGC 采用标记清除算法，MajorGC 会产生内存碎片,为了减少内
 GC 不会在主程序运行期对永久区域进行清理。在 Java8 中,永久代已经被移除,被一个称为“元数据区”(元空间)的区域所取代，元空间并不在虚拟机中,而是使用本地内存。类的元数 据放入 nativememory, 字符串池和类的静态变量放入 java 堆中。
 
 可达性分析：通过一系列的“GC roots”对象作为起点搜索。如果在“GC roots”和一个对象之间没有可达路径,则称该对象是不可达的。不可达对象变为可回收对象至少要经过两次标记过程。两次标记后仍然是可回收对象,则将面临回收。
+
+### GC算法
 
 1. 标记清除算法( Mark-Sweep ):标记阶段标记出所有需要回收的对象,清除阶段回收被标记的对象所占用的空间。但是内存碎片化严重。
 2. 复制算法(copying)：
@@ -60,6 +86,8 @@ LinkedList<PhantomReference<String>> pa=LinkedList<PhantomReference<String>>(new
 
 分区收集算法:将整个堆分为连续的不同小区间, 每个小区间独立使用, 独立回收. 这样可以控制一次回收多少个小区间 , 根据目标停顿时间, 每次合理地回收若干个小区间(而不是整个堆), 从而减少一次 GC 所产生的停顿。
 
+### 垃圾收集器
+
 Serial 垃圾收集器(单线程、复制算法):使用复制算法的单线程的收集器,新生代垃圾收集器.在进行垃圾收集的同时,必须暂停其他所有的工作线程.
 
 ParNew 垃圾收集器(Serial+多线程):使用复制算法的多线程收集器,在垃圾收集过程中同样也要暂停所有其他的工作线程。默认开启和 CPU 数目相同的线程数,通过-XX:ParallelGCThreads 参数来限制垃圾收集器的线程数。
@@ -81,6 +109,45 @@ CMS 收集器(多线程标记清除算法)：主要目标是获取最短垃圾�
 G1 收集器：标记-整理算法。可以非常精确控制停顿时间,在不牺牲吞吐量前提下,实现低停顿垃圾回收。它把堆内存划分为大小固定的几个独立区域,并且跟踪这些区域的垃圾收集进度,同时在后台维护一个优先级列表,每次根据所允许的收集时间,优先回收垃圾最多的区域。在有限时间获得最高的垃圾收集效率。
 
 2. 可以非常精确控制停顿时间,在不牺牲吞吐量前提下,实现低停顿垃圾回收。
+
+## 类加载机制
+
+### 双亲委托机制
+
+- BootStrapClassLoader : 启 动 类 加 载 器 , 该 ClassLoader 是 jvm 在 启 动 时 创 建 的 , 用于加载 $JAVA_HOME$/jre/lib 下面的类库(或者通过参数-Xbootclasspath 指定)。由于启动类加载器涉及到虚拟机本地实现细节,开发者无法直接获取到启动类加载器的引用,所以不能直接通过引用进行操作。
+- ExtClassLoader:扩展类加载器,该 ClassLoader 是在 sun.misc.Launcher 里作为一个内部类 ExtClassLoader定义的(即 sun.misc.Launcher$ExtClassLoader),ExtClassLoader 会加载 $JAVA_HOME/jre/lib/ext 下的类库(或者通过参数-Djava.ext.dirs 指定)。
+- AppClassLoader:应用程序类加载器,该 ClassLoader 同样是在 sun.misc.Launcher 里作为一个内部类AppClassLoader 定义的(即 sun.misc.Launcher$AppClassLoader),AppClassLoader 会加载 java 环境变量CLASSPATH所 指 定 的 路 径下的类库, 而CLASSPATH所 指 定 的 路 径 可 以 通 过System.getProperty("java.class.path")获取;当然,该变量也可以覆盖,可以使用参数-cp,例如:java -cp 路径 (可以指定要执行的 class 目录)。
+- CustomClassLoader:自定义类加载器,该 ClassLoader 是指自定义的ClassLoader,比如tomcat的StandardClassLoader 属于这一类。
+
+```java
+//ClassLoader 的 loadClass(String name, boolean resolve)的源码:
+protected synchronized Class<?> loadClass(String name, boolean resolve) throws 																				ClassNotFoundException {
+    // 首先找缓存是否有 class
+    Class c = findLoadedClass(name);
+    if (c == null) {
+        //判断有没有父类
+        try {
+            if (parent != null) {
+                //有的话,用父类递归获取 class
+               　c = parent.loadClass(name, false);
+            } else {
+                c = findBootstrapClassOrNull(name);
+            }
+        } catch (ClassNotFoundException e) {}
+        if (c == null) {
+            c = findClass(name);
+        }
+    }
+    if (resolve) {
+        resolveClass(c);
+    }
+    return c;
+}
+```
+
+虽 然 ClassLoader 加 载 类 是 使 用 loadClass 方 法 , 但 是 鼓 励 用 ClassLoader的子类重写findClass(String),而不是重写 loadClass,这样就不会覆盖了类加载默认的双亲委派机制。
+
+### 类初始化
 
 JVM 类加载机制分为五个部分:加载,验证,准备,解析,初始化。
 
