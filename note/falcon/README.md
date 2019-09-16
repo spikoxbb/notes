@@ -584,4 +584,10 @@ nodata用于检测监控数据的上报异常。nodata和实时报警judge模块
 ./open-falcon monitor aggregator  查看日志
 ```
 
-### 
+## 源码相关解读
+
+[报警发送原理](Sender.md)
+
+[HBS原理](HBS.md)
+
+[报警判断原理](judge.md)
