@@ -591,3 +591,9 @@ nodata用于检测监控数据的上报异常。nodata和实时报警judge模块
 [HBS原理](HBS.md)
 
 [报警判断原理](judge.md)
+
+[报警原理](Alarm.md)
+
+[发送数据点原理](Transfer.md)
+
+[agent原理](Agent.md)
