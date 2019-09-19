@@ -4,9 +4,9 @@
 
 * [springboot](note/springboot.md)
 
-* [java](note/java.md)
+* [java](note/java/README.md)
 
-* [JVM](note/JVM.md)
+* [golang](note/go/README.md)
 
 * [Kafka](note/kafka.md)
 
@@ -20,27 +20,9 @@
 
 * [mysql](note/mysql.md)
 
-* [SPI](note/SPI.md)
+* [SPI](note/java/SPI.md)
 
-* [RMI](note/RMI.md)
-
-* [dubbo_spi源码](note/dubbo_code/SPI.md)
-
-* [dubbo_export源码](note/dubbo_code/export.md)
-
-* [dubbo_adaptive源码](note/dubbo_code/adaptive.md)
-
-* [dubbo_refer源码](note/dubbo_code/refer.md)
-
-* [dubbo_directory源码](note/dubbo_code/directory.md)
-
-* [dubbo_route源码](note/dubbo_code/route.md)
-
-* [dubbo_cluster源码](note/dubbo_code/cluster.md)
-
-* [dubbo_loadbalance源码](note/dubbo_code/loadbalance.md)
-
-* [dubbo_process源码](note/dubbo_code/process.md)
+* [dubbo源码](note/dubbo_code/README.md)
 
 * [设计模式](note/设计模式.md)
 

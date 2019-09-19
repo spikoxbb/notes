@@ -586,14 +586,16 @@ nodata用于检测监控数据的上报异常。nodata和实时报警judge模块
 
 ## 源码相关解读
 
-[报警发送原理](Sender.md)
+[报警发送原理](./Sender.md)
 
-[HBS原理](HBS.md)
+[HBS原理](./HBS.md)
 
-[报警判断原理](judge.md)
+[报警判断原理](./judge.md)
 
-[报警原理](Alarm.md)
+[报警原理](./Alarm.md)
 
-[发送数据点原理](Transfer.md)
+[发送数据点原理](./Transfer.md)
 
-[agent原理](Agent.md)
+[agent原理](./Agent.md)
+
+[绘图原理](./Graph.md)

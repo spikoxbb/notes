@@ -594,3 +594,42 @@ func forward2JudgeTask(Q *list.SafeListLimited, node string, concurrent int) {
 
 ```
 
+call:
+
+```go
+func (this *SafeRpcConnPools) Call(addr, method string, args interface{}, resp interface{}) error {
+	connPool, exists := this.Get(addr)
+	if !exists {
+		return fmt.Errorf("%s has no connection pool", addr)
+	}
+
+	conn, err := connPool.Fetch()
+	if err != nil {
+		return fmt.Errorf("%s get connection fail: conn %v, err %v. proc: %s", addr, conn, err, connPool.Proc())
+	}
+
+	rpcClient := conn.(*rpcpool.RpcClient)
+	callTimeout := time.Duration(this.CallTimeout) * time.Millisecond
+
+	done := make(chan error, 1)
+	go func() {
+		done <- rpcClient.Call(method, args, resp)
+	}()
+
+	select {
+	case <-time.After(callTimeout):
+		connPool.ForceClose(conn)
+		return fmt.Errorf("%s, call timeout", addr)
+	case err = <-done:
+		if err != nil {
+			connPool.ForceClose(conn)
+			err = fmt.Errorf("%s, call failed, err %v. proc: %s", addr, err, connPool.Proc())
+		} else {
+			connPool.Release(conn)
+		}
+		return err
+	}
+}
+
+```
+
