@@ -9,34 +9,6 @@ Graph将采集与传送组件每次push上来的数据，进行采样存储，�
 ## code
 
 ```go
-//main.go
-func main() {
-	cfg := flag.String("c", "cfg.json", "specify config file")
-	version := flag.Bool("v", false, "show version")
-	versionGit := flag.Bool("vg", false, "show version and git commit log")
-
-	flag.Parse()
-
-	if *version {
-		fmt.Println(g.VERSION)
-		os.Exit(0)
-	}
-	if *versionGit {
-		fmt.Println(g.VERSION, g.COMMIT)
-		os.Exit(0)
-	}
-
-	// global config
-	g.ParseConfig(*cfg)
-	g.InitApolloConfig()
-
-	if g.Config().Debug {
-		g.InitLog("debug")
-	} else {
-		g.InitLog("info")
-		gin.SetMode(gin.ReleaseMode)
-	}
-
 	// rrdtool init
 	rrdtool.InitChannel()
 	// rrdtool before api for disable loopback connection
@@ -48,257 +20,293 @@ func main() {
 	// start http server
 	go http.Start()
 	go cron.CleanCache()
-
-	start_signal(os.Getpid(), g.Config())
-}
-
-// 系统信息注册、处理与资源回收（实现优雅的关闭系统）
-func start_signal(pid int, cfg *g.GlobalConfig) {
-    sigs := make(chan os.Signal, 1)  //创建传送信号channal
-    log.Println(pid, "register signal notify")
-    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT) //注册系统信号通知
-
-    for {
-        s := <-sigs   //接收系统信息号
-        log.Println("recv", s)
-
-        switch s {
-        //处理信号类型
-        case syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
-            log.Println("graceful shut down")
-            if cfg.Http.Enabled {   //关闭Http
-                http.Close_chan <- 1
-                <-http.Close_done_chan
-            }
-            log.Println("http stop ok")
-
-            if cfg.Rpc.Enabled {   //关闭RPC
-                api.Close_chan <- 1
-                <-api.Close_done_chan
-            }
-            log.Println("rpc stop ok")
-            
-            //rrd退出存盘
-            rrdtool.Out_done_chan <- 1
-            rrdtool.FlushAll(true)   
-            log.Println("rrdtool stop ok")
-
-            log.Println(pid, "exit")
-            os.Exit(0)
-        }
-    }
-}
-
-func InitChannel() {
-    Out_done_chan = make(chan int, 1)     //退出信号Channel
-    ioWorkerNum := g.Config().IOWorkerNum  //IO worker数
-    //创建与初始化指定IOWorker数量的Channel
-    io_task_chans = make([]chan *io_task_t, ioWorkerNum) 
-    for i := 0; i < ioWorkerNum; i++ {
-        io_task_chans[i] = make(chan *io_task_t, 16) 
-    }
-}
 ```
 
-rrdtool.Start() rrdTool服务启动 :
+为了减少读写rrd文件的次数，会在本地缓存这个接收到的数据,而且为了快速查找文件在本地建立索引index，方便查找。
+
+HandleItems是存储数据和建立index的:
 
 ```go
-func Start() {
-    cfg := g.Config()
-    var err error
-    // 检测data_dir,确保可读写权限
-    if err = file.EnsureDirRW(cfg.RRD.Storage); err != nil {
-        log.Fatalln("rrdtool.Start error, bad data dir "+cfg.RRD.Storage+",", err)
-    }
+//发送数据rpc接口
+func (this *Graph) Send(items []*cmodel.GraphItem, resp *cmodel.SimpleRpcResponse) error {
+	go handleItems(items)
+	return nil
+}
 
-    migrate_start(cfg)  //迁移数据线程，监听与处理NET_TASK_M_XXX任务
-                        //主要功能Send/query/pull RRD数据
-    go syncDisk()       //同步缓存(GraphItemsMap)至磁盘RRD文件
-    go ioWorker()       //IO工作线程，监听与处理IO_TASK_M_XXX任务
-                        //主要功能Read/write/flush RRD文件
-    log.Println("rrdtool.Start ok")
+func handleItems(items []*cmodel.GraphItem) {
+	if items == nil {
+		return
+	}
+
+	count := len(items)
+	if count == 0 {
+		return
+	}
+
+	cfg := g.Config()
+
+	for i := 0; i < count; i++ {
+		if items[i] == nil {
+			continue
+		}
+
+		endpoint := items[i].Endpoint
+		if !g.IsValidString(endpoint) {
+			if cfg.Debug {
+				log.Printf("invalid endpoint: %s", endpoint)
+			}
+			pfc.Meter("invalidEnpoint", 1)
+			continue
+		}
+
+		counter := cutils.Counter(items[i].Metric, items[i].Tags)
+		if !g.IsValidString(counter) {
+			if cfg.Debug {
+				log.Printf("invalid counter: %s/%s", endpoint, counter)
+			}
+			pfc.Meter("invalidCounter", 1)
+			continue
+		}
+
+		dsType := items[i].DsType
+		step := items[i].Step
+		checksum := items[i].Checksum()
+        //md5(endpoint/metric/project=falcon)_dstype_step
+		key := g.FormRrdCacheKey(checksum, dsType, step)
+
+		//statistics
+		proc.GraphRpcRecvCnt.Incr()
+
+		// To Graph
+        //添加到item的本地缓存中
+		first := store.GraphItems.First(key)
+		if first != nil && items[i].Timestamp <= first.Timestamp {
+			continue
+		}
+        //放入到本地缓存，定期刷写到磁盘中
+		store.GraphItems.PushFront(key, items[i], checksum, cfg)
+
+		// To Index 建立本地索引
+		index.ReceiveItem(items[i], checksum)
+
+		// To History
+		store.AddItem(checksum, items[i])
+	}
 }
 ```
 
-CheckSum计算
+刷新到磁盘：
 
 ```go
-checksum := items[i].Checksum()   //每个item Checksum计算
+func syncDisk() {
+	time.Sleep(time.Second * g.CACHE_DELAY)
+	ticker := time.NewTicker(time.Millisecond * g.FLUSH_DISK_STEP)
+	defer ticker.Stop()
+	var idx int = 0
 
-func (t *GraphItem) Checksum() string {
-    return MUtils.Checksum(t.Endpoint, t.Metric, t.Tags)
-}
-
-//Checksum计算函数实现（字符串化->MD5）
-// MD5(主键)
-func Checksum(endpoint string, metric string, tags map[string]string) string {
-    pk := PK(endpoint, metric, tags)  //字符串化 (PrimaryKey)  return Md5(pk)                        //md5 hash
-}
-
-# 主键（PrimaryKey）
-# Item Checksum 字符串化规则
-#   无Tags:"endpoint/metric"
-#   有Tags:"endpoint/metric/k=v,k=v..."
-func PK(endpoint, metric string, tags map[string]string) string {
-    ret := bufferPool.Get().(*bytes.Buffer)
-    ret.Reset()
-    defer bufferPool.Put(ret)
-
-    if tags == nil || len(tags) == 0 {  //无tags
-        ret.WriteString(endpoint)
-        ret.WriteString("/")
-        ret.WriteString(metric)
-
-        return ret.String()
-    }
-    ret.WriteString(endpoint)
-    ret.WriteString("/")
-    ret.WriteString(metric)
-    ret.WriteString("/")
-    ret.WriteString(SortedTags(tags))
-    return ret.String()
-}
-
-## 字符串化Tags项 （补图）
-func SortedTags(tags map[string]string) string {
-    if tags == nil {
-        return ""
-    }
-
-    size := len(tags)
-
-    if size == 0 {
-        return ""
-    }
-
-    ret := bufferPool.Get().(*bytes.Buffer)
-    ret.Reset()
-    defer bufferPool.Put(ret)
-
-    if size == 1 {                 //tags长度为1个时字串格式
-        for k, v := range tags {
-            ret.WriteString(k)
-            ret.WriteString("=")
-            ret.WriteString(v)
-        }
-        return ret.String()
-    }
-
-    keys := make([]string, size)  //缓存tags Key slice
-    i := 0
-    for k := range tags {
-        keys[i] = k
-        i++
-    }
-
-    sort.Strings(keys)
-
-    for j, key := range keys {   //tags长度>1个时字串格式
-        ret.WriteString(key)
-        ret.WriteString("=")
-        ret.WriteString(tags[key])
-        if j != size-1 {
-            ret.WriteString(",") //"k=v,k=v..."
-        }
-    }
-
-    return ret.String()
-}
-
-# MD5 hash
-func Md5(raw string) string {
-    h := md5.Sum([]byte(raw))
-    return hex.EncodeToString(h[:])
+	for {
+		select {
+		case <-ticker.C:
+			idx = idx % store.GraphItems.Size
+			FlushRRD(idx, false)
+			idx += 1
+		case <-Out_done_chan:
+			log.Println("cron recv sigout and exit...")
+			return
+		}
+	}
 }
 ```
 
-![](../../img/13603962-13040dd236b40e53.jpg)
-
-RRD key名生成与解析 、 RRD文件名计算 
+建立本地索引ReceiveItem，增量添加到数据库mysql中:
 
 ```go
-key := g.FormRrdCacheKey(checksum, dsType, step) //生成Key名称，用于采集Item数据缓存内存唯一标识和RRD文件名生成
+// index收到一条新上报的监控数据,尝试用于增量更新索引
+func ReceiveItem(item *cmodel.GraphItem, md5 string) {
+	if item == nil {
+		return
+	}
+    //endpoint/metric/dstype/step/project=falcon
+	uuid := item.UUID()
 
-// 生成rrd缓存数据的key Name
-// md5,dsType,step -> "md5_dsType_step"
-func FormRrdCacheKey(md5 string, dsType string, step int) string {
-    return md5 + "_" + dsType + "_" + strconv.Itoa(step)
-}
+	// 已上报过的数据
+	if IndexedItemCache.ContainsKey(md5) {
+		old := IndexedItemCache.Get(md5).(*IndexCacheItem)
+		if uuid == old.UUID { // dsType+step没有发生变化,只更新缓存
+			IndexedItemCache.Put(md5, NewIndexCacheItem(uuid, item))
+		} else { // dsType+step变化了,当成一个新的增量来处理
+			unIndexedItemCache.Put(md5, NewIndexCacheItem(uuid, item))
+		}
+		return
+	}
 
-// 反解析rrd Key名
-// "md5_dsType_step" -> md5,dsType,step
-func SplitRrdCacheKey(ckey string) (md5 string, dsType string, step int, err error) {
-    ckey_slice := strings.Split(ckey, "_") //分割字符串
-    if len(ckey_slice) != 3 {
-        err = fmt.Errorf("bad rrd cache key: %s", ckey)
-        return
-    }
+	// 针对 mysql索引重建场景 做的优化，是否有rrdtool文件存在,如果有 则认为MySQL中已建立索引；
+	rrdFileName := g.RrdFileName(g.Config().RRD.Storage, md5, item.DsType, item.Step)
+	if g.IsRrdFileExist(rrdFileName) {
+		IndexedItemCache.Put(md5, NewIndexCacheItem(uuid, item))
+		return
+	}
 
-    md5 = ckey_slice[0]    //第一段:md5
-    dsType = ckey_slice[1] //第二段:dsType
-    stepInt64, err := strconv.ParseInt(ckey_slice[2], 10, 32)
-    if err != nil {
-        return
-    }
-    step = int(stepInt64)  //第三段:step
-    
-    err = nil
-    return
-}
-
-// RRDTOOL UTILS
-// 监控数据对应的rrd文件名称
-// "baseDir/md5[0:2]/md5_dsType_step.rrd"
-func RrdFileName(baseDir string, md5 string, dsType string, step int) string {
-    return baseDir + "/" + md5[0:2] + "/" +
-        md5 + "_" + dsType + "_" + strconv.Itoa(step) + ".rrd"
+	// 缓存未命中, 放入增量更新队列
+	unIndexedItemCache.Put(md5, NewIndexCacheItem(uuid, item))
 }
 ```
 
-UUID 和 MD5(UUID)计算
+建立增量索引操作index_update_incr_task.go/StartIndexUpdateIncrTask 操作，他会定时的启动updateIndexIncr(）操作:
 
 ```go
-uuid := item.UUID() //UUID用于索引缓存的元素数据唯一标识
+// 进行一次增量更新
+func updateIndexIncr() int {
+	ret := 0
+	if unIndexedItemCache == nil || unIndexedItemCache.Size() <= 0 {
+		return ret
+	}
 
-func (this *GraphItem) UUID() string {
-    return MUtils.UUID(this.Endpoint, this.Metric, this.Tags, this.DsType, this.Step)
+	keys := unIndexedItemCache.Keys()
+	for _, key := range keys {
+		icitem := unIndexedItemCache.Get(key)
+		unIndexedItemCache.Remove(key)
+		if icitem != nil {
+			// 并发更新mysql
+			semaUpdateIndexIncr.Acquire()
+			go func(key string, icitem *IndexCacheItem) {
+				defer semaUpdateIndexIncr.Release()
+				err := updateIndexFromOneItem(icitem.Item)
+				if err != nil {
+					proc.IndexUpdateIncrErrorCnt.Incr()
+				} else {
+					IndexedItemCache.Put(key, icitem)
+				}
+			}(key, icitem.(*IndexCacheItem))
+			ret++
+		}
+	}
+
+	return ret
 }
 
-func UUID(endpoint, metric string, tags map[string]string, dstype string, step int) string {
-    ret := bufferPool.Get().(*bytes.Buffer)
-    ret.Reset()
-    defer bufferPool.Put(ret)
-    
-    //无tags UUID格式
-    //"endpoint/metric/dstype/step"
-    if tags == nil || len(tags) == 0 {  
-        ret.WriteString(endpoint)
-        ret.WriteString("/")
-        ret.WriteString(metric)
-        ret.WriteString("/")
-        ret.WriteString(dstype)
-        ret.WriteString("/")
-        ret.WriteString(strconv.Itoa(step))
 
-        return ret.String()
-    }     
-    //有tags UUID格式
-    // "endpoint/metric/k=v,k=v.../dstype/step"
-    ret.WriteString(endpoint)
-    ret.WriteString("/")
-    ret.WriteString(metric)
-    ret.WriteString("/")
-    ret.WriteString(SortedTags(tags))
-    ret.WriteString("/")
-    ret.WriteString(dstype)
-    ret.WriteString("/")
-    ret.WriteString(strconv.Itoa(step))
+// 根据item,更新mysql
+func updateIndexFromOneItem(item *cmodel.GraphItem) error {
+	if item == nil {
+		return nil
+	}
 
-    return ret.String()
-}
+	ts := item.Timestamp
+	var endpointId uint64 = 0
 
-# MD5(UUID)
-func ChecksumOfUUID(endpoint, metric string, tags map[string]string, dstype string, step int64) string {
-    return Md5(UUID(endpoint, metric, tags, dstype, int(step)))
+	// endpoint表
+	url := fmt.Sprintf("%s/api/v1/graph/endpoint", g.Config().Api.Api)
+	var endpoint = graph.Endpoint{
+		Endpoint: item.Endpoint,
+		Ts:       ts,
+	}
+	bytes, _ := json.Marshal(endpoint)
+	request, b := g.HttpRequest(url, bytes, g.POST)
+	if b {
+		json.Unmarshal(request, &endpoint)
+		proc.IndexUpdateIncrDbEndpointInsertCnt.Incr()
+	}
+
+	endpointId = endpoint.ID
+	if endpointId <= 0 {
+		log.Errorf("no such endpoint in db, endpoint=%s", item.Endpoint)
+		return errors.New("no such endpoint")
+	}
+
+	// tag_endpoint表
+	url = fmt.Sprintf("%s/api/v1/graph/tag_endpoint", g.Config().Api.Api)
+	for tagKey, tagVal := range item.Tags {
+		tag := fmt.Sprintf("%s=%s", tagKey, tagVal)
+		var tagEndpoint = graph.TagEndpoint{
+			Tag:        tag,
+			EndpointID: endpointId,
+			Ts:         ts,
+		}
+		bytes, _ := json.Marshal(tagEndpoint)
+		_, b := g.HttpRequest(url, bytes, g.POST)
+		if b {
+			proc.IndexUpdateIncrDbTagEndpointInsertCnt.Incr()
+		}
+	}
+
+	// endpoint_counter表
+	counter := item.Metric
+	if len(item.Tags) > 0 {
+		counter = fmt.Sprintf("%s/%s", counter, cutils.SortedTags(item.Tags))
+	}
+
+	url = fmt.Sprintf("%s/api/v1/graph/endpoint_counter", g.Config().Api.Api)
+	var endpointCounter = graph.EndpointCounter{
+		EndpointID: endpointId,
+		Counter:    counter,
+		Step:       item.Step,
+		Type:       item.DsType,
+		Ts:         ts,
+	}
+	bytes, _ = json.Marshal(endpointCounter)
+	_, b = g.HttpRequest(url, bytes, g.POST)
+	if b {
+		proc.IndexUpdateIncrDbEndpointCounterInsertCnt.Incr()
+	}
+
+	return nil
 }
 ```
+
+这里有三个表需要更新：
+
+a、endpoint 表。该表记录了所有上报数据的endpoint，并且为每一个endpoint生成一个id即 endpoint_id。
+
+b、tag_endpoint表。拆解item的每一个tag。用tag和endpoint形成一个主键的表。记录每个endpoint包含的tag。每条记录生成一个id，为tagendpoint_id
+
+c、endpoint_counter表。counter是metric和tags组合后的名词。看作是一个整体。
+
+其实这个index最后都转化成了这三个表。这三个表的意义呢？在于何处？ 答案是在与rrd文件的索引。表中并没有直接保存rrd文件的名字。如果查询的时候该怎么知道去查询哪一个rrd文件呢？不可能所有的rrd文件的头部都扫描一遍, filename=f（Endpoint，Metric，Tags，dstype，step）相关，所以要准确的找到rrd文件，必须凑齐这5个元素。
+
+```go
+type GraphQueryParam struct {
+	Start     int64  `json:"start"`
+	End       int64  `json:"end"`
+	ConsolFun string `json:"consolFuc"`
+	Endpoint  string `json:"endpoint"`
+	Counter   string `json:"counter"`
+}
+```
+
+有效的是 时间段start和end、endpoint、counter。counter是(Metric，Tags)的组合。为了凑齐5个条件组成rrdfilename缺少的是dstype和step。那么这时候可以根据endpoint和counter在endpoint_counter表中找到dstype和step。然后组合成rrdfilename。进行读取数据。
+
+```go
+func (this *Graph) Query(param cmodel.GraphQueryParam, resp *cmodel.GraphQueryResponse) error {
+	// statistics
+	proc.GraphQueryCnt.Incr()
+
+	// form empty response
+	resp.Values = []*cmodel.RRDData{}  //------》用于存放获取的数据
+	resp.Endpoint = param.Endpoint          // -------》数据的endpoint
+	resp.Counter = param.Counter         // ----------》数据的counter信息
+	dsType, step, exists := index.GetTypeAndStep(param.Endpoint, param.Counter) // complete dsType and step //----------->从缓存或者DB中获取dstype和step。这里DB同样使用了一层自己的缓存
+	if !exists {
+		return nil
+	}
+	resp.DsType = dsType
+	resp.Step = step
+
+	start_ts := param.Start - param.Start%int64(step)      //------》根据step对齐整理start时间
+	end_ts := param.End - param.End%int64(step) + int64(step) //-----》根据step对齐整理end时间
+	if end_ts-start_ts-int64(step) < 1 {
+		return nil
+	}
+
+	md5 := cutils.Md5(param.Endpoint + "/" + param.Counter) //------->计算md5值，用于计算key值
+	ckey := g.FormRrdCacheKey(md5, dsType, step)              //-----》计算key值,用于缓存索引，这个缓存是数据缓存，不是index缓存
+	filename := g.RrdFileName(g.Config().RRD.Storage, md5, dsType, step)  //还原rrd文件名字
+	// read data from rrd file
+	datas, _ := rrdtool.Fetch(filename, param.ConsolFun, start_ts, end_ts, step) //从rrd中获取数据，从rrd中获取数据需要指定获取数据的时间段。
+	datas_size := len(datas)
+	// read cached items
+	items := store.GraphItems.FetchAll(ckey)  //根据key值，在数据缓存中获取数据。
+	items_size := len(items)
+```
+
+最后根据 从rrd中获取的数据和从数据缓存中获取的数据进行合并，输出。完成查询。
