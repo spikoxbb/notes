@@ -1,0 +1,1113 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>dubbo · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="zookeeper.html" />
+    
+    
+    <link rel="prev" href="mongoDB.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="springboot.html">
+            
+                <a href="springboot.html">
+            
+                    
+                    springboot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="java/">
+            
+                <a href="java/">
+            
+                    
+                    java
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="golang/">
+            
+                <a href="golang/">
+            
+                    
+                    golang
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="kafka.html">
+            
+                <a href="kafka.html">
+            
+                    
+                    Kafka
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="redis.html">
+            
+                <a href="redis.html">
+            
+                    
+                    redis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="mongoDB.html">
+            
+                <a href="mongoDB.html">
+            
+                    
+                    mongoDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.8" data-path="dubbo.html">
+            
+                <a href="dubbo.html">
+            
+                    
+                    dubbo
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="zookeeper.html">
+            
+                <a href="zookeeper.html">
+            
+                    
+                    zookeeper/一致性算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="mysql.html">
+            
+                <a href="mysql.html">
+            
+                    
+                    mysql
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="java/SPI.md">
+            
+                <span>
+            
+                    
+                    SPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="dubbo_code/">
+            
+                <a href="dubbo_code/">
+            
+                    
+                    dubbo源码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="设计模式.html">
+            
+                <a href="设计模式.html">
+            
+                    
+                    设计模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="netty.html">
+            
+                <a href="netty.html">
+            
+                    
+                    nettty
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" data-path="falcon/">
+            
+                <a href="falcon/">
+            
+                    
+                    Falcon
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >dubbo</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x914D;&#x7F6E;&#xFF1A;">&#x914D;&#x7F6E;&#xFF1A;</h2>
+<xml 配置="">
+
+<pre><code class="lang-xml">//provider.xml   
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:application</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;demo-provider&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;zookeeper://127.0.0.1:2181&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dubbo&quot;</span> <span class="hljs-attr">port</span>=<span class="hljs-string">&quot;20890&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;demoService&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.apache.dubbo.samples.basic.impl.DemoServiceImpl&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;org.apache.dubbo.samples.basic.api.DemoService&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;demoService&quot;</span>/&gt;</span>
+//consumer.xml
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:application</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;demo-consumer&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;aaa&quot;</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;zookeeper://127.0.0.1:2181&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;demoService&quot;</span> <span class="hljs-attr">check</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;org.apache.dubbo.samples.basic.api.DemoService&quot;</span>/&gt;</span>
+</code></pre>
+<p>Dubbo&#x53EF;&#x4EE5;&#x81EA;&#x52A8;&#x52A0;&#x8F7D;classpath&#x6839;&#x76EE;&#x5F55;&#x4E0B;&#x7684;dubbo.properties&#xFF0C;&#x4F46;&#x662F;&#x4F60;&#x540C;&#x6837;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;JVM&#x53C2;&#x6570;&#x6765;&#x6307;&#x5B9A;&#x8DEF;&#x5F84;&#xFF1A;<code>-Ddubbo.properties.file=xxx.properties</code>&#x3002;</p>
+<p>&#x53EF;&#x4EE5;&#x5C06;xml&#x7684;tag&#x540D;&#x548C;&#x5C5E;&#x6027;&#x540D;&#x7EC4;&#x5408;&#x8D77;&#x6765;&#xFF0C;&#x7528;&#x2018;.&#x2019;&#x5206;&#x9694;&#x3002;&#x6BCF;&#x884C;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#x3002;</p>
+<ul>
+<li><code>dubbo.application.name=foo</code> &#x76F8;&#x5F53;&#x4E8E; <code>&lt;dubbo:application name=&quot;foo&quot; /&gt;</code></li>
+<li><code>dubbo.registry.address=10.20.153.10:9090</code> &#x76F8;&#x5F53;&#x4E8E; <code>&lt;dubbo:registry address=&quot;10.20.153.10:9090&quot; /&gt;</code></li>
+</ul>
+<p>&#x5982;&#x679C;&#x5728;xml&#x914D;&#x7F6E;&#x4E2D;&#x6709;&#x8D85;&#x8FC7;&#x4E00;&#x4E2A;&#x7684;tag&#xFF0C;&#x90A3;&#x4E48;&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x2018;id&#x2019;&#x8FDB;&#x884C;&#x533A;&#x5206;&#x3002;&#x5982;&#x679C;&#x4F60;&#x4E0D;&#x6307;&#x5B9A;id&#xFF0C;&#x5B83;&#x5C06;&#x4F5C;&#x7528;&#x4E8E;&#x6240;&#x6709;tag&#x3002;</p>
+<ul>
+<li><code>dubbo.protocol.rmi.port=1099</code> &#x76F8;&#x5F53;&#x4E8E; <code>&lt;dubbo:protocol id=&quot;rmi&quot; name=&quot;rmi&quot; port=&quot;1099&quot; /&gt;</code></li>
+<li><code>dubbo.registry.china.address=10.20.153.10:9090</code> &#x76F8;&#x5F53;&#x4E8E; <code>&lt;dubbo:registry id=&quot;china&quot; address=&quot;10.20.153.10:9090&quot; /&gt;</code></li>
+</ul>
+<p>&#x4F18;&#x5148;&#x7EA7;&#x4ECE;&#x9AD8;&#x5230;&#x4F4E;&#xFF1A;</p>
+<ul>
+<li>JVM -D&#x53C2;&#x6570;&#xFF0C;&#x5F53;&#x4F60;&#x90E8;&#x7F72;&#x6216;&#x8005;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x65F6;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x8F7B;&#x6613;&#x5730;&#x91CD;&#x5199;&#x914D;&#x7F6E;&#xFF0C;&#x6BD4;&#x5982;&#xFF0C;&#x6539;&#x53D8;buddo&#x534F;&#x8BAE;&#x7AEF;&#x53E3;&#xFF1B;</li>
+<li>XML, XML&#x4E2D;&#x7684;&#x5F53;&#x524D;&#x914D;&#x7F6E;&#x4F1A;&#x91CD;&#x5199;dubbo.properties&#x4E2D;&#x7684;&#xFF1B;</li>
+<li>Properties&#xFF0C;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#xFF0C;&#x4EC5;&#x4EC5;&#x4F5C;&#x7528;&#x4E8E;&#x4EE5;&#x4E0A;&#x4E24;&#x8005;&#x6CA1;&#x6709;&#x914D;&#x7F6E;&#x65F6;&#x3002;</li>
+</ul>
+<p>1&#xFF1A;&#x5982;&#x679C;&#x5728;classpath&#x4E0B;&#x6709;&#x8D85;&#x8FC7;&#x4E00;&#x4E2A;dubbo.properties&#x6587;&#x4EF6;&#xFF0C;&#x6BD4;&#x5982;&#xFF0C;&#x4E24;&#x4E2A;jar&#x5305;&#x90FD;&#x5404;&#x81EA;&#x5305;&#x542B;&#x4E86;dubbo.properties&#xFF0C;dubbo&#x5C06;&#x968F;&#x673A;&#x9009;&#x62E9;&#x4E00;&#x4E2A;&#x52A0;&#x8F7D;&#xFF0C;&#x5E76;&#x4E14;&#x6253;&#x5370;&#x9519;&#x8BEF;&#x65E5;&#x5FD7;&#x3002;</p>
+<p>2&#xFF1A;&#x5982;&#x679C; <code>id</code>&#x6CA1;&#x6709;&#x5728;<code>protocol</code>&#x4E2D;&#x914D;&#x7F6E;&#xFF0C;&#x5C06;&#x4F7F;&#x7528;<code>name</code>&#x4F5C;&#x4E3A;&#x9ED8;&#x8BA4;&#x5C5E;&#x6027;&#x3002;</p>
+<p><strong>&#x5F15;&#x7528;(Reference)&#x7F3A;&#x7701;&#x662F;&#x5EF6;&#x8FDF;&#x521D;&#x59CB;&#x5316;&#x7684;&#xFF0C;&#x53EA;&#x6709;&#x5F15;&#x7528;&#x88AB;&#x6CE8;&#x5165;&#x5230;&#x5176;&#x5B83; Bean&#xFF0C;&#x6216;&#x88AB; <code>getBean()</code> &#x83B7;&#x53D6;&#xFF0C;&#x624D;&#x4F1A;&#x521D;&#x59CB;&#x5316;&#x3002;&#x5982;&#x679C;&#x9700;&#x8981;&#x9965;&#x997F;&#x52A0;&#x8F7D;&#xFF0C;&#x5373;&#x6CA1;&#x6709;&#x4EBA;&#x5F15;&#x7528;&#x4E5F;&#x7ACB;&#x5373;&#x751F;&#x6210;&#x52A8;&#x6001;&#x4EE3;&#x7406;&#xFF0C;&#x53EF;&#x4EE5;&#x914D;&#x7F6E;&#xFF1A;`<dubbo:reference ...="" init="true"></dubbo:reference></strong></p>
+<p>&lt;&#x6CE8;&#x89E3; &#x914D;&#x7F6E;&gt;</p>
+<pre><code class="lang-java"><span class="hljs-meta">@Configuration</span>
+<span class="hljs-meta">@EnableDubbo</span>(scanBasePackages = <span class="hljs-string">&quot;org.apache.dubbo.samples.simple.annotation.impl&quot;</span>)
+<span class="hljs-meta">@PropertySource</span>(<span class="hljs-string">&quot;classpath:/spring/dubbo-provider.properties&quot;</span>)
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProviderConfiguration</span> </span>{
+       ......
+}
+<span class="hljs-comment">//&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x65B9;Service&#x6CE8;&#x89E3;&#x66B4;&#x9732;&#x670D;&#x52A1;</span>
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AnnotationServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">AnnotationService</span> </span>{
+   ......
+}
+<span class="hljs-comment">//&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x65B9;Reference&#x6CE8;&#x89E3;&#x5F15;&#x7528;&#x670D;&#x52A1;</span>
+<span class="hljs-meta">@Reference</span>
+<span class="hljs-keyword">private</span> AnnotationService annotationService;
+</code></pre>
+<p>&lt;&#x52A8;&#x6001;&#x914D;&#x7F6E;&#x4E2D;&#x5FC3;&gt;&#x542F;&#x52A8;&#x914D;&#x7F6E;&#x7684;&#x96C6;&#x4E2D;&#x5F0F;&#x5B58;&#x50A8; &#xFF08;&#x7B80;&#x5355;&#x7406;&#x89E3;&#x4E3A;dubbo.properties&#x7684;&#x5916;&#x90E8;&#x5316;&#x5B58;&#x50A8;&#xFF09;&#x3002;</p>
+<pre><code class="lang-properties">&lt;dubbo:config-center address=&quot;zookeeper://127.0.0.1:2181&quot;/&gt;
+dubbo.config-center.address=zookeeper://127.0.0.1:2181
+#&#x9ED8;&#x8BA4;&#x6240;&#x6709;&#x7684;&#x914D;&#x7F6E;&#x90FD;&#x5B58;&#x50A8;&#x5728;/dubbo/config&#x8282;&#x70B9;,/dubbo/config/dubbo(&#x6216;&#x8005;application)&#xFF0C;&#x5206;&#x522B;&#x7528;&#x6765;&#x9694;&#x79BB;&#x5168;&#x5C40;&#x914D;&#x7F6E;&#x3001;&#x5E94;&#x7528;&#x7EA7;&#x522B;&#x914D;&#x7F6E;&#xFF1A;dubbo&#x662F;&#x9ED8;&#x8BA4;group&#x503C;&#xFF0C;application&#x5BF9;&#x5E94;&#x5E94;&#x7528;&#x540D;,/dubbo/config&#x3001;dubbo/dubbo.properties&#xFF0C;&#x6B64;&#x8282;&#x70B9;&#x7684;node value&#x5B58;&#x50A8;&#x5177;&#x4F53;&#x914D;&#x7F6E;&#x5185;&#x5BB9;
+</code></pre>
+<hr>
+<p>Dubbo &#x7F3A;&#x7701;&#x4F1A;&#x5728;&#x542F;&#x52A8;&#x65F6;&#x68C0;&#x67E5;&#x4F9D;&#x8D56;&#x7684;&#x670D;&#x52A1;&#x662F;&#x5426;&#x53EF;&#x7528;&#xFF0C;&#x4E0D;&#x53EF;&#x7528;&#x65F6;&#x4F1A;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#xFF0C;&#x963B;&#x6B62; Spring &#x521D;&#x59CB;&#x5316;&#x5B8C;&#x6210;&#xFF0C;&#x4EE5;&#x4FBF;&#x4E0A;&#x7EBF;&#x65F6;&#xFF0C;&#x80FD;&#x53CA;&#x65E9;&#x53D1;&#x73B0;&#x95EE;&#x9898;&#xFF0C;&#x9ED8;&#x8BA4; <code>check=&quot;true&quot;</code>&#x3002;&#x5982;&#x679C; Spring &#x5BB9;&#x5668;&#x662F;&#x61D2;&#x52A0;&#x8F7D;&#x7684;&#xFF0C;&#x6216;&#x8005;&#x901A;&#x8FC7; API &#x7F16;&#x7A0B;&#x5EF6;&#x8FDF;&#x5F15;&#x7528;&#x670D;&#x52A1;&#xFF0C;&#x8BF7;&#x5173;&#x95ED; check&#xFF0C;&#x5426;&#x5219;&#x670D;&#x52A1;&#x4E34;&#x65F6;&#x4E0D;&#x53EF;&#x7528;&#x65F6;&#xFF0C;&#x4F1A;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#xFF0C;&#x62FF;&#x5230; null &#x5F15;&#x7528;&#xFF0C;&#x5982;&#x679C; <code>check=&quot;false&quot;</code>&#xFF0C;&#x603B;&#x662F;&#x4F1A;&#x8FD4;&#x56DE;&#x5F15;&#x7528;&#xFF0C;&#x5F53;&#x670D;&#x52A1;&#x6062;&#x590D;&#x65F6;&#xFF0C;&#x80FD;&#x81EA;&#x52A8;&#x8FDE;&#x4E0A;&#x3002;</p>
+<p>&#x5173;&#x95ED;&#x67D0;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x542F;&#x52A8;&#x65F6;&#x68C0;&#x67E5; (&#x6CA1;&#x6709;&#x63D0;&#x4F9B;&#x8005;&#x65F6;&#x62A5;&#x9519;)&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">check</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+dubbo.reference.com.foo.BarService.check=false
+</code></pre>
+<p>&#x5173;&#x95ED;&#x6240;&#x6709;&#x670D;&#x52A1;&#x7684;&#x542F;&#x52A8;&#x65F6;&#x68C0;&#x67E5; (&#x6CA1;&#x6709;&#x63D0;&#x4F9B;&#x8005;&#x65F6;&#x62A5;&#x9519;)&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:consumer</span> <span class="hljs-attr">check</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+dubbo.reference.check=false <span class="hljs-comment">&lt;!--&#x5F3A;&#x5236;&#x6539;&#x53D8;&#x6240;&#x6709; reference &#x7684; check &#x503C;&#xFF0C;&#x5C31;&#x7B97;&#x914D;&#x7F6E;&#x4E2D;&#x6709;&#x58F0;&#x660E;&#xFF0C;&#x4E5F;&#x4F1A;&#x88AB;&#x8986;&#x76D6;--&gt;</span>
+dubbo.consumer.check=false <span class="hljs-comment">&lt;!--&#x5982;&#x679C;&#x914D;&#x7F6E;&#x4E2D;&#x6709;&#x663E;&#x5F0F;&#x7684;&#x58F0;&#x660E;&#x5982;&lt;dubbo:reference check=&quot;true&quot;/&gt;&#x4E0D;&#x4F1A;&#x53D7;&#x5F71;&#x54CD;--&gt;</span>
+</code></pre>
+<p>&#x5173;&#x95ED;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x542F;&#x52A8;&#x65F6;&#x68C0;&#x67E5; (&#x6CE8;&#x518C;&#x8BA2;&#x9605;&#x5931;&#x8D25;&#x65F6;&#x62A5;&#x9519;)&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">check</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+dubbo.registry.check=false<span class="hljs-comment">&lt;!--&#x6CE8;&#x518C;&#x8BA2;&#x9605;&#x5931;&#x8D25;&#x65F6;&#xFF0C;&#x4E5F;&#x5141;&#x8BB8;&#x542F;&#x52A8;&#xFF0C;&#x5C06;&#x5728;&#x540E;&#x53F0;&#x5B9A;&#x65F6;&#x91CD;&#x8BD5;--&gt;</span>
+</code></pre>
+<hr>
+<p><img src="../img/cluster.jpg" alt=""></p>
+<ul>
+<li>&#x8FD9;&#x91CC;&#x7684; <code>Invoker</code> &#x662F; <code>Provider</code> &#x7684;&#x4E00;&#x4E2A;&#x53EF;&#x8C03;&#x7528; <code>Service</code> &#x7684;&#x62BD;&#x8C61;&#xFF0C;<code>Invoker</code> &#x5C01;&#x88C5;&#x4E86; <code>Provider</code> &#x5730;&#x5740;&#x53CA; <code>Service</code> &#x63A5;&#x53E3;&#x4FE1;&#x606F;</li>
+<li><code>Directory</code> &#x4EE3;&#x8868;&#x591A;&#x4E2A; <code>Invoker</code>&#xFF0C;&#x53EF;&#x4EE5;&#x628A;&#x5B83;&#x770B;&#x6210; <code>List&lt;Invoker&gt;</code> &#xFF0C;&#x4F46;&#x4E0E; <code>List</code> &#x4E0D;&#x540C;&#x7684;&#x662F;&#xFF0C;&#x5B83;&#x7684;&#x503C;&#x53EF;&#x80FD;&#x662F;&#x52A8;&#x6001;&#x53D8;&#x5316;&#x7684;&#xFF0C;&#x6BD4;&#x5982;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x63A8;&#x9001;&#x53D8;&#x66F4;</li>
+<li><code>Cluster</code> &#x5C06; <code>Directory</code> &#x4E2D;&#x7684;&#x591A;&#x4E2A; <code>Invoker</code> &#x4F2A;&#x88C5;&#x6210;&#x4E00;&#x4E2A; <code>Invoker</code>&#xFF0C;&#x5BF9;&#x4E0A;&#x5C42;&#x900F;&#x660E;&#xFF0C;&#x4F2A;&#x88C5;&#x8FC7;&#x7A0B;&#x5305;&#x542B;&#x4E86;&#x5BB9;&#x9519;&#x903B;&#x8F91;&#xFF0C;&#x8C03;&#x7528;&#x5931;&#x8D25;&#x540E;&#xFF0C;&#x91CD;&#x8BD5;&#x53E6;&#x4E00;&#x4E2A;</li>
+<li><code>Router</code> &#x8D1F;&#x8D23;&#x4ECE;&#x591A;&#x4E2A; <code>Invoker</code> &#x4E2D;&#x6309;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x9009;&#x51FA;&#x5B50;&#x96C6;&#xFF0C;&#x6BD4;&#x5982;&#x8BFB;&#x5199;&#x5206;&#x79BB;&#xFF0C;&#x5E94;&#x7528;&#x9694;&#x79BB;&#x7B49;</li>
+<li><code>LoadBalance</code> &#x8D1F;&#x8D23;&#x4ECE;&#x591A;&#x4E2A; <code>Invoker</code> &#x4E2D;&#x9009;&#x51FA;&#x5177;&#x4F53;&#x7684;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x672C;&#x6B21;&#x8C03;&#x7528;&#xFF0C;&#x9009;&#x7684;&#x8FC7;&#x7A0B;&#x5305;&#x542B;&#x4E86;&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#x7B97;&#x6CD5;&#xFF0C;&#x8C03;&#x7528;&#x5931;&#x8D25;&#x540E;&#xFF0C;&#x9700;&#x8981;&#x91CD;&#x9009;</li>
+</ul>
+<p>&#x96C6;&#x7FA4;&#x5BB9;&#x9519;&#x6A21;&#x5F0F;&#xFF1A;</p>
+<ol>
+<li><h3 id="failover-cluster">Failover Cluster</h3>
+</li>
+</ol>
+<p>&#x5931;&#x8D25;&#x81EA;&#x52A8;&#x5207;&#x6362;&#xFF0C;&#x5F53;&#x51FA;&#x73B0;&#x5931;&#x8D25;&#xFF0C;&#x91CD;&#x8BD5;&#x5176;&#x5B83;&#x670D;&#x52A1;&#x5668;,&#x91CD;&#x8BD5;&#x6B21;&#x6570;&#x914D;&#x7F6E;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">retries</span>=<span class="hljs-string">&quot;2&quot;</span> /&gt;</span>
+&#x6216;
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">retries</span>=<span class="hljs-string">&quot;2&quot;</span> /&gt;</span>
+&#x6216;
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;findFoo&quot;</span> <span class="hljs-attr">retries</span>=<span class="hljs-string">&quot;2&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+</code></pre>
+<ol>
+<li><h3 id="failfast-cluster">Failfast Cluster</h3>
+<p>&#x5FEB;&#x901F;&#x5931;&#x8D25;&#xFF0C;&#x53EA;&#x53D1;&#x8D77;&#x4E00;&#x6B21;&#x8C03;&#x7528;&#xFF0C;&#x5931;&#x8D25;&#x7ACB;&#x5373;&#x62A5;&#x9519;&#x3002;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x975E;&#x5E42;&#x7B49;&#x6027;&#x7684;&#x5199;&#x64CD;&#x4F5C;&#xFF0C;&#x6BD4;&#x5982;&#x65B0;&#x589E;&#x8BB0;&#x5F55;&#x3002;</p>
+</li>
+<li><h3 id="failsafe-cluster">Failsafe Cluster</h3>
+<p>&#x5931;&#x8D25;&#x5B89;&#x5168;&#xFF0C;&#x51FA;&#x73B0;&#x5F02;&#x5E38;&#x65F6;&#xFF0C;&#x76F4;&#x63A5;&#x5FFD;&#x7565;&#x3002;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x5199;&#x5165;&#x5BA1;&#x8BA1;&#x65E5;&#x5FD7;&#x7B49;&#x64CD;&#x4F5C;&#x3002;</p>
+</li>
+<li><h3 id="forking-cluster">Forking Cluster</h3>
+<p>&#x5E76;&#x884C;&#x8C03;&#x7528;&#x591A;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x53EA;&#x8981;&#x4E00;&#x4E2A;&#x6210;&#x529F;&#x5373;&#x8FD4;&#x56DE;&#x3002;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x5B9E;&#x65F6;&#x6027;&#x8981;&#x6C42;&#x8F83;&#x9AD8;&#x7684;&#x8BFB;&#x64CD;&#x4F5C;&#xFF0C;&#x4F46;&#x9700;&#x8981;&#x6D6A;&#x8D39;&#x66F4;&#x591A;&#x670D;&#x52A1;&#x8D44;&#x6E90;&#x3002;&#x53EF;&#x901A;&#x8FC7; <code>forks=&quot;2&quot;</code> &#x6765;&#x8BBE;&#x7F6E;&#x6700;&#x5927;&#x5E76;&#x884C;&#x6570;&#x3002;</p>
+</li>
+<li><h3 id="broadcast-cluster">Broadcast Cluster</h3>
+<p>&#x5E7F;&#x64AD;&#x8C03;&#x7528;&#x6240;&#x6709;&#x63D0;&#x4F9B;&#x8005;&#xFF0C;&#x9010;&#x4E2A;&#x8C03;&#x7528;&#xFF0C;&#x4EFB;&#x610F;&#x4E00;&#x53F0;&#x62A5;&#x9519;&#x5219;&#x62A5;&#x9519;&#x3002;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x901A;&#x77E5;&#x6240;&#x6709;&#x63D0;&#x4F9B;&#x8005;&#x66F4;&#x65B0;&#x7F13;&#x5B58;&#x6216;&#x65E5;&#x5FD7;&#x7B49;&#x672C;&#x5730;&#x8D44;&#x6E90;&#x4FE1;&#x606F;&#x3002;</p>
+</li>
+</ol>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!--&#x5728;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x65B9;&#x548C;&#x6D88;&#x8D39;&#x65B9;&#x914D;&#x7F6E;&#x96C6;&#x7FA4;&#x6A21;&#x5F0F;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">cluster</span>=<span class="hljs-string">&quot;failsafe&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">cluster</span>=<span class="hljs-string">&quot;failsafe&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#x7B56;&#x7565;</p>
+<ol>
+<li>Random LoadBalance:&#x968F;&#x673A;,&#x6309;&#x6743;&#x91CD;&#x8BBE;&#x7F6E;&#x968F;&#x673A;&#x6982;&#x7387;&#x3002;</li>
+<li>RoundRobin LoadBalance:&#x8F6E;&#x8BE2;&#xFF0C;&#x6309;&#x516C;&#x7EA6;&#x540E;&#x7684;&#x6743;&#x91CD;&#x8BBE;&#x7F6E;&#x8F6E;&#x8BE2;&#x6BD4;&#x7387;&#x3002;</li>
+<li>LeastActive LoadBalance:&#x6700;&#x5C11;&#x6D3B;&#x8DC3;&#x8C03;&#x7528;&#x6570;&#xFF0C;&#x76F8;&#x540C;&#x6D3B;&#x8DC3;&#x6570;&#x7684;&#x968F;&#x673A;&#xFF0C;&#x6D3B;&#x8DC3;&#x6570;&#x6307;&#x8C03;&#x7528;&#x524D;&#x540E;&#x8BA1;&#x6570;&#x5DEE;&#x3002;&#x4F7F;&#x6162;&#x7684;&#x63D0;&#x4F9B;&#x8005;&#x6536;&#x5230;&#x66F4;&#x5C11;&#x8BF7;&#x6C42;&#xFF0C;&#x56E0;&#x4E3A;&#x8D8A;&#x6162;&#x7684;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x8C03;&#x7528;&#x524D;&#x540E;&#x8BA1;&#x6570;&#x5DEE;&#x4F1A;&#x8D8A;&#x5927;&#x3002;</li>
+<li>ConsistentHash LoadBalance:&#x4E00;&#x81F4;&#x6027; Hash&#x76F8;&#x540C;&#x53C2;&#x6570;&#x7684;&#x8BF7;&#x6C42;&#x603B;&#x662F;&#x53D1;&#x5230;&#x540C;&#x4E00;&#x63D0;&#x4F9B;&#x8005;&#x3002;&#x5F53;&#x67D0;&#x4E00;&#x53F0;&#x63D0;&#x4F9B;&#x8005;&#x6302;&#x65F6;&#xFF0C;&#x539F;&#x672C;&#x53D1;&#x5F80;&#x8BE5;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x57FA;&#x4E8E;&#x865A;&#x62DF;&#x8282;&#x70B9;&#xFF0C;&#x5E73;&#x644A;&#x5230;&#x5176;&#x5B83;&#x63D0;&#x4F9B;&#x8005;&#xFF0C;&#x4E0D;&#x4F1A;&#x5F15;&#x8D77;&#x5267;&#x70C8;&#x53D8;&#x52A8;&#x3002;&#x7F3A;&#x7701;&#x53EA;&#x5BF9;&#x7B2C;&#x4E00;&#x4E2A;&#x53C2;&#x6570; Hash&#xFF0C;&#x5982;&#x679C;&#x8981;&#x4FEE;&#x6539;&#xFF0C;&#x8BF7;&#x914D;&#x7F6E; <code>&lt;dubbo:parameter key=&quot;hash.arguments&quot; value=&quot;0,1&quot; /&gt;</code>&#x7F3A;&#x7701;&#x7528; 160 &#x4EFD;&#x865A;&#x62DF;&#x8282;&#x70B9;&#xFF0C;&#x5982;&#x679C;&#x8981;&#x4FEE;&#x6539;&#xFF0C;&#x8BF7;&#x914D;&#x7F6E; <code>&lt;dubbo:parameter key=&quot;hash.nodes&quot; value=&quot;320&quot; /&gt;</code></li>
+</ol>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;...&quot;</span> <span class="hljs-attr">loadbalance</span>=<span class="hljs-string">&quot;roundrobin&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;...&quot;</span> <span class="hljs-attr">loadbalance</span>=<span class="hljs-string">&quot;roundrobin&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;...&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;...&quot;</span> <span class="hljs-attr">loadbalance</span>=<span class="hljs-string">&quot;roundrobin&quot;</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:service</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;...&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;...&quot;</span> <span class="hljs-attr">loadbalance</span>=<span class="hljs-string">&quot;roundrobin&quot;</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+</code></pre>
+<hr>
+<p>&#x7EBF;&#x7A0B;&#x6A21;&#x578B;:</p>
+<p>&#x5982;&#x679C;&#x4E8B;&#x4EF6;&#x5904;&#x7406;&#x7684;&#x903B;&#x8F91;&#x80FD;&#x8FC5;&#x901F;&#x5B8C;&#x6210;&#xFF0C;&#x5E76;&#x4E14;&#x4E0D;&#x4F1A;&#x53D1;&#x8D77;&#x65B0;&#x7684; IO &#x8BF7;&#x6C42;&#xFF0C;&#x6BD4;&#x5982;&#x53EA;&#x662F;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x8BB0;&#x4E2A;&#x6807;&#x8BC6;&#xFF0C;&#x5219;&#x76F4;&#x63A5;&#x5728; IO &#x7EBF;&#x7A0B;&#x4E0A;&#x5904;&#x7406;&#x66F4;&#x5FEB;&#xFF0C;&#x56E0;&#x4E3A;&#x51CF;&#x5C11;&#x4E86;&#x7EBF;&#x7A0B;&#x6C60;&#x8C03;&#x5EA6;&#x3002;</p>
+<p>&#x4F46;&#x5982;&#x679C;&#x4E8B;&#x4EF6;&#x5904;&#x7406;&#x903B;&#x8F91;&#x8F83;&#x6162;&#xFF0C;&#x6216;&#x8005;&#x9700;&#x8981;&#x53D1;&#x8D77;&#x65B0;&#x7684; IO &#x8BF7;&#x6C42;&#xFF0C;&#x6BD4;&#x5982;&#x9700;&#x8981;&#x67E5;&#x8BE2;&#x6570;&#x636E;&#x5E93;&#xFF0C;&#x5219;&#x5FC5;&#x987B;&#x6D3E;&#x53D1;&#x5230;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x5426;&#x5219; IO &#x7EBF;&#x7A0B;&#x963B;&#x585E;&#xFF0C;&#x5C06;&#x5BFC;&#x81F4;&#x4E0D;&#x80FD;&#x63A5;&#x6536;&#x5176;&#x5B83;&#x8BF7;&#x6C42;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x7528; IO &#x7EBF;&#x7A0B;&#x5904;&#x7406;&#x4E8B;&#x4EF6;&#xFF0C;&#x53C8;&#x5728;&#x4E8B;&#x4EF6;&#x5904;&#x7406;&#x8FC7;&#x7A0B;&#x4E2D;&#x53D1;&#x8D77;&#x65B0;&#x7684; IO &#x8BF7;&#x6C42;&#xFF0C;&#x6BD4;&#x5982;&#x5728;&#x8FDE;&#x63A5;&#x4E8B;&#x4EF6;&#x4E2D;&#x53D1;&#x8D77;&#x767B;&#x5F55;&#x8BF7;&#x6C42;&#xFF0C;&#x4F1A;&#x62A5;&#x201C;&#x53EF;&#x80FD;&#x5F15;&#x53D1;&#x6B7B;&#x9501;&#x201D;&#x5F02;&#x5E38;&#xFF0C;&#x4F46;&#x4E0D;&#x4F1A;&#x771F;&#x6B7B;&#x9501;&#x3002;&#x9700;&#x8981;&#x901A;&#x8FC7;&#x4E0D;&#x540C;&#x7684;&#x6D3E;&#x53D1;&#x7B56;&#x7565;&#x548C;&#x4E0D;&#x540C;&#x7684;&#x7EBF;&#x7A0B;&#x6C60;&#x914D;&#x7F6E;&#x7684;&#x7EC4;&#x5408;&#x6765;&#x5E94;&#x5BF9;&#x4E0D;&#x540C;&#x7684;&#x573A;&#x666F;:</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dubbo&quot;</span> <span class="hljs-attr">dispatcher</span>=<span class="hljs-string">&quot;all&quot;</span> <span class="hljs-attr">threadpool</span>=<span class="hljs-string">&quot;fixed&quot;</span> <span class="hljs-attr">threads</span>=<span class="hljs-string">&quot;100&quot;</span> /&gt;</span>
+</code></pre>
+<ul>
+<li><code>all</code> &#x6240;&#x6709;&#x6D88;&#x606F;&#x90FD;&#x6D3E;&#x53D1;&#x5230;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x5305;&#x62EC;&#x8BF7;&#x6C42;&#xFF0C;&#x54CD;&#x5E94;&#xFF0C;&#x8FDE;&#x63A5;&#x4E8B;&#x4EF6;&#xFF0C;&#x65AD;&#x5F00;&#x4E8B;&#x4EF6;&#xFF0C;&#x5FC3;&#x8DF3;&#x7B49;&#x3002;</li>
+<li><code>direct</code> &#x6240;&#x6709;&#x6D88;&#x606F;&#x90FD;&#x4E0D;&#x6D3E;&#x53D1;&#x5230;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x5168;&#x90E8;&#x5728; IO &#x7EBF;&#x7A0B;&#x4E0A;&#x76F4;&#x63A5;&#x6267;&#x884C;&#x3002;</li>
+<li><code>message</code> &#x53EA;&#x6709;&#x8BF7;&#x6C42;&#x54CD;&#x5E94;&#x6D88;&#x606F;&#x6D3E;&#x53D1;&#x5230;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x5176;&#x5B83;&#x8FDE;&#x63A5;&#x65AD;&#x5F00;&#x4E8B;&#x4EF6;&#xFF0C;&#x5FC3;&#x8DF3;&#x7B49;&#x6D88;&#x606F;&#xFF0C;&#x76F4;&#x63A5;&#x5728; IO &#x7EBF;&#x7A0B;&#x4E0A;&#x6267;&#x884C;&#x3002;</li>
+<li><code>execution</code> &#x53EA;&#x8BF7;&#x6C42;&#x6D88;&#x606F;&#x6D3E;&#x53D1;&#x5230;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x4E0D;&#x542B;&#x54CD;&#x5E94;&#xFF0C;&#x54CD;&#x5E94;&#x548C;&#x5176;&#x5B83;&#x8FDE;&#x63A5;&#x65AD;&#x5F00;&#x4E8B;&#x4EF6;&#xFF0C;&#x5FC3;&#x8DF3;&#x7B49;&#x6D88;&#x606F;&#xFF0C;&#x76F4;&#x63A5;&#x5728; IO &#x7EBF;&#x7A0B;&#x4E0A;&#x6267;&#x884C;&#x3002;</li>
+<li><code>connection</code> &#x5728; IO &#x7EBF;&#x7A0B;&#x4E0A;&#xFF0C;&#x5C06;&#x8FDE;&#x63A5;&#x65AD;&#x5F00;&#x4E8B;&#x4EF6;&#x653E;&#x5165;&#x961F;&#x5217;&#xFF0C;&#x6709;&#x5E8F;&#x9010;&#x4E2A;&#x6267;&#x884C;&#xFF0C;&#x5176;&#x5B83;&#x6D88;&#x606F;&#x6D3E;&#x53D1;&#x5230;&#x7EBF;&#x7A0B;&#x6C60;&#x3002;</li>
+</ul>
+<p>ThreadPool</p>
+<ul>
+<li><code>fixed</code> &#x56FA;&#x5B9A;&#x5927;&#x5C0F;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x542F;&#x52A8;&#x65F6;&#x5EFA;&#x7ACB;&#x7EBF;&#x7A0B;&#xFF0C;&#x4E0D;&#x5173;&#x95ED;&#xFF0C;&#x4E00;&#x76F4;&#x6301;&#x6709;&#x3002;(&#x7F3A;&#x7701;)</li>
+<li><code>cached</code> &#x7F13;&#x5B58;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x7A7A;&#x95F2;&#x4E00;&#x5206;&#x949F;&#x81EA;&#x52A8;&#x5220;&#x9664;&#xFF0C;&#x9700;&#x8981;&#x65F6;&#x91CD;&#x5EFA;&#x3002;</li>
+<li><code>limited</code> &#x53EF;&#x4F38;&#x7F29;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x4F46;&#x6C60;&#x4E2D;&#x7684;&#x7EBF;&#x7A0B;&#x6570;&#x53EA;&#x4F1A;&#x589E;&#x957F;&#x4E0D;&#x4F1A;&#x6536;&#x7F29;&#x3002;&#x53EA;&#x589E;&#x957F;&#x4E0D;&#x6536;&#x7F29;&#x7684;&#x76EE;&#x7684;&#x662F;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x6536;&#x7F29;&#x65F6;&#x7A81;&#x7136;&#x6765;&#x4E86;&#x5927;&#x6D41;&#x91CF;&#x5F15;&#x8D77;&#x7684;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x3002;</li>
+<li><code>eager</code> &#x4F18;&#x5148;&#x521B;&#x5EFA;<code>Worker</code>&#x7EBF;&#x7A0B;&#x6C60;&#x3002;&#x5728;&#x4EFB;&#x52A1;&#x6570;&#x91CF;&#x5927;&#x4E8E;<code>corePoolSize</code>&#x4F46;&#x662F;&#x5C0F;&#x4E8E;<code>maximumPoolSize</code>&#x65F6;&#xFF0C;&#x4F18;&#x5148;&#x521B;&#x5EFA;<code>Worker</code>&#x6765;&#x5904;&#x7406;&#x4EFB;&#x52A1;&#x3002;&#x5F53;&#x4EFB;&#x52A1;&#x6570;&#x91CF;&#x5927;&#x4E8E;<code>maximumPoolSize</code>&#x65F6;&#xFF0C;&#x5C06;&#x4EFB;&#x52A1;&#x653E;&#x5165;&#x963B;&#x585E;&#x961F;&#x5217;&#x4E2D;&#x3002;&#x963B;&#x585E;&#x961F;&#x5217;&#x5145;&#x6EE1;&#x65F6;&#x629B;&#x51FA;<code>RejectedExecutionException</code>&#x3002;(&#x76F8;&#x6BD4;&#x4E8E;<code>cached</code>:<code>cached</code>&#x5728;&#x4EFB;&#x52A1;&#x6570;&#x91CF;&#x8D85;&#x8FC7;<code>maximumPoolSize</code>&#x65F6;&#x76F4;&#x63A5;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#x800C;&#x4E0D;&#x662F;&#x5C06;&#x4EFB;&#x52A1;&#x653E;&#x5165;&#x963B;&#x585E;&#x961F;&#x5217;)</li>
+</ul>
+<hr>
+<p>&#x5728;&#x5F00;&#x53D1;&#x53CA;&#x6D4B;&#x8BD5;&#x73AF;&#x5883;&#x4E0B;&#xFF0C;&#x7ECF;&#x5E38;&#x9700;&#x8981;&#x7ED5;&#x8FC7;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#xFF0C;&#x53EA;&#x6D4B;&#x8BD5;&#x6307;&#x5B9A;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#xFF0C;&#x8FD9;&#x65F6;&#x5019;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x70B9;&#x5BF9;&#x70B9;&#x76F4;&#x8FDE;&#xFF0C;&#x5FFD;&#x7565;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x7684;&#x63D0;&#x4F9B;&#x8005;&#x5217;&#x8868;.</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;xxxService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.alibaba.xxx.XxxService&quot;</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;dubbo://localhost:20890&quot;</span> /&gt;</span>
+</code></pre>
+<p>&#x7981;&#x7528;&#x8BA2;&#x9605;&#x914D;&#x7F6E;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;qdRegistry&quot;</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.141.150:9090&quot;</span> <span class="hljs-attr">subscribe</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+&#x6216;
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;qdRegistry&quot;</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.141.150:9090?subscribe=false&quot;</span> /&gt;</span>
+</code></pre>
+<p>&#x7981;&#x7528;&#x6CE8;&#x518C;&#x914D;&#x7F6E;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.153.10:9090&quot;</span> <span class="hljs-attr">register</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+&#x6216;
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.153.10:9090?register=false&quot;</span> /&gt;</span>
+</code></pre>
+<p>&#x6709;&#x65F6;&#x5019;&#x5E0C;&#x671B;&#x4EBA;&#x5DE5;&#x7BA1;&#x7406;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x4E0A;&#x7EBF;&#x548C;&#x4E0B;&#x7EBF;&#xFF0C;&#x6B64;&#x65F6;&#x9700;&#x5C06;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x6807;&#x8BC6;&#x4E3A;&#x975E;&#x52A8;&#x6001;&#x7BA1;&#x7406;&#x6A21;&#x5F0F;&#x3002;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.141.150:9090&quot;</span> <span class="hljs-attr">dynamic</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+&#x6216;
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.141.150:9090?dynamic=false&quot;</span> /&gt;</span>
+</code></pre>
+<p>Dubbo &#x5141;&#x8BB8;&#x914D;&#x7F6E;&#x591A;&#x534F;&#x8BAE;&#xFF0C;&#x5728;&#x4E0D;&#x540C;&#x670D;&#x52A1;&#x4E0A;&#x652F;&#x6301;&#x4E0D;&#x540C;&#x534F;&#x8BAE;&#x6216;&#x8005;&#x540C;&#x4E00;&#x670D;&#x52A1;&#x4E0A;&#x540C;&#x65F6;&#x652F;&#x6301;&#x591A;&#x79CD;&#x534F;&#x8BAE;&#x3002;</p>
+<pre><code class="lang-xml">    <span class="hljs-comment">&lt;!-- &#x591A;&#x534F;&#x8BAE;&#x914D;&#x7F6E; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dubbo&quot;</span> <span class="hljs-attr">port</span>=<span class="hljs-string">&quot;20880&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rmi&quot;</span> <span class="hljs-attr">port</span>=<span class="hljs-string">&quot;1099&quot;</span> /&gt;</span>
+    <span class="hljs-comment">&lt;!-- &#x4F7F;&#x7528;dubbo&#x534F;&#x8BAE;&#x66B4;&#x9732;&#x670D;&#x52A1; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.alibaba.hello.api.HelloService&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0.0&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;helloService&quot;</span> <span class="hljs-attr">protocol</span>=<span class="hljs-string">&quot;dubbo&quot;</span> /&gt;</span>
+    <span class="hljs-comment">&lt;!-- &#x4F7F;&#x7528;rmi&#x534F;&#x8BAE;&#x66B4;&#x9732;&#x670D;&#x52A1; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.alibaba.hello.api.DemoService&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0.0&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;demoService&quot;</span> <span class="hljs-attr">protocol</span>=<span class="hljs-string">&quot;rmi&quot;</span> /&gt;</span> 
+
+<span class="hljs-comment">&lt;!-- &#x591A;&#x534F;&#x8BAE;&#x914D;&#x7F6E; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dubbo&quot;</span> <span class="hljs-attr">port</span>=<span class="hljs-string">&quot;20880&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;hessian&quot;</span> <span class="hljs-attr">port</span>=<span class="hljs-string">&quot;8080&quot;</span> /&gt;</span>
+    <span class="hljs-comment">&lt;!-- &#x4F7F;&#x7528;&#x591A;&#x4E2A;&#x534F;&#x8BAE;&#x66B4;&#x9732;&#x670D;&#x52A1; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;helloService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.alibaba.hello.api.HelloService&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0.0&quot;</span> <span class="hljs-attr">protocol</span>=<span class="hljs-string">&quot;dubbo,hessian&quot;</span> /&gt;</span>
+</code></pre>
+<p>Dubbo &#x652F;&#x6301;&#x540C;&#x4E00;&#x670D;&#x52A1;&#x5411;&#x591A;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x540C;&#x65F6;&#x6CE8;&#x518C;&#xFF0C;&#x6216;&#x8005;&#x4E0D;&#x540C;&#x670D;&#x52A1;&#x5206;&#x522B;&#x6CE8;&#x518C;&#x5230;&#x4E0D;&#x540C;&#x7684;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x4E0A;&#x53BB;</p>
+<pre><code class="lang-xml">    <span class="hljs-comment">&lt;!-- &#x591A;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x914D;&#x7F6E; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;hangzhouRegistry&quot;</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.141.150:9090&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:registry</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;qingdaoRegistry&quot;</span> <span class="hljs-attr">address</span>=<span class="hljs-string">&quot;10.20.141.151:9010&quot;</span> <span class="hljs-attr">default</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+    <span class="hljs-comment">&lt;!-- &#x5411;&#x591A;&#x4E2A;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x6CE8;&#x518C; --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.alibaba.hello.api.HelloService&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0.0&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;helloService&quot;</span> <span class="hljs-attr">registry</span>=<span class="hljs-string">&quot;hangzhouRegistry,qingdaoRegistry&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x5F53;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x6709;&#x591A;&#x79CD;&#x5B9E;&#x73B0;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x7528; group &#x533A;&#x5206;&#x3002;</p>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!--&#x670D;&#x52A1;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;feedback&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.IndexService&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;member&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.IndexService&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x5F15;&#x7528;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;feedbackIndexService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;feedback&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.IndexService&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;memberIndexService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;member&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.IndexService&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x4EFB;&#x610F;&#x7EC4;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;barService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;*&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x5F53;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x5B9E;&#x73B0;&#xFF0C;&#x51FA;&#x73B0;&#x4E0D;&#x517C;&#x5BB9;&#x5347;&#x7EA7;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x7248;&#x672C;&#x53F7;&#x8FC7;&#x6E21;&#xFF0C;&#x7248;&#x672C;&#x53F7;&#x4E0D;&#x540C;&#x7684;&#x670D;&#x52A1;&#x76F8;&#x4E92;&#x95F4;&#x4E0D;&#x5F15;&#x7528;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4E0D;&#x9700;&#x8981;&#x533A;&#x5206;&#x7248;&#x672C;&#xFF0C;&#x53EF;&#x4EE5;&#x6309;&#x7167;&#x4EE5;&#x4E0B;&#x7684;&#x65B9;&#x5F0F;&#x914D;&#x7F6E;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;barService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;*&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x6309;&#x7EC4;&#x5408;&#x5E76;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;,&#x6BD4;&#x5982;&#x83DC;&#x5355;&#x670D;&#x52A1;&#xFF0C;&#x63A5;&#x53E3;&#x4E00;&#x6837;&#xFF0C;&#x4F46;&#x6709;&#x591A;&#x79CD;&#x5B9E;&#x73B0;&#xFF0C;&#x7528;group&#x533A;&#x5206;&#xFF0C;&#x73B0;&#x5728;&#x6D88;&#x8D39;&#x65B9;&#x9700;&#x4ECE;&#x6BCF;&#x79CD;group&#x4E2D;&#x8C03;&#x7528;&#x4E00;&#x6B21;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#xFF0C;&#x5408;&#x5E76;&#x7ED3;&#x679C;&#x8FD4;&#x56DE;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0;&#x805A;&#x5408;&#x83DC;&#x5355;&#x9879;&#x3002;</p>
+<p>&#x641C;&#x7D22;&#x6240;&#x6709;&#x5206;&#x7EC4;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.MenuService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;*&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.MenuService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;aaa,bbb&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.MenuService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;*&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;getMenuItems&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span><span class="hljs-comment">&lt;!--&#x5176;&#x5B83;&#x672A;&#x6307;&#x5B9A;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x5C06;&#x53EA;&#x8C03;&#x7528;&#x4E00;&#x4E2A; Group--&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.MenuService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;*&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;getMenuItems&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span><span class="hljs-comment">&lt;!--&#x67D0;&#x4E2A;&#x65B9;&#x6CD5;&#x4E0D;&#x5408;&#x5E76;&#x7ED3;&#x679C;&#xFF0C;&#x5176;&#x5B83;&#x90FD;&#x5408;&#x5E76;&#x7ED3;&#x679C;--&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.MenuService&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;*&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;getMenuItems&quot;</span> <span class="hljs-attr">merger</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+</code></pre>
+<hr>
+<h3 id="&#x53C2;&#x6570;&#x9A8C;&#x8BC1;">&#x53C2;&#x6570;&#x9A8C;&#x8BC1;</h3>
+<pre><code class="lang-java"><span class="hljs-comment">//&#x5206;&#x7EC4;&#x9A8C;&#x8BC1;&#x793A;&#x4F8B;</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ValidationService</span> </span>{ <span class="hljs-comment">// &#x7F3A;&#x7701;&#x53EF;&#x6309;&#x670D;&#x52A1;&#x63A5;&#x53E3;&#x533A;&#x5206;&#x9A8C;&#x8BC1;&#x573A;&#x666F;&#xFF0C;&#x5982;&#xFF1A;@NotNull(groups = ValidationService.class)   </span>
+    <span class="hljs-meta">@interface</span> Save{} <span class="hljs-comment">// &#x4E0E;&#x65B9;&#x6CD5;&#x540C;&#x540D;&#x63A5;&#x53E3;&#xFF0C;&#x9996;&#x5B57;&#x6BCD;&#x5927;&#x5199;&#xFF0C;&#x7528;&#x4E8E;&#x533A;&#x5206;&#x9A8C;&#x8BC1;&#x573A;&#x666F;&#xFF0C;&#x5982;&#xFF1A;@NotNull(groups = ValidationService.Save.class)&#xFF0C;&#x53EF;&#x9009;</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">save</span><span class="hljs-params">(ValidationParameter parameter)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(ValidationParameter parameter)</span></span>;
+}
+
+<span class="hljs-comment">//&#x5173;&#x8054;&#x9A8C;&#x8BC1;&#x793A;&#x4F8B;</span>
+<span class="hljs-keyword">import</span> javax.validation.GroupSequence;
+ <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ValidationService</span> </span>{   
+    <span class="hljs-meta">@GroupSequence</span>(Update.class) <span class="hljs-comment">// &#x540C;&#x65F6;&#x9A8C;&#x8BC1;Update&#x7EC4;&#x89C4;&#x5219;</span>
+    <span class="hljs-meta">@interface</span> Save{}
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">save</span><span class="hljs-params">(ValidationParameter parameter)</span></span>;
+
+    <span class="hljs-meta">@interface</span> Update{} 
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(ValidationParameter parameter)</span></span>;
+}
+
+<span class="hljs-comment">//&#x53C2;&#x6570;&#x9A8C;&#x8BC1;&#x793A;&#x4F8B;</span>
+<span class="hljs-keyword">import</span> javax.validation.constraints.Min;
+<span class="hljs-keyword">import</span> javax.validation.constraints.NotNull;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ValidationService</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">save</span><span class="hljs-params">(@NotNull ValidationParameter parameter)</span></span>; <span class="hljs-comment">// &#x9A8C;&#x8BC1;&#x53C2;&#x6570;&#x4E0D;&#x4E3A;&#x7A7A;</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(@Min(<span class="hljs-number">1</span>)</span> <span class="hljs-keyword">int</span> id)</span>; <span class="hljs-comment">// &#x76F4;&#x63A5;&#x5BF9;&#x57FA;&#x672C;&#x7C7B;&#x578B;&#x53C2;&#x6570;&#x9A8C;&#x8BC1;</span>
+}
+</code></pre>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!--&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x9A8C;&#x8BC1;&#x53C2;&#x6570;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;validationService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;org.apache.dubbo.examples.validation.api.ValidationService&quot;</span> <span class="hljs-attr">validation</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x5728;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x9A8C;&#x8BC1;&#x53C2;&#x6570;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;org.apache.dubbo.examples.validation.api.ValidationService&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;validationService&quot;</span> <span class="hljs-attr">validation</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-keyword">try</span> {
+            parameter = <span class="hljs-keyword">new</span> ValidationParameter();
+            validationService.save(parameter);
+            System.out.println(<span class="hljs-string">&quot;Validation ERROR&quot;</span>);
+        } <span class="hljs-keyword">catch</span> (RpcException e) { <span class="hljs-comment">// &#x629B;&#x51FA;&#x7684;&#x662F;RpcException</span>
+            ConstraintViolationException ve = (ConstraintViolationException) e.getCause(); <span class="hljs-comment">// &#x91CC;&#x9762;&#x5D4C;&#x4E86;&#x4E00;&#x4E2A;ConstraintViolationException</span>
+            Set&lt;ConstraintViolation&lt;?&gt;&gt; violations = ve.getConstraintViolations(); <span class="hljs-comment">// &#x53EF;&#x4EE5;&#x62FF;&#x5230;&#x4E00;&#x4E2A;&#x9A8C;&#x8BC1;&#x9519;&#x8BEF;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#x7684;&#x96C6;&#x5408;</span>
+            System.out.println(violations);
+        }
+</code></pre>
+<hr>
+<p>&#x7F13;&#x5B58;&#x7C7B;&#x578B;</p>
+<ul>
+<li><code>lru</code> &#x57FA;&#x4E8E;&#x6700;&#x8FD1;&#x6700;&#x5C11;&#x4F7F;&#x7528;&#x539F;&#x5219;&#x5220;&#x9664;&#x591A;&#x4F59;&#x7F13;&#x5B58;&#xFF0C;&#x4FDD;&#x6301;&#x6700;&#x70ED;&#x7684;&#x6570;&#x636E;&#x88AB;&#x7F13;&#x5B58;&#x3002;</li>
+<li><code>threadlocal</code> &#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x7F13;&#x5B58;&#xFF0C;&#x6BD4;&#x5982;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x6E32;&#x67D3;&#xFF0C;&#x7528;&#x5230;&#x5F88;&#x591A; portal&#xFF0C;&#x6BCF;&#x4E2A; portal &#x90FD;&#x8981;&#x53BB;&#x67E5;&#x7528;&#x6237;&#x4FE1;&#x606F;&#xFF0C;&#x901A;&#x8FC7;&#x7EBF;&#x7A0B;&#x7F13;&#x5B58;&#xFF0C;&#x53EF;&#x4EE5;&#x51CF;&#x5C11;&#x8FD9;&#x79CD;&#x591A;&#x4F59;&#x8BBF;&#x95EE;&#x3002;</li>
+<li><code>jcache</code> &#x4E0E; JSR107&#x96C6;&#x6210;&#xFF0C;&#x53EF;&#x4EE5;&#x6865;&#x63A5;&#x5404;&#x79CD;&#x7F13;&#x5B58;&#x5B9E;&#x73B0;&#x3002;</li>
+</ul>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">cache</span>=<span class="hljs-string">&quot;lru&quot;</span> /&gt;</span>
+&#x6216;&#xFF1A;
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;findBar&quot;</span> <span class="hljs-attr">cache</span>=<span class="hljs-string">&quot;lru&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+</code></pre>
+<hr>
+<p>&#x6CDB;&#x5316;&#x63A5;&#x53E3;&#x8C03;&#x7528;&#x65B9;&#x5F0F;&#x4E3B;&#x8981;&#x7528;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x6CA1;&#x6709; API &#x63A5;&#x53E3;&#x53CA;&#x6A21;&#x578B;&#x7C7B;&#x5143;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x53C2;&#x6570;&#x53CA;&#x8FD4;&#x56DE;&#x503C;&#x4E2D;&#x7684;&#x6240;&#x6709; POJO &#x5747;&#x7528; <code>Map</code>&#x8868;&#x793A;&#xFF0C;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x6846;&#x67B6;&#x96C6;&#x6210;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x901A;&#x7528;&#x7684;&#x670D;&#x52A1;&#x6D4B;&#x8BD5;&#x6846;&#x67B6;&#xFF0C;&#x53EF;&#x901A;&#x8FC7; <code>GenericService</code> &#x8C03;&#x7528;&#x6240;&#x6709;&#x670D;&#x52A1;&#x5B9E;&#x73B0;&#x3002;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;barService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">generic</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+</code></pre>
+<pre><code class="lang-java">GenericService barService = (GenericService) applicationContext.getBean(<span class="hljs-string">&quot;barService&quot;</span>);
+Object result = barService.$invoke(<span class="hljs-string">&quot;sayHello&quot;</span>, <span class="hljs-keyword">new</span> String[] { <span class="hljs-string">&quot;java.lang.String&quot;</span> }, <span class="hljs-keyword">new</span> Object[] { <span class="hljs-string">&quot;World&quot;</span> });
+<span class="hljs-comment">// &#x7528;Map&#x8868;&#x793A;POJO&#x53C2;&#x6570;&#xFF0C;&#x5982;&#x679C;&#x8FD4;&#x56DE;&#x503C;&#x4E3A;POJO&#x4E5F;&#x5C06;&#x81EA;&#x52A8;&#x8F6C;&#x6210;Map </span>
+Map&lt;String, Object&gt; person = <span class="hljs-keyword">new</span> HashMap&lt;String, Object&gt;(); 
+person.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;xxx&quot;</span>); 
+person.put(<span class="hljs-string">&quot;password&quot;</span>, <span class="hljs-string">&quot;yyy&quot;</span>); 
+<span class="hljs-comment">// &#x5982;&#x679C;&#x8FD4;&#x56DE;POJO&#x5C06;&#x81EA;&#x52A8;&#x8F6C;&#x6210;Map </span>
+Object result = genericService.$invoke(<span class="hljs-string">&quot;findPerson&quot;</span>, <span class="hljs-keyword">new</span> String[]
+{<span class="hljs-string">&quot;com.xxx.Person&quot;</span>}, <span class="hljs-keyword">new</span> Object[]{person}); 
+<span class="hljs-comment">//POJO &#x6570;&#x636E;&#x53EF;&#x7528;&#x4E0B;&#x9762; Map &#x8868;&#x793A;&#xFF1A;</span>
+Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;String, Object&gt;(); 
+map.put(<span class="hljs-string">&quot;class&quot;</span>, <span class="hljs-string">&quot;com.xxx.PersonImpl&quot;</span>); 
+map.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;xxx&quot;</span>); 
+map.put(<span class="hljs-string">&quot;password&quot;</span>, <span class="hljs-string">&quot;yyy&quot;</span>);
+</code></pre>
+<hr>
+<p>&#x56DE;&#x58F0;&#x6D4B;&#x8BD5;&#x7528;&#x4E8E;&#x68C0;&#x6D4B;&#x670D;&#x52A1;&#x662F;&#x5426;&#x53EF;&#x7528;&#xFF0C;&#x56DE;&#x58F0;&#x6D4B;&#x8BD5;&#x6309;&#x7167;&#x6B63;&#x5E38;&#x8BF7;&#x6C42;&#x6D41;&#x7A0B;&#x6267;&#x884C;&#xFF0C;&#x80FD;&#x591F;&#x6D4B;&#x8BD5;&#x6574;&#x4E2A;&#x8C03;&#x7528;&#x662F;&#x5426;&#x901A;&#x7545;&#xFF0C;&#x53EF;&#x7528;&#x4E8E;&#x76D1;&#x63A7;&#x3002;&#x6240;&#x6709;&#x670D;&#x52A1;&#x81EA;&#x52A8;&#x5B9E;&#x73B0; <code>EchoService</code> &#x63A5;&#x53E3;&#xFF0C;&#x53EA;&#x9700;&#x5C06;&#x4EFB;&#x610F;&#x670D;&#x52A1;&#x5F15;&#x7528;&#x5F3A;&#x5236;&#x8F6C;&#x578B;&#x4E3A; <code>EchoService</code>&#xFF0C;&#x5373;&#x53EF;&#x4F7F;&#x7528;&#x3002;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;memberService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.MemberService&quot;</span> /&gt;</span>
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-comment">// &#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x5F15;&#x7528;</span>
+MemberService memberService = ctx.getBean(<span class="hljs-string">&quot;memberService&quot;</span>); 
+EchoService echoService = (EchoService) memberService; <span class="hljs-comment">// &#x5F3A;&#x5236;&#x8F6C;&#x578B;&#x4E3A;EchoService</span>
+<span class="hljs-comment">// &#x56DE;&#x58F0;&#x6D4B;&#x8BD5;&#x53EF;&#x7528;&#x6027;</span>
+String status = echoService.$echo(<span class="hljs-string">&quot;OK&quot;</span>); 
+<span class="hljs-keyword">assert</span>(status.equals(<span class="hljs-string">&quot;OK&quot;</span>));
+</code></pre>
+<hr>
+<p>&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#x5B58;&#x653E;&#x7684;&#x662F;&#x5F53;&#x524D;&#x8C03;&#x7528;&#x8FC7;&#x7A0B;&#x4E2D;&#x6240;&#x9700;&#x7684;&#x73AF;&#x5883;&#x4FE1;&#x606F;&#x3002;RpcContext &#x662F;&#x4E00;&#x4E2A; ThreadLocal &#x7684;&#x4E34;&#x65F6;&#x72B6;&#x6001;&#x8BB0;&#x5F55;&#x5668;&#xFF0C;&#x5F53;&#x63A5;&#x6536;&#x5230; RPC &#x8BF7;&#x6C42;&#xFF0C;&#x6216;&#x53D1;&#x8D77; RPC &#x8BF7;&#x6C42;&#x65F6;&#xFF0C;RpcContext &#x7684;&#x72B6;&#x6001;&#x90FD;&#x4F1A;&#x53D8;&#x5316;&#x3002;&#x56E0;&#x4E3A;&#x5728;&#x8C03;&#x7528;&#x63D0;&#x4F9B;&#x8005;&#x4E4B;&#x524D;&#xFF0C;&#x4F1A;&#x83B7;&#x53D6;&#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x4E34;&#x65F6;&#x53D8;&#x91CF;&#x91CC;&#x7684;RpcContext&#x5BF9;&#x8C61;&#xFF0C;&#x518D;&#x5C06;RpcContext&#x5BF9;&#x8C61;&#x91CC;&#x7684;&#x53C2;&#x6570;&#x8BBE;&#x7F6E;&#x5230;Invocation&#x5BF9;&#x8C61;&#xFF0C;&#x6700;&#x540E;&#x8C03;&#x7528;doInvoke(Invocation invocation)&#x65B9;&#x6CD5;&#xFF0C;&#x5C31;&#x4F1A;&#x53D1;&#x9001;&#x53C2;&#x6570;&#x7ED9;&#x63D0;&#x4F9B;&#x8005;&#x3002;</p>
+<p>&#x53EF;&#x4EE5;&#x901A;&#x8FC7; <code>RpcContext</code> &#x4E0A;&#x7684; <code>setAttachment</code> &#x548C; <code>getAttachment</code> &#x5728;&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x65B9;&#x548C;&#x63D0;&#x4F9B;&#x65B9;&#x4E4B;&#x95F4;&#x8FDB;&#x884C;&#x53C2;&#x6570;&#x7684;&#x9690;&#x5F0F;&#x4F20;&#x9012;&#x3002;</p>
+<p><code>setAttachment</code> &#x8BBE;&#x7F6E;&#x7684; KV &#x5BF9;&#xFF0C;&#x5728;&#x5B8C;&#x6210;&#x4E0B;&#x9762;&#x4E00;&#x6B21;&#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x4F1A;&#x88AB;&#x6E05;&#x7A7A;&#xFF0C;&#x5373;&#x591A;&#x6B21;&#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x8981;&#x591A;&#x6B21;&#x8BBE;&#x7F6E;&#x3002;</p>
+<pre><code class="lang-java">RpcContext.getContext().setAttachment(<span class="hljs-string">&quot;index&quot;</span>, <span class="hljs-string">&quot;1&quot;</span>); <span class="hljs-comment">// &#x9690;&#x5F0F;&#x4F20;&#x53C2;&#xFF0C;&#x540E;&#x9762;&#x7684;&#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x90FD;&#x4F1A;&#x9690;&#x5F0F;&#x5C06;&#x8FD9;&#x4E9B;&#x53C2;&#x6570;&#x53D1;&#x9001;&#x5230;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#xFF0C;&#x7C7B;&#x4F3C;cookie&#xFF0C;&#x7528;&#x4E8E;&#x6846;&#x67B6;&#x96C6;&#x6210;&#xFF0C;&#x4E0D;&#x5EFA;&#x8BAE;&#x5E38;&#x89C4;&#x4E1A;&#x52A1;&#x4F7F;&#x7528;</span>
+xxxService.xxx(); <span class="hljs-comment">// &#x8FDC;&#x7A0B;&#x8C03;&#x7528;</span>
+</code></pre>
+<hr>
+<p>Dubbo&#x7684;&#x6240;&#x6709;&#x5F02;&#x6B65;&#x7F16;&#x7A0B;&#x63A5;&#x53E3;&#x5F00;&#x59CB;&#x4EE5;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html" target="_blank">CompletableFuture</a>&#x4E3A;&#x57FA;&#x7840;,&#x57FA;&#x4E8E; NIO &#x7684;&#x975E;&#x963B;&#x585E;&#x5B9E;&#x73B0;&#x5E76;&#x884C;&#x8C03;&#x7528;&#xFF0C;&#x5BA2;&#x6237;&#x7AEF;&#x4E0D;&#x9700;&#x8981;&#x542F;&#x52A8;&#x591A;&#x7EBF;&#x7A0B;&#x5373;&#x53EF;&#x5B8C;&#x6210;&#x5E76;&#x884C;&#x8C03;&#x7528;&#x591A;&#x4E2A;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#xFF0C;&#x76F8;&#x5BF9;&#x591A;&#x7EBF;&#x7A0B;&#x5F00;&#x9500;&#x8F83;&#x5C0F;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">AsyncService</span> </span>{
+    <span class="hljs-function">CompletableFuture&lt;String&gt; <span class="hljs-title">sayHello</span><span class="hljs-params">(String name)</span></span>;
+}
+</code></pre>
+<pre><code class="lang-java">&lt;dubbo:reference id=&quot;asyncService&quot; timeout=&quot;10000&quot; interface=&quot;com.alibaba.dubbo.samples.async.api.AsyncService&quot;/&gt;
+// &#x8C03;&#x7528;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;CompletableFuture
+CompletableFuture&lt;String&gt; future = asyncService.sayHello(&quot;async call request&quot;);
+// &#x589E;&#x52A0;&#x56DE;&#x8C03;
+future.whenComplete((v, t) -&gt; {
+    if (t != null) {
+        t.printStackTrace();
+    } else {
+        System.out.println(&quot;Response: &quot; + v);
+    }
+});
+// &#x65E9;&#x4E8E;&#x7ED3;&#x679C;&#x8F93;&#x51FA;
+System.out.println(&quot;Executed before response return.&quot;);
+
+//&#x4F7F;&#x7528;RpcContext
+&lt;dubbo:reference id=&quot;asyncService&quot; interface=&quot;org.apache.dubbo.samples.governance.api.AsyncService&quot;&gt;
+      &lt;dubbo:method name=&quot;sayHello&quot; async=&quot;true&quot; /&gt;
+&lt;/dubbo:reference&gt;
+
+// &#x6B64;&#x8C03;&#x7528;&#x4F1A;&#x7ACB;&#x5373;&#x8FD4;&#x56DE;null
+asyncService.sayHello(&quot;world&quot;);
+// &#x62FF;&#x5230;&#x8C03;&#x7528;&#x7684;Future&#x5F15;&#x7528;&#xFF0C;&#x5F53;&#x7ED3;&#x679C;&#x8FD4;&#x56DE;&#x540E;&#xFF0C;&#x4F1A;&#x88AB;&#x901A;&#x77E5;&#x548C;&#x8BBE;&#x7F6E;&#x5230;&#x6B64;Future
+CompletableFuture&lt;String&gt; helloFuture = RpcContext.getContext().getCompletableFuture();
+// &#x4E3A;Future&#x6DFB;&#x52A0;&#x56DE;&#x8C03;
+helloFuture.whenComplete((retValue, exception) -&gt; {
+    if (exception == null) {
+        System.out.println(retValue);
+    } else {
+        exception.printStackTrace();
+    }
+});
+//&#x6216;&#x8005;
+CompletableFuture&lt;String&gt; future = RpcContext.getContext().asyncCall(
+    () -&gt; {
+        asyncService.sayHello(&quot;oneway call request1&quot;);
+    }
+);
+future.get();
+</code></pre>
+<p>&#x5982;&#x679C;&#x662F;&#x60F3;&#x5F02;&#x6B65;&#xFF0C;&#x5B8C;&#x5168;&#x5FFD;&#x7565;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x53EF;&#x4EE5;&#x914D;&#x7F6E; <code>return=&quot;false&quot;</code>&#xFF0C;&#x4EE5;&#x51CF;&#x5C11; Future &#x5BF9;&#x8C61;&#x7684;&#x521B;&#x5EFA;&#x548C;&#x7BA1;&#x7406;&#x6210;&#x672C;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;findFoo&quot;</span> <span class="hljs-attr">async</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">return</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x5728;&#x8C03;&#x7528;&#x4E4B;&#x524D;&#x3001;&#x8C03;&#x7528;&#x4E4B;&#x540E;&#x3001;&#x51FA;&#x73B0;&#x5F02;&#x5E38;&#x65F6;&#xFF0C;&#x4F1A;&#x89E6;&#x53D1; <code>oninvoke</code>&#x3001;<code>onreturn</code>&#x3001;<code>onthrow</code>.</p>
+<h4 id="&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;-callback-&#x914D;&#x7F6E;">&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005; Callback &#x914D;&#x7F6E;</h4>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span> =<span class="hljs-string">&quot;demoCallback&quot;</span> <span class="hljs-attr">class</span> = &quot;<span class="hljs-attr">org.apache.dubbo.callback.implicit.NofifyImpl</span>&quot; /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;demoService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;org.apache.dubbo.callback.implicit.IDemoService&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0.0&quot;</span> <span class="hljs-attr">group</span>=<span class="hljs-string">&quot;cn&quot;</span> &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;get&quot;</span> <span class="hljs-attr">async</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">onreturn</span> = &quot;<span class="hljs-attr">demoCallback.onreturn</span>&quot; <span class="hljs-attr">onthrow</span>=<span class="hljs-string">&quot;demoCallback.onthrow&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+</code></pre>
+<hr>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!--&#x5EF6;&#x8FDF;&#x5230; Spring &#x521D;&#x59CB;&#x5316;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x518D;&#x66B4;&#x9732;&#x670D;&#x52A1;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">delay</span>=<span class="hljs-string">&quot;-1&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x5EF6;&#x8FDF; 5 &#x79D2;&#x66B4;&#x9732;&#x670D;&#x52A1;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">delay</span>=<span class="hljs-string">&quot;5000&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!--&#x9650;&#x5236; `com.foo.BarService` &#x7684;&#x6BCF;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x5E76;&#x53D1;&#x6267;&#x884C;&#xFF08;&#x6216;&#x5360;&#x7528;&#x7EBF;&#x7A0B;&#x6C60;&#x7EBF;&#x7A0B;&#x6570;&#xFF09;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7; 10 &#x4E2A;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">executes</span>=<span class="hljs-string">&quot;10&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x9650;&#x5236; com.foo.BarService &#x7684; sayHello &#x65B9;&#x6CD5;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x5E76;&#x53D1;&#x6267;&#x884C;&#xFF08;&#x6216;&#x5360;&#x7528;&#x7EBF;&#x7A0B;&#x6C60;&#x7EBF;&#x7A0B;&#x6570;&#xFF09;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7; 10 &#x4E2A;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sayHello&quot;</span> <span class="hljs-attr">executes</span>=<span class="hljs-string">&quot;10&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:service</span>&gt;</span>
+<span class="hljs-comment">&lt;!--&#x9650;&#x5236; com.foo.BarService &#x7684;&#x6BCF;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x6BCF;&#x5BA2;&#x6237;&#x7AEF;&#x5E76;&#x53D1;&#x6267;&#x884C;&#xFF08;&#x6216;&#x5360;&#x7528;&#x8FDE;&#x63A5;&#x7684;&#x8BF7;&#x6C42;&#x6570;&#xFF09;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7; 10 &#x4E2A;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:service</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">actives</span>=<span class="hljs-string">&quot;10&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!--&#x9650;&#x5236;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x63A5;&#x53D7;&#x7684;&#x8FDE;&#x63A5;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7; 10 &#x4E2A;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:provider</span> <span class="hljs-attr">protocol</span>=<span class="hljs-string">&quot;dubbo&quot;</span> <span class="hljs-attr">accepts</span>=<span class="hljs-string">&quot;10&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x9650;&#x5236;&#x5BA2;&#x6237;&#x7AEF;&#x670D;&#x52A1;&#x4F7F;&#x7528;&#x8FDE;&#x63A5;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7; 10 &#x4E2A; --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.foo.BarService&quot;</span> <span class="hljs-attr">connections</span>=<span class="hljs-string">&quot;10&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x5EF6;&#x8FDF;&#x8FDE;&#x63A5;&#x7528;&#x4E8E;&#x51CF;&#x5C11;&#x957F;&#x8FDE;&#x63A5;&#x6570;&#x3002;&#x5F53;&#x6709;&#x8C03;&#x7528;&#x53D1;&#x8D77;&#x65F6;&#xFF0C;&#x518D;&#x521B;&#x5EFA;&#x957F;&#x8FDE;&#x63A5;&#x3002;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dubbo&quot;</span> <span class="hljs-attr">lazy</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p>&#x7C98;&#x6EDE;&#x8FDE;&#x63A5;&#x7528;&#x4E8E;&#x6709;&#x72B6;&#x6001;&#x670D;&#x52A1;&#xFF0C;&#x5C3D;&#x53EF;&#x80FD;&#x8BA9;&#x5BA2;&#x6237;&#x7AEF;&#x603B;&#x662F;&#x5411;&#x540C;&#x4E00;&#x63D0;&#x4F9B;&#x8005;&#x53D1;&#x8D77;&#x8C03;&#x7528;&#xFF0C;&#x9664;&#x975E;&#x8BE5;&#x63D0;&#x4F9B;&#x8005;&#x6302;&#x4E86;&#xFF0C;&#x518D;&#x8FDE;&#x53E6;&#x4E00;&#x53F0;&#x3002;&#x7C98;&#x6EDE;&#x8FDE;&#x63A5;&#x5C06;&#x81EA;&#x52A8;&#x5F00;&#x542F;&#x5EF6;&#x8FDF;&#x8FDE;&#x63A5;&#xFF0C;&#x4EE5;&#x51CF;&#x5C11;&#x957F;&#x8FDE;&#x63A5;&#x6570;&#x3002;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;xxxService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.XxxService&quot;</span> <span class="hljs-attr">sticky</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+<span class="hljs-comment">&lt;!--&#x65B9;&#x6CD5;&#x7EA7;&#x522B;--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dubbo:reference</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;xxxService&quot;</span> <span class="hljs-attr">interface</span>=<span class="hljs-string">&quot;com.xxx.XxxService&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dubbo:mothod</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sayHello&quot;</span> <span class="hljs-attr">sticky</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dubbo:reference</span>&gt;</span>
+</code></pre>
+<hr>
+<p>&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x5728;&#x53D1;&#x8D77;&#x4E00;&#x6B21;RPC&#x8C03;&#x7528;&#x524D;&#x8D77;&#x5230;&#x8FC7;&#x6EE4;&#x76EE;&#x6807;&#x670D;&#x52A1;&#x5668;&#x5730;&#x5740;&#x7684;&#x4F5C;&#x7528;&#xFF0C;&#x8FC7;&#x6EE4;&#x540E;&#x7684;&#x5730;&#x5740;&#x5217;&#x8868;&#xFF0C;&#x5C06;&#x4F5C;&#x4E3A;&#x6D88;&#x8D39;&#x7AEF;&#x6700;&#x7EC8;&#x53D1;&#x8D77;RPC&#x8C03;&#x7528;&#x7684;&#x5907;&#x9009;&#x5730;&#x5740;&#x3002;</p>
+<ul>
+<li>&#x6761;&#x4EF6;&#x8DEF;&#x7531;&#x3002;&#x652F;&#x6301;&#x4EE5;&#x670D;&#x52A1;&#x6216;Consumer&#x5E94;&#x7528;&#x4E3A;&#x7C92;&#x5EA6;&#x914D;&#x7F6E;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x3002;</li>
+<li><p>&#x6807;&#x7B7E;&#x8DEF;&#x7531;&#x3002;&#x4EE5;Provider&#x5E94;&#x7528;&#x4E3A;&#x7C92;&#x5EA6;&#x914D;&#x7F6E;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x3002;</p>
+</li>
+<li><p>&#x5E94;&#x7528;&#x7C92;&#x5EA6;</p>
+<pre><code class="lang-yaml"><span class="hljs-comment"># app1&#x7684;&#x6D88;&#x8D39;&#x8005;&#x53EA;&#x80FD;&#x6D88;&#x8D39;&#x6240;&#x6709;&#x7AEF;&#x53E3;&#x4E3A;20880&#x7684;&#x670D;&#x52A1;&#x5B9E;&#x4F8B;</span>
+<span class="hljs-comment"># app2&#x7684;&#x6D88;&#x8D39;&#x8005;&#x53EA;&#x80FD;&#x6D88;&#x8D39;&#x6240;&#x6709;&#x7AEF;&#x53E3;&#x4E3A;20881&#x7684;&#x670D;&#x52A1;&#x5B9E;&#x4F8B;</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">scope:</span> application
+<span class="hljs-comment">#force=false &#x5F53;&#x8DEF;&#x7531;&#x7ED3;&#x679C;&#x4E3A;&#x7A7A;&#x65F6;&#xFF0C;&#x662F;&#x5426;&#x5F3A;&#x5236;&#x6267;&#x884C;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x5F3A;&#x5236;&#x6267;&#x884C;&#xFF0C;&#x8DEF;&#x7531;&#x7ED3;&#x679C;&#x4E3A;&#x7A7A;&#x7684;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x5C06;&#x81EA;&#x52A8;&#x5931;&#x6548;&#xFF0C;&#x53EF;&#x4E0D;&#x586B;&#xFF0C;&#x7F3A;&#x7701;&#x4E3A; false&#x3002;</span>
+<span class="hljs-attr">force:</span> <span class="hljs-literal">true</span>
+<span class="hljs-comment">#&#x662F;&#x5426;&#x5728;&#x6BCF;&#x6B21;&#x8C03;&#x7528;&#x65F6;&#x6267;&#x884C;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#xFF0C;&#x5426;&#x5219;&#x53EA;&#x5728;&#x63D0;&#x4F9B;&#x8005;&#x5730;&#x5740;&#x5217;&#x8868;&#x53D8;&#x66F4;&#x65F6;&#x9884;&#x5148;&#x6267;&#x884C;&#x5E76;&#x7F13;&#x5B58;&#x7ED3;&#x679C;&#xFF0C;&#x8C03;&#x7528;&#x65F6;&#x76F4;&#x63A5;&#x4ECE;&#x7F13;&#x5B58;&#x4E2D;&#x83B7;&#x53D6;&#x8DEF;&#x7531;&#x7ED3;&#x679C;&#x3002;&#x5982;&#x679C;&#x7528;&#x4E86;&#x53C2;&#x6570;&#x8DEF;&#x7531;&#xFF0C;&#x5FC5;&#x987B;&#x8BBE;&#x4E3A; true&#xFF0C;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x8BBE;&#x7F6E;&#x4F1A;&#x5F71;&#x54CD;&#x8C03;&#x7528;&#x7684;&#x6027;&#x80FD;&#xFF0C;&#x53EF;&#x4E0D;&#x586B;&#xFF0C;&#x7F3A;&#x7701;&#x4E3A; false</span>
+<span class="hljs-attr">runtime:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">key:</span> governance-conditionrouter-consumer
+<span class="hljs-comment">#&#x5982;&#x679C;&#x5339;&#x914D;&#x6761;&#x4EF6;&#x4E3A;&#x7A7A;&#xFF0C;&#x8868;&#x793A;&#x5BF9;&#x6240;&#x6709;&#x6D88;&#x8D39;&#x65B9;&#x5E94;&#x7528;&#xFF0C;&#x5982;&#xFF1A;=&gt; host != 10.20.153.11</span>
+<span class="hljs-comment">#&#x5982;&#x679C;&#x8FC7;&#x6EE4;&#x6761;&#x4EF6;&#x4E3A;&#x7A7A;&#xFF0C;&#x8868;&#x793A;&#x7981;&#x6B62;&#x8BBF;&#x95EE;&#xFF0C;&#x5982;&#xFF1A;host = 10.20.153.10 =&gt;</span>
+<span class="hljs-attr">conditions:</span>
+<span class="hljs-bullet">  -</span> application=app1 =&gt; address=*:<span class="hljs-number">20880</span>
+<span class="hljs-bullet">  -</span> application=app2 =&gt; address=*:<span class="hljs-number">20881</span>
+...
+</code></pre>
+</li>
+<li><p>&#x670D;&#x52A1;&#x7C92;&#x5EA6;</p>
+<pre><code class="lang-yaml"><span class="hljs-comment"># DemoService&#x7684;sayHello&#x65B9;&#x6CD5;&#x53EA;&#x80FD;&#x6D88;&#x8D39;&#x6240;&#x6709;&#x7AEF;&#x53E3;&#x4E3A;20880&#x7684;&#x670D;&#x52A1;&#x5B9E;&#x4F8B;</span>
+<span class="hljs-comment"># DemoService&#x7684;sayHi&#x65B9;&#x6CD5;&#x53EA;&#x80FD;&#x6D88;&#x8D39;&#x6240;&#x6709;&#x7AEF;&#x53E3;&#x4E3A;20881&#x7684;&#x670D;&#x52A1;&#x5B9E;&#x4F8B;</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">scope:</span> service
+<span class="hljs-attr">force:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">runtime:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">key:</span> org.apache.dubbo.samples.governance.api.DemoService
+<span class="hljs-attr">conditions:</span>
+<span class="hljs-bullet">  -</span> method=sayHello =&gt; address=*:<span class="hljs-number">20880</span>
+<span class="hljs-bullet">  -</span> method=sayHi =&gt; address=*:<span class="hljs-number">20881</span>
+...
+</code></pre>
+</li>
+</ul>
+<hr>
+<p>&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x670D;&#x52A1;&#x964D;&#x7EA7;&#x529F;&#x80FD;&#x4E34;&#x65F6;&#x5C4F;&#x853D;&#x67D0;&#x4E2A;&#x51FA;&#x9519;&#x7684;&#x975E;&#x5173;&#x952E;&#x670D;&#x52A1;&#xFF0C;&#x5E76;&#x5B9A;&#x4E49;&#x964D;&#x7EA7;&#x540E;&#x7684;&#x8FD4;&#x56DE;&#x7B56;&#x7565;&#x3002;&#x5411;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x5199;&#x5165;&#x52A8;&#x6001;&#x914D;&#x7F6E;&#x8986;&#x76D6;&#x89C4;&#x5219;&#xFF1A;</p>
+<pre><code class="lang-java">RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getAdaptiveExtension();
+Registry registry = registryFactory.getRegistry(URL.valueOf(<span class="hljs-string">&quot;zookeeper://10.20.153.10:2181&quot;</span>));
+registry.register(URL.valueOf(<span class="hljs-string">&quot;override://0.0.0.0/com.foo.BarService?category=configurators&amp;dynamic=false&amp;application=foo&amp;mock=force:return+null&quot;</span>));
+</code></pre>
+<ul>
+<li><code>mock=force:return+null</code> &#x8868;&#x793A;&#x6D88;&#x8D39;&#x65B9;&#x5BF9;&#x8BE5;&#x670D;&#x52A1;&#x7684;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x90FD;&#x76F4;&#x63A5;&#x8FD4;&#x56DE; null &#x503C;&#xFF0C;&#x4E0D;&#x53D1;&#x8D77;&#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x3002;&#x7528;&#x6765;&#x5C4F;&#x853D;&#x4E0D;&#x91CD;&#x8981;&#x670D;&#x52A1;&#x4E0D;&#x53EF;&#x7528;&#x65F6;&#x5BF9;&#x8C03;&#x7528;&#x65B9;&#x7684;&#x5F71;&#x54CD;&#x3002;</li>
+<li>&#x8FD8;&#x53EF;&#x4EE5;&#x6539;&#x4E3A; <code>mock=fail:return+null</code> &#x8868;&#x793A;&#x6D88;&#x8D39;&#x65B9;&#x5BF9;&#x8BE5;&#x670D;&#x52A1;&#x7684;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x5728;&#x5931;&#x8D25;&#x540E;&#xFF0C;&#x518D;&#x8FD4;&#x56DE; null &#x503C;&#xFF0C;&#x4E0D;&#x629B;&#x5F02;&#x5E38;&#x3002;&#x7528;&#x6765;&#x5BB9;&#x5FCD;&#x4E0D;&#x91CD;&#x8981;&#x670D;&#x52A1;&#x4E0D;&#x7A33;&#x5B9A;&#x65F6;&#x5BF9;&#x8C03;&#x7528;&#x65B9;&#x7684;&#x5F71;&#x54CD;&#x3002;</li>
+</ul>
+<hr>
+<p>Dubbo &#x662F;&#x901A;&#x8FC7; JDK &#x7684; ShutdownHook &#x6765;&#x5B8C;&#x6210;&#x4F18;&#x96C5;&#x505C;&#x673A;&#x7684;.</p>
+<h3 id="&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x65B9;">&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x65B9;</h3>
+<ul>
+<li>&#x505C;&#x6B62;&#x65F6;&#xFF0C;&#x5148;&#x6807;&#x8BB0;&#x4E3A;&#x4E0D;&#x63A5;&#x6536;&#x65B0;&#x8BF7;&#x6C42;&#xFF0C;&#x65B0;&#x8BF7;&#x6C42;&#x8FC7;&#x6765;&#x65F6;&#x76F4;&#x63A5;&#x62A5;&#x9519;&#xFF0C;&#x8BA9;&#x5BA2;&#x6237;&#x7AEF;&#x91CD;&#x8BD5;&#x5176;&#x5B83;&#x673A;&#x5668;&#x3002;</li>
+<li>&#x7136;&#x540E;&#xFF0C;&#x68C0;&#x6D4B;&#x7EBF;&#x7A0B;&#x6C60;&#x4E2D;&#x7684;&#x7EBF;&#x7A0B;&#x662F;&#x5426;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#xFF0C;&#x5982;&#x679C;&#x6709;&#xFF0C;&#x7B49;&#x5F85;&#x6240;&#x6709;&#x7EBF;&#x7A0B;&#x6267;&#x884C;&#x5B8C;&#x6210;&#xFF0C;&#x9664;&#x975E;&#x8D85;&#x65F6;&#xFF0C;&#x5219;&#x5F3A;&#x5236;&#x5173;&#x95ED;&#x3002;</li>
+</ul>
+<h3 id="&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x65B9;">&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x65B9;</h3>
+<ul>
+<li>&#x505C;&#x6B62;&#x65F6;&#xFF0C;&#x4E0D;&#x518D;&#x53D1;&#x8D77;&#x65B0;&#x7684;&#x8C03;&#x7528;&#x8BF7;&#x6C42;&#xFF0C;&#x6240;&#x6709;&#x65B0;&#x7684;&#x8C03;&#x7528;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x5373;&#x62A5;&#x9519;&#x3002;</li>
+<li>&#x7136;&#x540E;&#xFF0C;&#x68C0;&#x6D4B;&#x6709;&#x6CA1;&#x6709;&#x8BF7;&#x6C42;&#x7684;&#x54CD;&#x5E94;&#x8FD8;&#x6CA1;&#x6709;&#x8FD4;&#x56DE;&#xFF0C;&#x7B49;&#x5F85;&#x54CD;&#x5E94;&#x8FD4;&#x56DE;&#xFF0C;&#x9664;&#x975E;&#x8D85;&#x65F6;&#xFF0C;&#x5219;&#x5F3A;&#x5236;&#x5173;&#x95ED;&#x3002;</li>
+</ul>
+<p>&#x8BBE;&#x7F6E;&#x4F18;&#x96C5;&#x505C;&#x673A;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#xFF0C;&#x7F3A;&#x7701;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#x662F; 10 &#x79D2;&#xFF0C;&#x5982;&#x679C;&#x8D85;&#x65F6;&#x5219;&#x5F3A;&#x5236;&#x5173;&#x95ED;&#x3002;</p>
+<pre><code class="lang-properties"># dubbo.properties
+dubbo.service.shutdown.wait=15000
+</code></pre>
+<p>&#x5982;&#x679C; ShutdownHook &#x4E0D;&#x80FD;&#x751F;&#x6548;&#xFF0C;&#x53EF;&#x4EE5;&#x81EA;&#x884C;&#x8C03;&#x7528;&#xFF0C;<strong>&#x4F7F;&#x7528;tomcat&#x7B49;&#x5BB9;&#x5668;&#x90E8;&#x7F72;&#x7684;&#x5834;&#x666F;&#xFF0C;&#x5EFA;&#x8BAE;&#x901A;&#x8FC7;&#x6269;&#x5C55;ContextListener&#x7B49;&#x81EA;&#x884C;&#x8C03;&#x7528;&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x5B9E;&#x73B0;&#x4F18;&#x96C5;&#x505C;&#x673A;</strong>&#xFF1A;</p>
+<pre><code class="lang-java">ProtocolConfig.destroyAll();
+</code></pre>
+<hr>
+<p>&#x5982;&#x679C;&#x60F3;&#x8BB0;&#x5F55;&#x6BCF;&#x4E00;&#x6B21;&#x8BF7;&#x6C42;&#x4FE1;&#x606F;&#xFF0C;&#x53EF;&#x5F00;&#x542F;&#x8BBF;&#x95EE;&#x65E5;&#x5FD7;&#xFF0C;&#x7C7B;&#x4F3C;&#x4E8E;apache&#x7684;&#x8BBF;&#x95EE;&#x65E5;&#x5FD7;&#x3002;<strong>&#x6CE8;&#x610F;</strong>&#xFF1A;&#x65E5;&#x5FD7;&#x91CF;&#x6BD4;&#x8F83;&#x5927;&#xFF0C;&#x8BF7;&#x6CE8;&#x610F;&#x78C1;&#x76D8;&#x5BB9;&#x91CF;&#x3002;</p>
+<p>&#x5C06;&#x8BBF;&#x95EE;&#x65E5;&#x5FD7;&#x8F93;&#x51FA;&#x5230;&#x5F53;&#x524D;&#x5E94;&#x7528;&#x7684;log4j&#x65E5;&#x5FD7;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">accesslog</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+</code></pre>
+<p>&#x5C06;&#x8BBF;&#x95EE;&#x65E5;&#x5FD7;&#x8F93;&#x51FA;&#x5230;&#x6307;&#x5B9A;&#x6587;&#x4EF6;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">accesslog</span>=<span class="hljs-string">&quot;http://10.20.160.198/wiki/display/dubbo/foo/bar.log&quot;</span> /&gt;</span>
+</code></pre>
+<hr>
+<p><code>ReferenceConfig</code> &#x5B9E;&#x4F8B;&#x5F88;&#x91CD;&#xFF0C;&#x5C01;&#x88C5;&#x4E86;&#x4E0E;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x7684;&#x8FDE;&#x63A5;&#x4EE5;&#x53CA;&#x4E0E;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x8FDE;&#x63A5;&#xFF0C;&#x9700;&#x8981;&#x7F13;&#x5B58;&#x3002;&#x5426;&#x5219;&#x91CD;&#x590D;&#x751F;&#x6210; <code>ReferenceConfig</code> &#x53EF;&#x80FD;&#x9020;&#x6210;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x5E76;&#x4E14;&#x4F1A;&#x6709;&#x5185;&#x5B58;&#x548C;&#x8FDE;&#x63A5;&#x6CC4;&#x6F0F;&#x3002;</p>
+<pre><code class="lang-java">ReferenceConfig&lt;XxxService&gt; reference = <span class="hljs-keyword">new</span> ReferenceConfig&lt;XxxService&gt;();
+reference.setInterface(XxxService.class);
+reference.setVersion(<span class="hljs-string">&quot;1.0.0&quot;</span>);
+......
+ReferenceConfigCache cache = ReferenceConfigCache.getCache();
+<span class="hljs-comment">// cache.get&#x65B9;&#x6CD5;&#x4E2D;&#x4F1A;&#x7F13;&#x5B58; Reference&#x5BF9;&#x8C61;&#xFF0C;&#x5E76;&#x4E14;&#x8C03;&#x7528;ReferenceConfig.get&#x65B9;&#x6CD5;&#x542F;&#x52A8;ReferenceConfig</span>
+XxxService xxxService = cache.get(reference);
+<span class="hljs-comment">// &#x6CE8;&#x610F;&#xFF01; Cache&#x4F1A;&#x6301;&#x6709;ReferenceConfig&#xFF0C;&#x4E0D;&#x8981;&#x5728;&#x5916;&#x90E8;&#x518D;&#x8C03;&#x7528;ReferenceConfig&#x7684;destroy&#x65B9;&#x6CD5;&#xFF0C;&#x5BFC;&#x81F4;Cache&#x5185;&#x7684;ReferenceConfig&#x5931;&#x6548;&#xFF01;</span>
+<span class="hljs-comment">// &#x4F7F;&#x7528;xxxService&#x5BF9;&#x8C61;</span>
+xxxService.sayHello();
+
+<span class="hljs-comment">//&#x6D88;&#x9664; Cache &#x4E2D;&#x7684; `ReferenceConfig`&#xFF0C;&#x5C06;&#x9500;&#x6BC1; `ReferenceConfig` &#x5E76;&#x91CA;&#x653E;&#x5BF9;&#x5E94;&#x7684;&#x8D44;&#x6E90;&#x3002;</span>
+ReferenceConfigCache cache = ReferenceConfigCache.getCache();
+cache.destroy(reference);
+</code></pre>
+<p>&#x7F3A;&#x7701; <code>ReferenceConfigCache</code> &#x628A;&#x76F8;&#x540C;&#x670D;&#x52A1; Group&#x3001;&#x63A5;&#x53E3;&#x3001;&#x7248;&#x672C;&#x7684; <code>ReferenceConfig</code> &#x8BA4;&#x4E3A;&#x662F;&#x76F8;&#x540C;&#xFF0C;&#x7F13;&#x5B58;&#x4E00;&#x4EFD;&#x3002;&#x5373;&#x4EE5;&#x670D;&#x52A1; Group&#x3001;&#x63A5;&#x53E3;&#x3001;&#x7248;&#x672C;&#x4E3A;&#x7F13;&#x5B58;&#x7684; Key&#x3002;</p>
+<pre><code class="lang-java">KeyGenerator keyGenerator = <span class="hljs-keyword">new</span> ...
+ReferenceConfigCache cache = ReferenceConfigCache.getCache(keyGenerator );
+</code></pre>
+<hr>
+<p>&#x5F53;&#x4E1A;&#x52A1;&#x7EBF;&#x7A0B;&#x6C60;&#x6EE1;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x77E5;&#x9053;&#x7EBF;&#x7A0B;&#x90FD;&#x5728;&#x7B49;&#x5F85;&#x54EA;&#x4E9B;&#x8D44;&#x6E90;&#x3001;&#x6761;&#x4EF6;&#xFF0C;&#x4EE5;&#x627E;&#x5230;&#x7CFB;&#x7EDF;&#x7684;&#x74F6;&#x9888;&#x70B9;&#x6216;&#x5F02;&#x5E38;&#x70B9;&#x3002;dubbo&#x901A;&#x8FC7;Jstack&#x81EA;&#x52A8;&#x5BFC;&#x51FA;&#x7EBF;&#x7A0B;&#x5806;&#x6808;&#x6765;&#x4FDD;&#x7559;&#x73B0;&#x573A;&#xFF0C;&#x65B9;&#x4FBF;&#x6392;&#x67E5;&#x95EE;&#x9898;,&#x9ED8;&#x8BA4;&#x7B56;&#x7565;:</p>
+<ul>
+<li>&#x5BFC;&#x51FA;&#x8DEF;&#x5F84;&#xFF0C;user.home&#x6807;&#x8BC6;&#x7684;&#x7528;&#x6237;&#x4E3B;&#x76EE;&#x5F55;</li>
+<li>&#x5BFC;&#x51FA;&#x95F4;&#x9694;&#xFF0C;&#x6700;&#x77ED;&#x95F4;&#x9694;&#x5141;&#x8BB8;&#x6BCF;&#x9694;10&#x5206;&#x949F;&#x5BFC;&#x51FA;&#x4E00;&#x6B21;</li>
+</ul>
+<pre><code class="lang-properties"># &#x6307;&#x5B9A;&#x5BFC;&#x51FA;&#x8DEF;&#x5F84;&#xFF1A;
+dubbo.application.dump.directory=/tmp
+#&#x6216;
+&lt;dubbo:application ...&gt;
+    &lt;dubbo:parameter key=&quot;dump.directory&quot; value=&quot;/tmp&quot; /&gt;
+&lt;/dubbo:application&gt;
+</code></pre>
+<hr>
+<h2 id="&#x534F;&#x8BAE;">&#x534F;&#x8BAE;</h2>
+<ol>
+<li><p><strong>dubbo://</strong></p>
+<p>Dubbo &#x7F3A;&#x7701;&#x534F;&#x8BAE;&#x91C7;&#x7528;&#x5355;&#x4E00;&#x957F;&#x8FDE;&#x63A5;&#x548C; NIO &#x5F02;&#x6B65;&#x901A;&#x8BAF;&#xFF0C;&#x9002;&#x5408;&#x4E8E;&#x5C0F;&#x6570;&#x636E;&#x91CF;&#x5927;&#x5E76;&#x53D1;&#x7684;&#x670D;&#x52A1;&#x8C03;&#x7528;&#xFF0C;&#x4EE5;&#x53CA;&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;&#x673A;&#x5668;&#x6570;&#x8FDC;&#x5927;&#x4E8E;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x673A;&#x5668;&#x6570;&#x7684;&#x60C5;&#x51B5;&#x3002;&#x53CD;&#x4E4B;&#xFF0C;Dubbo &#x7F3A;&#x7701;&#x534F;&#x8BAE;&#x4E0D;&#x9002;&#x5408;&#x4F20;&#x9001;&#x5927;&#x6570;&#x636E;&#x91CF;&#x7684;&#x670D;&#x52A1;&#xFF0C;&#x6BD4;&#x5982;&#x4F20;&#x6587;&#x4EF6;&#xFF0C;&#x4F20;&#x89C6;&#x9891;&#x7B49;&#xFF0C;&#x9664;&#x975E;&#x8BF7;&#x6C42;&#x91CF;&#x5F88;&#x4F4E;&#x3002;</p>
+<ul>
+<li><p>&#x8FDE;&#x63A5;&#x4E2A;&#x6570;&#xFF1A;&#x5355;&#x8FDE;&#x63A5;</p>
+</li>
+<li><p>&#x8FDE;&#x63A5;&#x65B9;&#x5F0F;&#xFF1A;&#x957F;&#x8FDE;&#x63A5;</p>
+</li>
+<li><p>&#x4F20;&#x8F93;&#x534F;&#x8BAE;&#xFF1A;TCP</p>
+</li>
+<li><p>&#x4F20;&#x8F93;&#x65B9;&#x5F0F;&#xFF1A;NIO &#x5F02;&#x6B65;&#x4F20;&#x8F93;</p>
+</li>
+<li><p>&#x5E8F;&#x5217;&#x5316;&#xFF1A;Hessian &#x4E8C;&#x8FDB;&#x5236;&#x5E8F;&#x5217;&#x5316;</p>
+</li>
+<li><p>&#x9002;&#x7528;&#x8303;&#x56F4;&#xFF1A;&#x4F20;&#x5165;&#x4F20;&#x51FA;&#x53C2;&#x6570;&#x6570;&#x636E;&#x5305;&#x8F83;&#x5C0F;&#xFF08;&#x5EFA;&#x8BAE;&#x5C0F;&#x4E8E;100K&#xFF09;&#xFF0C;&#x6D88;&#x8D39;&#x8005;&#x6BD4;&#x63D0;&#x4F9B;&#x8005;&#x4E2A;&#x6570;&#x591A;&#xFF0C;&#x5355;&#x4E00;&#x6D88;&#x8D39;&#x8005;&#x65E0;&#x6CD5;&#x538B;&#x6EE1;&#x63D0;&#x4F9B;&#x8005;&#xFF0C;&#x5C3D;&#x91CF;&#x4E0D;&#x8981;&#x7528; dubbo &#x534F;&#x8BAE;&#x4F20;&#x8F93;&#x5927;&#x6587;&#x4EF6;&#x6216;&#x8D85;&#x5927;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+</li>
+<li><p>&#x9002;&#x7528;&#x573A;&#x666F;&#xFF1A;&#x5E38;&#x89C4;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x65B9;&#x6CD5;&#x8C03;&#x7528;</p>
+<pre><code>1.&#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x6D88;&#x8D39;&#x8005;&#x6BD4;&#x63D0;&#x4F9B;&#x8005;&#x4E2A;&#x6570;&#x591A;?
+&#x56E0; dubbo &#x534F;&#x8BAE;&#x91C7;&#x7528;&#x5355;&#x4E00;&#x957F;&#x8FDE;&#x63A5;&#xFF0C;&#x5047;&#x8BBE;&#x7F51;&#x7EDC;&#x4E3A;&#x5343;&#x5146;&#x7F51;&#x5361;&#xFF0C;&#x6839;&#x636E;&#x6D4B;&#x8BD5;&#x7ECF;&#x9A8C;&#x6570;&#x636E;&#x6BCF;&#x6761;&#x8FDE;&#x63A5;&#x6700;&#x591A;&#x53EA;&#x80FD;&#x538B;&#x6EE1; 7MByte(&#x4E0D;&#x540C;&#x7684;&#x73AF;&#x5883;&#x53EF;&#x80FD;&#x4E0D;&#x4E00;&#x6837;&#xFF0C;&#x4F9B;&#x53C2;&#x8003;)&#xFF0C;&#x7406;&#x8BBA;&#x4E0A; 1 &#x4E2A;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x9700;&#x8981; 20 &#x4E2A;&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;&#x624D;&#x80FD;&#x538B;&#x6EE1;&#x7F51;&#x5361;&#x3002;
+2.&#x4E3A;&#x4EC0;&#x4E48;&#x4E0D;&#x80FD;&#x4F20;&#x5927;&#x5305;?
+&#x56E0; dubbo &#x534F;&#x8BAE;&#x91C7;&#x7528;&#x5355;&#x4E00;&#x957F;&#x8FDE;&#x63A5;&#xFF0C;&#x5982;&#x679C;&#x6BCF;&#x6B21;&#x8BF7;&#x6C42;&#x7684;&#x6570;&#x636E;&#x5305;&#x5927;&#x5C0F;&#x4E3A; 500KByte&#xFF0C;&#x5047;&#x8BBE;&#x7F51;&#x7EDC;&#x4E3A;&#x5343;&#x5146;&#x7F51;&#x5361; [3:1]&#xFF0C;&#x6BCF;&#x6761;&#x8FDE;&#x63A5;&#x6700;&#x5927; 7MByte(&#x4E0D;&#x540C;&#x7684;&#x73AF;&#x5883;&#x53EF;&#x80FD;&#x4E0D;&#x4E00;&#x6837;&#xFF0C;&#x4F9B;&#x53C2;&#x8003;)&#xFF0C;&#x5355;&#x4E2A;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x7684; TPS(&#x6BCF;&#x79D2;&#x5904;&#x7406;&#x4E8B;&#x52A1;&#x6570;)&#x6700;&#x5927;&#x4E3A;&#xFF1A;128MByte / 500KByte = 262&#x3002;&#x5355;&#x4E2A;&#x6D88;&#x8D39;&#x8005;&#x8C03;&#x7528;&#x5355;&#x4E2A;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x7684; TPS(&#x6BCF;&#x79D2;&#x5904;&#x7406;&#x4E8B;&#x52A1;&#x6570;)&#x6700;&#x5927;&#x4E3A;&#xFF1A;7MByte / 500KByte = 14&#x3002;&#x5982;&#x679C;&#x80FD;&#x63A5;&#x53D7;&#xFF0C;&#x53EF;&#x4EE5;&#x8003;&#x8651;&#x4F7F;&#x7528;&#xFF0C;&#x5426;&#x5219;&#x7F51;&#x7EDC;&#x5C06;&#x6210;&#x4E3A;&#x74F6;&#x9888;&#x3002;
+3.&#x4E3A;&#x4EC0;&#x4E48;&#x91C7;&#x7528;&#x5F02;&#x6B65;&#x5355;&#x4E00;&#x957F;&#x8FDE;&#x63A5;?
+&#x56E0;&#x4E3A;&#x670D;&#x52A1;&#x7684;&#x73B0;&#x72B6;&#x5927;&#x90FD;&#x662F;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x5C11;&#xFF0C;&#x901A;&#x5E38;&#x53EA;&#x6709;&#x51E0;&#x53F0;&#x673A;&#x5668;&#xFF0C;&#x800C;&#x670D;&#x52A1;&#x7684;&#x6D88;&#x8D39;&#x8005;&#x591A;&#xFF0C;&#x53EF;&#x80FD;&#x6574;&#x4E2A;&#x7F51;&#x7AD9;&#x90FD;&#x5728;&#x8BBF;&#x95EE;&#x8BE5;&#x670D;&#x52A1;&#xFF0C;&#x6BD4;&#x5982; Morgan &#x7684;&#x63D0;&#x4F9B;&#x8005;&#x53EA;&#x6709; 6 &#x53F0;&#x63D0;&#x4F9B;&#x8005;&#xFF0C;&#x5374;&#x6709;&#x4E0A;&#x767E;&#x53F0;&#x6D88;&#x8D39;&#x8005;&#xFF0C;&#x6BCF;&#x5929;&#x6709; 1.5 &#x4EBF;&#x6B21;&#x8C03;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x91C7;&#x7528;&#x5E38;&#x89C4;&#x7684; hessian &#x670D;&#x52A1;&#xFF0C;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x5F88;&#x5BB9;&#x6613;&#x5C31;&#x88AB;&#x538B;&#x8DE8;&#xFF0C;&#x901A;&#x8FC7;&#x5355;&#x4E00;&#x8FDE;&#x63A5;&#xFF0C;&#x4FDD;&#x8BC1;&#x5355;&#x4E00;&#x6D88;&#x8D39;&#x8005;&#x4E0D;&#x4F1A;&#x538B;&#x6B7B;&#x63D0;&#x4F9B;&#x8005;&#xFF0C;&#x957F;&#x8FDE;&#x63A5;&#xFF0C;&#x51CF;&#x5C11;&#x8FDE;&#x63A5;&#x63E1;&#x624B;&#x9A8C;&#x8BC1;&#x7B49;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;&#x5F02;&#x6B65; IO&#xFF0C;&#x590D;&#x7528;&#x7EBF;&#x7A0B;&#x6C60;&#xFF0C;&#x9632;&#x6B62; C10K &#x95EE;&#x9898;&#x3002;
+</code></pre></li>
+</ul>
+</li>
+<li><p><strong>rmi://</strong></p>
+<p>RMI &#x534F;&#x8BAE;&#x91C7;&#x7528; JDK &#x6807;&#x51C6;&#x7684; <code>java.rmi.*</code> &#x5B9E;&#x73B0;&#xFF0C;&#x91C7;&#x7528;&#x963B;&#x585E;&#x5F0F;&#x77ED;&#x8FDE;&#x63A5;&#x548C; JDK &#x6807;&#x51C6;&#x5E8F;&#x5217;&#x5316;&#x65B9;&#x5F0F;&#x3002;</p>
+<ul>
+<li>&#x8FDE;&#x63A5;&#x4E2A;&#x6570;&#xFF1A;&#x591A;&#x8FDE;&#x63A5;</li>
+<li>&#x8FDE;&#x63A5;&#x65B9;&#x5F0F;&#xFF1A;&#x77ED;&#x8FDE;&#x63A5;</li>
+<li>&#x4F20;&#x8F93;&#x534F;&#x8BAE;&#xFF1A;TCP</li>
+<li>&#x4F20;&#x8F93;&#x65B9;&#x5F0F;&#xFF1A;&#x540C;&#x6B65;&#x4F20;&#x8F93;</li>
+<li>&#x5E8F;&#x5217;&#x5316;&#xFF1A;Java &#x6807;&#x51C6;&#x4E8C;&#x8FDB;&#x5236;&#x5E8F;&#x5217;&#x5316;</li>
+<li>&#x9002;&#x7528;&#x8303;&#x56F4;&#xFF1A;&#x4F20;&#x5165;&#x4F20;&#x51FA;&#x53C2;&#x6570;&#x6570;&#x636E;&#x5305;&#x5927;&#x5C0F;&#x6DF7;&#x5408;&#xFF0C;&#x6D88;&#x8D39;&#x8005;&#x4E0E;&#x63D0;&#x4F9B;&#x8005;&#x4E2A;&#x6570;&#x5DEE;&#x4E0D;&#x591A;&#xFF0C;&#x53EF;&#x4F20;&#x6587;&#x4EF6;&#x3002;</li>
+<li>&#x9002;&#x7528;&#x573A;&#x666F;&#xFF1A;&#x5E38;&#x89C4;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#xFF0C;&#x4E0E;&#x539F;&#x751F;RMI&#x670D;&#x52A1;&#x4E92;&#x64CD;&#x4F5C;</li>
+</ul>
+<p>&#x5982;&#x679C;&#x670D;&#x52A1;&#x63A5;&#x53E3;&#x7EE7;&#x627F;&#x4E86; <code>java.rmi.Remote</code> &#x63A5;&#x53E3;&#xFF0C;&#x53EF;&#x4EE5;&#x548C;&#x539F;&#x751F; RMI &#x4E92;&#x64CD;&#x4F5C;</p>
+<p>&#x5982;&#x679C;&#x670D;&#x52A1;&#x63A5;&#x53E3;&#x6CA1;&#x6709;&#x7EE7;&#x627F; <code>java.rmi.Remote</code> &#x63A5;&#x53E3;&#xFF1A;</p>
+<ul>
+<li>&#x7F3A;&#x7701; Dubbo &#x5C06;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x4E00;&#x4E2A; <code>com.xxx.XxxService$Remote</code> &#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x5E76;&#x7EE7;&#x627F; <code>java.rmi.Remote</code> &#x63A5;&#x53E3;&#xFF0C;&#x5E76;&#x4EE5;&#x6B64;&#x63A5;&#x53E3;&#x66B4;&#x9732;&#x670D;&#x52A1;&#xFF0C;</li>
+<li>&#x4F46;&#x5982;&#x679C;&#x8BBE;&#x7F6E;&#x4E86; <code>&lt;dubbo:protocol name=&quot;rmi&quot; codec=&quot;spring&quot; /&gt;</code>&#xFF0C;&#x5C06;&#x4E0D;&#x751F;&#x6210; <code>$Remote</code> &#x63A5;&#x53E3;&#xFF0C;&#x800C;&#x4F7F;&#x7528; Spring &#x7684; <code>RmiInvocationHandler</code> &#x63A5;&#x53E3;&#x66B4;&#x9732;&#x670D;&#x52A1;&#xFF0C;&#x548C; Spring &#x517C;&#x5BB9;&#x3002;</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="&#x6846;&#x67B6;">&#x6846;&#x67B6;</h2>
+<p><img src="../img/dubbo-framework.jpg" alt=""></p>
+<p>&#x5DE6;&#x8FB9;&#x4E3A;&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x65B9;&#x4F7F;&#x7528;&#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x53F3;&#x8FB9;&#x4E3A;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x65B9;&#x4F7F;&#x7528;&#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x4F4D;&#x4E8E;&#x4E2D;&#x8F74;&#x7EBF;&#x4E0A;&#x7684;&#x4E3A;&#x53CC;&#x65B9;&#x90FD;&#x7528;&#x5230;&#x7684;&#x63A5;&#x53E3;&#x3002;</p>
+<p>&#x5404;&#x5C42;&#x5747;&#x4E3A;&#x5355;&#x5411;&#x4F9D;&#x8D56;&#xFF0C;&#x53F3;&#x8FB9;&#x7684;&#x9ED1;&#x8272;&#x7BAD;&#x5934;&#x4EE3;&#x8868;&#x5C42;&#x4E4B;&#x95F4;&#x7684;&#x4F9D;&#x8D56;&#x5173;&#x7CFB;&#xFF0C;&#x6BCF;&#x4E00;&#x5C42;&#x90FD;&#x53EF;&#x4EE5;&#x5265;&#x79BB;&#x4E0A;&#x5C42;&#x88AB;&#x590D;&#x7528;&#xFF0C;&#x5176;&#x4E2D;&#xFF0C;Service &#x548C; Config &#x5C42;&#x4E3A; API&#xFF0C;&#x5176;&#x5B83;&#x5404;&#x5C42;&#x5747;&#x4E3A; SPI&#x3002;</p>
+<p>&#x56FE;&#x4E2D;&#x7EFF;&#x8272;&#x5C0F;&#x5757;&#x7684;&#x4E3A;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#xFF0C;&#x84DD;&#x8272;&#x5C0F;&#x5757;&#x4E3A;&#x5B9E;&#x73B0;&#x7C7B;&#x3002;&#x56FE;&#x4E2D;&#x53EA;&#x663E;&#x793A;&#x7528;&#x4E8E;&#x5173;&#x8054;&#x5404;&#x5C42;&#x7684;&#x5B9E;&#x73B0;&#x7C7B;&#x3002;</p>
+<p>&#x56FE;&#x4E2D;&#x84DD;&#x8272;&#x865A;&#x7EBF;&#x4E3A;&#x521D;&#x59CB;&#x5316;&#x8FC7;&#x7A0B;&#xFF0C;&#x5373;&#x542F;&#x52A8;&#x65F6;&#x7EC4;&#x88C5;&#x94FE;&#xFF0C;&#x7EA2;&#x8272;&#x5B9E;&#x7EBF;&#x4E3A;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x8FC7;&#x7A0B;&#xFF0C;&#x5373;&#x8FD0;&#x884C;&#x65F6;&#x8C03;&#x65F6;&#x94FE;&#xFF0C;&#x7D2B;&#x8272;&#x4E09;&#x89D2;&#x7BAD;&#x5934;&#x4E3A;&#x7EE7;&#x627F;&#xFF0C;&#x7EBF;&#x4E0A;&#x7684;&#x6587;&#x5B57;&#x4E3A;&#x8C03;&#x7528;&#x7684;&#x65B9;&#x6CD5;&#x3002;</p>
+<ul>
+<li><strong>config &#x914D;&#x7F6E;&#x5C42;</strong>&#xFF1A;&#x5BF9;&#x5916;&#x914D;&#x7F6E;&#x63A5;&#x53E3;&#xFF0C;&#x4EE5; <code>ServiceConfig</code>, <code>ReferenceConfig</code> &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x521D;&#x59CB;&#x5316;&#x914D;&#x7F6E;&#x7C7B;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7; spring &#x89E3;&#x6790;&#x914D;&#x7F6E;&#x751F;&#x6210;&#x914D;&#x7F6E;&#x7C7B;</li>
+<li><strong>proxy &#x670D;&#x52A1;&#x4EE3;&#x7406;&#x5C42;</strong>&#xFF1A;&#x670D;&#x52A1;&#x63A5;&#x53E3;&#x900F;&#x660E;&#x4EE3;&#x7406;&#xFF0C;&#x751F;&#x6210;&#x670D;&#x52A1;&#x7684;&#x5BA2;&#x6237;&#x7AEF; Stub &#x548C;&#x670D;&#x52A1;&#x5668;&#x7AEF; Skeleton, &#x4EE5; <code>ServiceProxy</code>&#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>ProxyFactory</code></li>
+<li><strong>registry &#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x5C42;</strong>&#xFF1A;&#x5C01;&#x88C5;&#x670D;&#x52A1;&#x5730;&#x5740;&#x7684;&#x6CE8;&#x518C;&#x4E0E;&#x53D1;&#x73B0;&#xFF0C;&#x4EE5;&#x670D;&#x52A1; URL &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>RegistryFactory</code>, <code>Registry</code>, <code>RegistryService</code></li>
+<li><strong>cluster &#x8DEF;&#x7531;&#x5C42;</strong>&#xFF1A;&#x5C01;&#x88C5;&#x591A;&#x4E2A;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x8DEF;&#x7531;&#x53CA;&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#xFF0C;&#x5E76;&#x6865;&#x63A5;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#xFF0C;&#x4EE5; <code>Invoker</code> &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>Cluster</code>, <code>Directory</code>, <code>Router</code>, <code>LoadBalance</code></li>
+<li><strong>monitor &#x76D1;&#x63A7;&#x5C42;</strong>&#xFF1A;RPC &#x8C03;&#x7528;&#x6B21;&#x6570;&#x548C;&#x8C03;&#x7528;&#x65F6;&#x95F4;&#x76D1;&#x63A7;&#xFF0C;&#x4EE5; <code>Statistics</code> &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>MonitorFactory</code>, <code>Monitor</code>, <code>MonitorService</code></li>
+<li><strong>protocol &#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x5C42;</strong>&#xFF1A;&#x5C01;&#x88C5; RPC &#x8C03;&#x7528;&#xFF0C;&#x4EE5; <code>Invocation</code>, <code>Result</code> &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>Protocol</code>, <code>Invoker</code>, <code>Exporter</code></li>
+<li><strong>exchange &#x4FE1;&#x606F;&#x4EA4;&#x6362;&#x5C42;</strong>&#xFF1A;&#x5C01;&#x88C5;&#x8BF7;&#x6C42;&#x54CD;&#x5E94;&#x6A21;&#x5F0F;&#xFF0C;&#x540C;&#x6B65;&#x8F6C;&#x5F02;&#x6B65;&#xFF0C;&#x4EE5; <code>Request</code>, <code>Response</code> &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>Exchanger</code>, <code>ExchangeChannel</code>, <code>ExchangeClient</code>, <code>ExchangeServer</code></li>
+<li><strong>transport &#x7F51;&#x7EDC;&#x4F20;&#x8F93;&#x5C42;</strong>&#xFF1A;&#x62BD;&#x8C61; mina &#x548C; netty &#x4E3A;&#x7EDF;&#x4E00;&#x63A5;&#x53E3;&#xFF0C;&#x4EE5; <code>Message</code> &#x4E3A;&#x4E2D;&#x5FC3;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>Channel</code>, <code>Transporter</code>, <code>Client</code>, <code>Server</code>, <code>Codec</code></li>
+<li><strong>serialize &#x6570;&#x636E;&#x5E8F;&#x5217;&#x5316;&#x5C42;</strong>&#xFF1A;&#x53EF;&#x590D;&#x7528;&#x7684;&#x4E00;&#x4E9B;&#x5DE5;&#x5177;&#xFF0C;&#x6269;&#x5C55;&#x63A5;&#x53E3;&#x4E3A; <code>Serialization</code>, <code>ObjectInput</code>, <code>ObjectOutput</code>, <code>ThreadPool</code></li>
+</ul>
+<hr>
+<h2 id="zookeeper-&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;">zookeeper &#x6CE8;&#x518C;&#x4E2D;&#x5FC3;</h2>
+<ul>
+<li>&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x542F;&#x52A8;&#x65F6;: &#x5411; <code>/dubbo/com.foo.BarService/providers</code> &#x76EE;&#x5F55;&#x4E0B;&#x5199;&#x5165;&#x81EA;&#x5DF1;&#x7684; URL &#x5730;&#x5740;</li>
+<li>&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;&#x542F;&#x52A8;&#x65F6;: &#x8BA2;&#x9605; <code>/dubbo/com.foo.BarService/providers</code> &#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x63D0;&#x4F9B;&#x8005; URL &#x5730;&#x5740;&#x3002;&#x5E76;&#x5411; <code>/dubbo/com.foo.BarService/consumers</code> &#x76EE;&#x5F55;&#x4E0B;&#x5199;&#x5165;&#x81EA;&#x5DF1;&#x7684; URL &#x5730;&#x5740;</li>
+<li>&#x76D1;&#x63A7;&#x4E2D;&#x5FC3;&#x542F;&#x52A8;&#x65F6;: &#x8BA2;&#x9605; <code>/dubbo/com.foo.BarService</code> &#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x6240;&#x6709;&#x63D0;&#x4F9B;&#x8005;&#x548C;&#x6D88;&#x8D39;&#x8005; URL &#x5730;&#x5740;&#x3002;</li>
+<li>&#x5F53;&#x63D0;&#x4F9B;&#x8005;&#x51FA;&#x73B0;&#x65AD;&#x7535;&#x7B49;&#x5F02;&#x5E38;&#x505C;&#x673A;&#x65F6;&#xFF0C;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x80FD;&#x81EA;&#x52A8;&#x5220;&#x9664;&#x63D0;&#x4F9B;&#x8005;&#x4FE1;&#x606F;</li>
+<li>&#x5F53;&#x8BBE;&#x7F6E; <code>&lt;dubbo:registry check=&quot;false&quot; /&gt;</code> &#x65F6;&#xFF0C;&#x8BB0;&#x5F55;&#x5931;&#x8D25;&#x6CE8;&#x518C;&#x548C;&#x8BA2;&#x9605;&#x8BF7;&#x6C42;&#xFF0C;&#x540E;&#x53F0;&#x5B9A;&#x65F6;&#x91CD;&#x8BD5;</li>
+<li>&#x53EF;&#x901A;&#x8FC7; <code>&lt;dubbo:registry username=&quot;admin&quot; password=&quot;1234&quot; /&gt;</code> &#x8BBE;&#x7F6E; zookeeper &#x767B;&#x5F55;&#x4FE1;&#x606F;</li>
+<li>&#x53EF;&#x901A;&#x8FC7; <code>&lt;dubbo:registry group=&quot;dubbo&quot; /&gt;</code> &#x8BBE;&#x7F6E; zookeeper &#x7684;&#x6839;&#x8282;&#x70B9;&#xFF0C;&#x4E0D;&#x8BBE;&#x7F6E;&#x5C06;&#x4F7F;&#x7528;&#x65E0;&#x6839;&#x6811;</li>
+<li>&#x652F;&#x6301; <code>*</code> &#x53F7;&#x901A;&#x914D;&#x7B26; <code>&lt;dubbo:reference group=&quot;*&quot; version=&quot;*&quot; /&gt;</code>&#xFF0C;&#x53EF;&#x8BA2;&#x9605;&#x670D;&#x52A1;&#x7684;&#x6240;&#x6709;&#x5206;&#x7EC4;&#x548C;&#x6240;&#x6709;&#x7248;&#x672C;&#x7684;&#x63D0;&#x4F9B;&#x8005;</li>
+</ul>
+<hr>
+<h2 id="&#x6269;&#x5C55;&#x70B9;&#x52A0;&#x8F7D;">&#x6269;&#x5C55;&#x70B9;&#x52A0;&#x8F7D;</h2>
+<ul>
+<li><p>&#x4E00;&#x4E2A;&#x6269;&#x5C55;&#x70B9;&#x53EF;&#x4EE5;&#x76F4;&#x63A5; setter &#x6CE8;&#x5165;&#x5176;&#x5B83;&#x6269;&#x5C55;&#x70B9;&#x3002;</p>
+</li>
+<li><p>&#x653E;&#x7F6E;&#x6269;&#x5C55;&#x70B9;&#x914D;&#x7F6E;&#x6587;&#x4EF6; <code>META-INF/dubbo/&#x63A5;&#x53E3;&#x5168;&#x9650;&#x5B9A;&#x540D;</code>&#xFF0C;&#x5185;&#x5BB9;&#x4E3A;&#xFF1A;<code>&#x914D;&#x7F6E;&#x540D;=&#x6269;&#x5C55;&#x5B9E;&#x73B0;&#x7C7B;&#x5168;&#x9650;&#x5B9A;&#x540D;</code>&#xFF0C;&#x591A;&#x4E2A;&#x5B9E;&#x73B0;&#x7C7B;&#x7528;&#x6362;&#x884C;&#x7B26;&#x5206;&#x9694;&#x3002;</p>
+</li>
+<li><p>Dubbo &#x914D;&#x7F6E;&#x6A21;&#x5757;&#x4E2D;&#xFF0C;&#x6269;&#x5C55;&#x70B9;&#x5747;&#x6709;&#x5BF9;&#x5E94;&#x914D;&#x7F6E;&#x5C5E;&#x6027;&#x6216;&#x6807;&#x7B7E;&#xFF0C;&#x901A;&#x8FC7;&#x914D;&#x7F6E;&#x6307;&#x5B9A;&#x4F7F;&#x7528;&#x54EA;&#x4E2A;&#x6269;&#x5C55;&#x5B9E;&#x73B0;&#x3002;&#x6BD4;&#x5982;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dubbo:protocol</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xxx&quot;</span> /&gt;</span>
+</code></pre>
+</li>
+<li><p>&#x81EA;&#x52A8;&#x5305;&#x88C5;&#x6269;&#x5C55;&#x70B9;&#x7684; Wrapper &#x7C7B;&#x3002;<code>ExtensionLoader</code> &#x5728;&#x52A0;&#x8F7D;&#x6269;&#x5C55;&#x70B9;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x52A0;&#x8F7D;&#x5230;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x6709;&#x62F7;&#x8D1D;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x5219;&#x5224;&#x5B9A;&#x4E3A;&#x6269;&#x5C55;&#x70B9; Wrapper &#x7C7B;&#x3002;&#x5B83;&#x7684;&#x7528;&#x9014;&#x4E3B;&#x8981;&#x662F;&#x7528;&#x4E8E;&#x4ECE; <code>ExtensionLoader</code> &#x8FD4;&#x56DE;&#x6269;&#x5C55;&#x70B9;&#x65F6;&#xFF0C;&#x5305;&#x88C5;&#x5728;&#x771F;&#x6B63;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x5B9E;&#x73B0;&#x5916;&#x3002;&#x5373;&#x4ECE; <code>ExtensionLoader</code> &#x4E2D;&#x8FD4;&#x56DE;&#x7684;&#x5B9E;&#x9645;&#x4E0A;&#x662F; Wrapper &#x7C7B;&#x7684;&#x5B9E;&#x4F8B;&#xFF0C;Wrapper &#x6301;&#x6709;&#x4E86;&#x5B9E;&#x9645;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x5B9E;&#x73B0;&#x7C7B;&#x3002;&#x901A;&#x8FC7; Wrapper &#x7C7B;&#x53EF;&#x4EE5;&#x628A;&#x6240;&#x6709;&#x6269;&#x5C55;&#x70B9;&#x516C;&#x5171;&#x903B;&#x8F91;&#x79FB;&#x81F3; Wrapper &#x4E2D;&#x3002;&#x65B0;&#x52A0;&#x7684; Wrapper &#x5728;&#x6240;&#x6709;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x4E0A;&#x6DFB;&#x52A0;&#x4E86;&#x903B;&#x8F91;&#xFF0C;&#x6709;&#x4E9B;&#x7C7B;&#x4F3C; AOP&#xFF0C;&#x5373; Wrapper &#x4EE3;&#x7406;&#x4E86;&#x6269;&#x5C55;&#x70B9;&#x3002;</p>
+</li>
+<li><p>&#x52A0;&#x8F7D;&#x6269;&#x5C55;&#x70B9;&#x65F6;&#xFF0C;&#x81EA;&#x52A8;&#x6CE8;&#x5165;&#x4F9D;&#x8D56;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x3002;&#x52A0;&#x8F7D;&#x6269;&#x5C55;&#x70B9;&#x65F6;&#xFF0C;&#x6269;&#x5C55;&#x70B9;&#x5B9E;&#x73B0;&#x7C7B;&#x7684;&#x6210;&#x5458;&#x5982;&#x679C;&#x4E3A;&#x5176;&#x5B83;&#x6269;&#x5C55;&#x70B9;&#x7C7B;&#x578B;&#xFF0C;<code>ExtensionLoader</code> &#x5728;&#x4F1A;&#x81EA;&#x52A8;&#x6CE8;&#x5165;&#x4F9D;&#x8D56;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x3002;<code>ExtensionLoader</code> &#x901A;&#x8FC7;&#x626B;&#x63CF;&#x6269;&#x5C55;&#x70B9;&#x5B9E;&#x73B0;&#x7C7B;&#x7684;&#x6240;&#x6709; setter &#x65B9;&#x6CD5;&#x6765;&#x5224;&#x5B9A;&#x5176;&#x6210;&#x5458;&#x3002;</p>
+</li>
+<li><p><code>ExtensionLoader</code> &#x6CE8;&#x5165;&#x7684;&#x4F9D;&#x8D56;&#x6269;&#x5C55;&#x70B9;&#x662F;&#x4E00;&#x4E2A; <code>Adaptive</code> &#x5B9E;&#x4F8B;&#xFF0C;&#x76F4;&#x5230;&#x6269;&#x5C55;&#x70B9;&#x65B9;&#x6CD5;&#x6267;&#x884C;&#x65F6;&#x624D;&#x51B3;&#x5B9A;&#x8C03;&#x7528;&#x662F;&#x4E00;&#x4E2A;&#x6269;&#x5C55;&#x70B9;&#x5B9E;&#x73B0;&#x3002;Dubbo &#x4F7F;&#x7528; URL &#x5BF9;&#x8C61;&#xFF08;&#x5305;&#x542B;&#x4E86;Key-Value&#xFF09;&#x4F20;&#x9012;&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#x3002;</p>
+<p>&#x793A;&#x4F8B;&#xFF1A;&#x6709;&#x4E24;&#x4E2A;&#x4E3A;&#x6269;&#x5C55;&#x70B9; <code>CarMaker</code>&#x3001;<code>WheelMaker</code></p>
+<p>&#x63A5;&#x53E3;&#x7C7B;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CarMaker</span> </span>{
+    <span class="hljs-function">Car <span class="hljs-title">makeCar</span><span class="hljs-params">(URL url)</span></span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">WheelMaker</span> </span>{
+    <span class="hljs-function">Wheel <span class="hljs-title">makeWheel</span><span class="hljs-params">(URL url)</span></span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RaceCarMaker</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">CarMaker</span> </span>{
+    WheelMaker wheelMaker;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">setWheelMaker</span><span class="hljs-params">(WheelMaker wheelMaker)</span> </span>{
+        <span class="hljs-keyword">this</span>.wheelMaker = wheelMaker;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Car <span class="hljs-title">makeCar</span><span class="hljs-params">(URL url)</span> </span>{
+        <span class="hljs-comment">// &#x6CE8;&#x5165;&#x7684; Adaptive &#x5B9E;&#x4F8B;&#x53EF;&#x4EE5;&#x63D0;&#x53D6;&#x7EA6;&#x5B9A; Key &#x6765;&#x51B3;&#x5B9A;&#x4F7F;&#x7528;&#x54EA;&#x4E2A; WheelMaker &#x5B9E;&#x73B0;&#x6765;&#x8C03;&#x7528;&#x5BF9;&#x5E94;&#x5B9E;&#x73B0;&#x7684;&#x771F;&#x6B63;&#x7684; makeWheel &#x65B9;&#x6CD5;&#x3002;&#x5982;&#x63D0;&#x53D6; wheel.type, key &#x5373; url.get(&quot;wheel.type&quot;) &#x6765;&#x51B3;&#x5B9A; WheelMake &#x5B9E;&#x73B0;&#x3002;Adaptive &#x5B9E;&#x4F8B;&#x7684;&#x903B;&#x8F91;&#x662F;&#x56FA;&#x5B9A;&#xFF0C;&#x6307;&#x5B9A;&#x63D0;&#x53D6;&#x7684; URL &#x7684; Key&#xFF0C;&#x5373;&#x53EF;&#x4EE5;&#x4EE3;&#x7406;&#x771F;&#x6B63;&#x7684;&#x5B9E;&#x73B0;&#x7C7B;&#x4E0A;&#xFF0C;&#x53EF;&#x4EE5;&#x52A8;&#x6001;&#x751F;&#x6210;&#x3002;</span>
+        Wheel wheel = wheelMaker.makeWheel(url);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> RaceCar(wheel, ...);
+    }
+}
+</code></pre>
+<p>&#x5728; Dubbo &#x7684; <code>ExtensionLoader</code> &#x7684;&#x6269;&#x5C55;&#x70B9;&#x7C7B;&#x5BF9;&#x5E94;&#x7684; <code>Adaptive</code> &#x5B9E;&#x73B0;&#x662F;&#x5728;&#x52A0;&#x8F7D;&#x6269;&#x5C55;&#x70B9;&#x91CC;&#x52A8;&#x6001;&#x751F;&#x6210;&#x3002;&#x6307;&#x5B9A;&#x63D0;&#x53D6;&#x7684; URL &#x7684; Key &#x901A;&#x8FC7; <code>@Adaptive</code> &#x6CE8;&#x89E3;&#x5728;&#x63A5;&#x53E3;&#x65B9;&#x6CD5;&#x4E0A;&#x63D0;&#x4F9B;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Transporter</span> </span>{
+    <span class="hljs-comment">//Adaptive &#x5B9E;&#x73B0;&#x5148;&#x67E5;&#x627E; server key&#xFF0C;&#x5982;&#x679C;&#x8BE5; Key &#x6CA1;&#x6709;&#x503C;&#x5219;&#x627E; transport key &#x503C;&#xFF0C;&#x6765;&#x51B3;&#x5B9A;&#x4EE3;&#x7406;&#x5230;&#x54EA;&#x4E2A;&#x5B9E;&#x9645;&#x6269;&#x5C55;&#x70B9;&#x3002;</span>
+    <span class="hljs-meta">@Adaptive</span>({<span class="hljs-string">&quot;server&quot;</span>, <span class="hljs-string">&quot;transport&quot;</span>})
+    <span class="hljs-function">Server <span class="hljs-title">bind</span><span class="hljs-params">(URL url, ChannelHandler handler)</span> <span class="hljs-keyword">throws</span> RemotingException</span>;
+
+    <span class="hljs-meta">@Adaptive</span>({<span class="hljs-string">&quot;client&quot;</span>, <span class="hljs-string">&quot;transport&quot;</span>})
+    <span class="hljs-function">Client <span class="hljs-title">connect</span><span class="hljs-params">(URL url, ChannelHandler handler)</span> <span class="hljs-keyword">throws</span> RemotingException</span>;
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<h2 id="&#x521D;&#x59CB;&#x5316;&#x8FC7;&#x7A0B;&#x7EC6;&#x8282;">&#x521D;&#x59CB;&#x5316;&#x8FC7;&#x7A0B;&#x7EC6;&#x8282;</h2>
+<p>&#x6240;&#x6709; dubbo &#x7684;&#x6807;&#x7B7E;&#xFF0C;&#x90FD;&#x7EDF;&#x4E00;&#x7528; <code>DubboBeanDefinitionParser</code> &#x8FDB;&#x884C;&#x89E3;&#x6790;&#xFF0C;&#x57FA;&#x4E8E;&#x4E00;&#x5BF9;&#x4E00;&#x5C5E;&#x6027;&#x6620;&#x5C04;&#xFF0C;&#x5C06; XML &#x6807;&#x7B7E;&#x89E3;&#x6790;&#x4E3A; Bean &#x5BF9;&#x8C61;&#x3002;</p>
+<p>&#x5728; <code>ServiceConfig.export()</code> &#x6216; <code>ReferenceConfig.get()</code> &#x521D;&#x59CB;&#x5316;&#x65F6;&#xFF0C;&#x5C06; Bean &#x5BF9;&#x8C61;&#x8F6C;&#x6362; URL &#x683C;&#x5F0F;&#xFF0C;&#x6240;&#x6709; Bean &#x5C5E;&#x6027;&#x8F6C;&#x6210; URL &#x7684;&#x53C2;&#x6570;&#x3002;&#x7136;&#x540E;&#x5C06; URL &#x4F20;&#x7ED9;&#x534F;&#x8BAE;&#x6269;&#x5C55;&#x70B9;&#xFF0C;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x7684;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x6839;&#x636E; URL &#x7684;&#x534F;&#x8BAE;&#x5934;&#xFF0C;&#x8FDB;&#x884C;&#x4E0D;&#x540C;&#x534F;&#x8BAE;&#x7684;&#x670D;&#x52A1;&#x66B4;&#x9732;&#x6216;&#x5F15;&#x7528;&#x3002;</p>
+<h3 id="&#x66B4;&#x9732;&#x670D;&#x52A1;">&#x66B4;&#x9732;&#x670D;&#x52A1;</h3>
+<h4 id="1-&#x53EA;&#x66B4;&#x9732;&#x670D;&#x52A1;&#x7AEF;&#x53E3;&#xFF1A;">1. &#x53EA;&#x66B4;&#x9732;&#x670D;&#x52A1;&#x7AEF;&#x53E3;&#xFF1A;</h4>
+<p>&#x5728;&#x6CA1;&#x6709;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#xFF0C;&#x76F4;&#x63A5;&#x66B4;&#x9732;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x60C5;&#x51B5;&#x4E0B; ,<code>ServiceConfig</code> &#x89E3;&#x6790;&#x51FA;&#x7684; URL &#x7684;&#x683C;&#x5F0F;&#x4E3A;&#xFF1A;<code>dubbo://service-host/com.foo.FooService?version=1.0.0</code>&#x3002;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x901A;&#x8FC7; URL &#x7684; <code>dubbo://</code> &#x534F;&#x8BAE;&#x5934;&#x8BC6;&#x522B;&#xFF0C;&#x76F4;&#x63A5;&#x8C03;&#x7528; <code>DubboProtocol</code>&#x7684; <code>export()</code> &#x65B9;&#x6CD5;&#xFF0C;&#x6253;&#x5F00;&#x670D;&#x52A1;&#x7AEF;&#x53E3;&#x3002;</p>
+<h4 id="2-&#x5411;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x66B4;&#x9732;&#x670D;&#x52A1;&#xFF1A;">2. &#x5411;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x66B4;&#x9732;&#x670D;&#x52A1;&#xFF1A;</h4>
+<p>&#x5728;&#x6709;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#xFF0C;&#x9700;&#x8981;&#x6CE8;&#x518C;&#x63D0;&#x4F9B;&#x8005;&#x5730;&#x5740;&#x7684;&#x60C5;&#x51B5;&#x4E0B;,<code>ServiceConfig</code> &#x89E3;&#x6790;&#x51FA;&#x7684; URL &#x7684;&#x683C;&#x5F0F;&#x4E3A;: <code>registry://registry-host/org.apache.dubbo.registry.RegistryService?export=URL.encode(&quot;dubbo://service-host/com.foo.FooService?version=1.0.0&quot;)</code>&#xFF0C;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x901A;&#x8FC7; URL &#x7684; <code>registry://</code> &#x534F;&#x8BAE;&#x5934;&#x8BC6;&#x522B;&#xFF0C;&#x5C31;&#x4F1A;&#x8C03;&#x7528; <code>RegistryProtocol</code> &#x7684; <code>export()</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5C06; <code>export</code> &#x53C2;&#x6570;&#x4E2D;&#x7684;&#x63D0;&#x4F9B;&#x8005; URL&#xFF0C;&#x5148;&#x6CE8;&#x518C;&#x5230;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x3002;&#x518D;&#x91CD;&#x65B0;&#x4F20;&#x7ED9; <code>Protocol</code> &#x6269;&#x5C55;&#x70B9;&#x8FDB;&#x884C;&#x66B4;&#x9732;&#xFF1A; <code>dubbo://service-host/com.foo.FooService?version=1.0.0</code>&#xFF0C;&#x7136;&#x540E;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x901A;&#x8FC7;&#x63D0;&#x4F9B;&#x8005; URL &#x7684; <code>dubbo://</code> &#x534F;&#x8BAE;&#x5934;&#x8BC6;&#x522B;&#xFF0C;&#x5C31;&#x4F1A;&#x8C03;&#x7528; <code>DubboProtocol</code> &#x7684; <code>export()</code>&#x65B9;&#x6CD5;&#xFF0C;&#x6253;&#x5F00;&#x670D;&#x52A1;&#x7AEF;&#x53E3;&#x3002;</p>
+<h3 id="&#x5F15;&#x7528;&#x670D;&#x52A1;">&#x5F15;&#x7528;&#x670D;&#x52A1;</h3>
+<h4 id="1-&#x76F4;&#x8FDE;&#x5F15;&#x7528;&#x670D;&#x52A1;&#xFF1A;">1. &#x76F4;&#x8FDE;&#x5F15;&#x7528;&#x670D;&#x52A1;&#xFF1A;</h4>
+<p>&#x5728;&#x6CA1;&#x6709;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#xFF0C;&#x76F4;&#x8FDE;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x60C5;&#x51B5;&#x4E0B;,<code>ReferenceConfig</code> &#x89E3;&#x6790;&#x51FA;&#x7684; URL &#x7684;&#x683C;&#x5F0F;&#x4E3A;&#xFF1A;<code>dubbo://service-host/com.foo.FooService?version=1.0.0</code>&#x3002;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x901A;&#x8FC7; URL &#x7684; <code>dubbo://</code> &#x534F;&#x8BAE;&#x5934;&#x8BC6;&#x522B;&#xFF0C;&#x76F4;&#x63A5;&#x8C03;&#x7528; <code>DubboProtocol</code> &#x7684; <code>refer()</code> &#x65B9;&#x6CD5;&#xFF0C;&#x8FD4;&#x56DE;&#x63D0;&#x4F9B;&#x8005;&#x5F15;&#x7528;&#x3002;</p>
+<h4 id="2-&#x4ECE;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x53D1;&#x73B0;&#x5F15;&#x7528;&#x670D;&#x52A1;&#xFF1A;">2. &#x4ECE;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x53D1;&#x73B0;&#x5F15;&#x7528;&#x670D;&#x52A1;&#xFF1A;</h4>
+<p>&#x5728;&#x6709;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#xFF0C;&#x901A;&#x8FC7;&#x6CE8;&#x518C;&#x4E2D;&#x5FC3;&#x53D1;&#x73B0;&#x63D0;&#x4F9B;&#x8005;&#x5730;&#x5740;&#x7684;&#x60C5;&#x51B5;&#x4E0B; ,<code>ReferenceConfig</code> &#x89E3;&#x6790;&#x51FA;&#x7684; URL &#x7684;&#x683C;&#x5F0F;&#x4E3A;&#xFF1A;<code>registry://registry-host/org.apache.dubbo.registry.RegistryService?refer=URL.encode(&quot;consumer://consumer-host/com.foo.FooService?version=1.0.0&quot;)</code>&#x3002;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x901A;&#x8FC7; URL &#x7684; <code>registry://</code> &#x534F;&#x8BAE;&#x5934;&#x8BC6;&#x522B;&#xFF0C;&#x5C31;&#x4F1A;&#x8C03;&#x7528; <code>RegistryProtocol</code> &#x7684; <code>refer()</code>&#x65B9;&#x6CD5;&#xFF0C;&#x57FA;&#x4E8E; <code>refer</code> &#x53C2;&#x6570;&#x4E2D;&#x7684;&#x6761;&#x4EF6;&#xFF0C;&#x67E5;&#x8BE2;&#x63D0;&#x4F9B;&#x8005; URL&#xFF0C;&#x5982;&#xFF1A; <code>dubbo://service-host/com.foo.FooService?version=1.0.0</code>&#x3002;&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x901A;&#x8FC7;&#x63D0;&#x4F9B;&#x8005; URL &#x7684; <code>dubbo://</code> &#x534F;&#x8BAE;&#x5934;&#x8BC6;&#x522B;&#xFF0C;&#x5C31;&#x4F1A;&#x8C03;&#x7528; <code>DubboProtocol</code> &#x7684; <code>refer()</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5F97;&#x5230;&#x63D0;&#x4F9B;&#x8005;&#x5F15;&#x7528;&#x3002;&#x7136;&#x540E; <code>RegistryProtocol</code> &#x5C06;&#x591A;&#x4E2A;&#x63D0;&#x4F9B;&#x8005;&#x5F15;&#x7528;&#xFF0C;&#x901A;&#x8FC7; <code>Cluster</code> &#x6269;&#x5C55;&#x70B9;&#xFF0C;&#x4F2A;&#x88C5;&#x6210;&#x5355;&#x4E2A;&#x63D0;&#x4F9B;&#x8005;&#x5F15;&#x7528;&#x8FD4;&#x56DE;&#x3002;</p>
+<h3 id="&#x62E6;&#x622A;&#x670D;&#x52A1;">&#x62E6;&#x622A;&#x670D;&#x52A1;</h3>
+<p>&#x57FA;&#x4E8E;&#x6269;&#x5C55;&#x70B9;&#x81EA;&#x9002;&#x5E94;&#x673A;&#x5236;&#xFF0C;&#x6240;&#x6709;&#x7684; <code>Protocol</code> &#x6269;&#x5C55;&#x70B9;&#x90FD;&#x4F1A;&#x81EA;&#x52A8;&#x5957;&#x4E0A; <code>Wrapper</code> &#x7C7B;&#x3002;</p>
+<p>&#x57FA;&#x4E8E; <code>ProtocolFilterWrapper</code> &#x7C7B;&#xFF0C;&#x5C06;&#x6240;&#x6709; <code>Filter</code> &#x7EC4;&#x88C5;&#x6210;&#x94FE;&#xFF0C;&#x5728;&#x94FE;&#x7684;&#x6700;&#x540E;&#x4E00;&#x8282;&#x8C03;&#x7528;&#x771F;&#x5B9E;&#x7684;&#x5F15;&#x7528;&#x3002;</p>
+<p>&#x57FA;&#x4E8E; <code>ProtocolListenerWrapper</code> &#x7C7B;&#xFF0C;&#x5C06;&#x6240;&#x6709; <code>InvokerListener</code> &#x548C; <code>ExporterListener</code> &#x7EC4;&#x88C5;&#x96C6;&#x5408;&#xFF0C;&#x5728;&#x66B4;&#x9732;&#x548C;&#x5F15;&#x7528;&#x524D;&#x540E;&#xFF0C;&#x8FDB;&#x884C;&#x56DE;&#x8C03;&#x3002;&#x5305;&#x62EC;&#x76D1;&#x63A7;&#x5728;&#x5185;&#xFF0C;&#x6240;&#x6709;&#x9644;&#x52A0;&#x529F;&#x80FD;&#xFF0C;&#x5168;&#x90E8;&#x901A;&#x8FC7; <code>Filter</code> &#x62E6;&#x622A;&#x5B9E;&#x73B0;&#x3002;</p>
+<h2 id="&#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x7EC6;&#x8282;">&#x8FDC;&#x7A0B;&#x8C03;&#x7528;&#x7EC6;&#x8282;</h2>
+<h3 id="&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x66B4;&#x9732;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x8BE6;&#x7EC6;&#x8FC7;&#x7A0B;">&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x66B4;&#x9732;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x8BE6;&#x7EC6;&#x8FC7;&#x7A0B;<img src="../img/dubbo_rpc_export.jpg" alt=""></h3>
+<p>&#x9996;&#x5148; <code>ServiceConfig</code> &#x7C7B;&#x62FF;&#x5230;&#x5BF9;&#x5916;&#x63D0;&#x4F9B;&#x670D;&#x52A1;&#x7684;&#x5B9E;&#x9645;&#x7C7B; ref(&#x5982;&#xFF1A;HelloWorldImpl),&#x7136;&#x540E;&#x901A;&#x8FC7; <code>ProxyFactory</code> &#x7C7B;&#x7684; <code>getInvoker</code> &#x65B9;&#x6CD5;&#x4F7F;&#x7528; ref &#x751F;&#x6210;&#x4E00;&#x4E2A; <code>AbstractProxyInvoker</code> &#x5B9E;&#x4F8B;&#xFF0C;&#x5230;&#x8FD9;&#x4E00;&#x6B65;&#x5C31;&#x5B8C;&#x6210;&#x5177;&#x4F53;&#x670D;&#x52A1;&#x5230; <code>Invoker</code> &#x7684;&#x8F6C;&#x5316;&#x3002;&#x63A5;&#x4E0B;&#x6765;&#x5C31;&#x662F; <code>Invoker</code> &#x8F6C;&#x6362;&#x5230; <code>Exporter</code> &#x7684;&#x8FC7;&#x7A0B;&#x3002;</p>
+<p>Dubbo &#x5904;&#x7406;&#x670D;&#x52A1;&#x66B4;&#x9732;&#x7684;&#x5173;&#x952E;&#x5C31;&#x5728;Invoker&#x8F6C;&#x6362;&#x5230;Exporter&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x4EE5; Dubbo &#x548C; RMI &#x8FD9;&#x4E24;&#x79CD;&#x5178;&#x578B;&#x534F;&#x8BAE;&#x7684;&#x5B9E;&#x73B0;&#x6765;&#x8FDB;&#x884C;&#x8BF4;&#x660E;&#xFF1A;</p>
+<ol>
+<li>Dubbo &#x534F;&#x8BAE;&#x7684; <code>Invoker</code> &#x8F6C;&#x4E3A; <code>Exporter</code> &#x53D1;&#x751F;&#x5728; <code>DubboProtocol</code> &#x7C7B;&#x7684; <code>export</code> &#x65B9;&#x6CD5;&#xFF0C;&#x5B83;&#x4E3B;&#x8981;&#x662F;&#x6253;&#x5F00; socket &#x4FA6;&#x542C;&#x670D;&#x52A1;&#xFF0C;&#x5E76;&#x63A5;&#x6536;&#x5BA2;&#x6237;&#x7AEF;&#x53D1;&#x6765;&#x7684;&#x5404;&#x79CD;&#x8BF7;&#x6C42;&#xFF0C;&#x901A;&#x8BAF;&#x7EC6;&#x8282;&#x7531; Dubbo &#x81EA;&#x5DF1;&#x5B9E;&#x73B0;&#x3002;</li>
+<li>RMI &#x534F;&#x8BAE;&#x7684; <code>Invoker</code> &#x8F6C;&#x4E3A; <code>Exporter</code> &#x53D1;&#x751F;&#x5728; <code>RmiProtocol</code>&#x7C7B;&#x7684; <code>export</code> &#x65B9;&#x6CD5;&#xFF0C;&#x5B83;&#x901A;&#x8FC7; Spring &#x6216; Dubbo &#x6216; JDK &#x6765;&#x5B9E;&#x73B0; RMI &#x670D;&#x52A1;&#xFF0C;&#x901A;&#x8BAF;&#x7EC6;&#x8282;&#x8FD9;&#x4E00;&#x5757;&#x7531; JDK &#x5E95;&#x5C42;&#x6765;&#x5B9E;&#x73B0;&#xFF0C;&#x8FD9;&#x5C31;&#x7701;&#x4E86;&#x4E0D;&#x5C11;&#x5DE5;&#x4F5C;&#x91CF;&#x3002;</li>
+</ol>
+<h3 id="&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;&#x6D88;&#x8D39;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x8BE6;&#x7EC6;&#x8FC7;&#x7A0B;">&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;&#x6D88;&#x8D39;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x8BE6;&#x7EC6;&#x8FC7;&#x7A0B;</h3>
+<p><img src="../img/dubbo_rpc_refer.jpg" alt=""></p>
+<p>&#x9996;&#x5148; <code>ReferenceConfig</code> &#x7C7B;&#x7684; <code>init</code> &#x65B9;&#x6CD5;&#x8C03;&#x7528; <code>Protocol</code> &#x7684; <code>refer</code> &#x65B9;&#x6CD5;&#x751F;&#x6210; <code>Invoker</code> &#x5B9E;&#x4F8B;&#x3002;&#x63A5;&#x4E0B;&#x6765;&#x628A; <code>Invoker</code> &#x8F6C;&#x6362;&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x9700;&#x8981;&#x7684;&#x63A5;&#x53E3;(&#x5982;&#xFF1A;HelloWorld)&#x3002;&#x6BCF;&#x79CD;&#x534F;&#x8BAE;&#x5982; RMI/Dubbo/Web service &#x7B49;&#x5B83;&#x4EEC;&#x5728;&#x8C03;&#x7528; <code>refer</code> &#x65B9;&#x6CD5;&#x751F;&#x6210; <code>Invoker</code> &#x5B9E;&#x4F8B;&#x7684;&#x7EC6;&#x8282;&#x548C;&#x4E0A;&#x9762;&#x6240;&#x63CF;&#x8FF0;&#x7684;&#x7C7B;&#x4F3C;&#x3002;</p>
+<p>&#x670D;&#x52A1;&#x63D0;&#x4F9B; <code>Invoker</code> &#x548C;&#x670D;&#x52A1;&#x6D88;&#x8D39; <code>Invoker</code>&#xFF1A;<img src="../img/dubbo_rpc_invoke.jpg" alt=""></p>
+<p>&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x8005;&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoClientAction</span> </span>{
+    <span class="hljs-comment">//&#x670D;&#x52A1;&#x6D88;&#x8D39;&#x7AEF;&#x7684; proxy&#xFF0C;&#x7528;&#x6237;&#x4EE3;&#x7801;&#x901A;&#x8FC7;&#x8FD9;&#x4E2A; proxy &#x8C03;&#x7528;&#x5176;&#x5BF9;&#x5E94;&#x7684; Invoker&#xFF0C;&#x800C;&#x8BE5; Invoker &#x5B9E;&#x73B0;&#x4E86;&#x771F;&#x6B63;&#x7684;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x8C03;&#x7528;&#x3002;</span>
+    <span class="hljs-keyword">private</span> DemoService demoService;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setDemoService</span><span class="hljs-params">(DemoService demoService)</span> </span>{
+        <span class="hljs-keyword">this</span>.demoService = demoService;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">start</span><span class="hljs-params">()</span> </span>{
+        String hello = demoService.sayHello(<span class="hljs-string">&quot;world&quot;</span> + i);
+    }
+}
+</code></pre>
+<p>&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-comment">//&#x4E0A;&#x9762;&#x8FD9;&#x4E2A;&#x7C7B;&#x4F1A;&#x88AB;&#x5C01;&#x88C5;&#x6210;&#x4E3A;&#x4E00;&#x4E2A; AbstractProxyInvoker &#x5B9E;&#x4F8B;&#xFF0C;&#x5E76;&#x65B0;&#x751F;&#x6210;&#x4E00;&#x4E2A; Exporter &#x5B9E;&#x4F8B;&#x3002;&#x8FD9;&#x6837;&#x5F53;&#x7F51;&#x7EDC;&#x901A;&#x8BAF;&#x5C42;&#x6536;&#x5230;&#x4E00;&#x4E2A;&#x8BF7;&#x6C42;&#x540E;&#xFF0C;&#x4F1A;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x7684; Exporter &#x5B9E;&#x4F8B;&#xFF0C;&#x5E76;&#x8C03;&#x7528;&#x5B83;&#x6240;&#x5BF9;&#x5E94;&#x7684; AbstractProxyInvoker &#x5B9E;&#x4F8B;&#xFF0C;&#x4ECE;&#x800C;&#x771F;&#x6B63;&#x8C03;&#x7528;&#x4E86;&#x670D;&#x52A1;&#x63D0;&#x4F9B;&#x8005;&#x7684;&#x4EE3;&#x7801;&#x3002;</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">DemoService</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">sayHello</span><span class="hljs-params">(String name)</span> <span class="hljs-keyword">throws</span> RemoteException </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Hello &quot;</span> + name;
+    }
+}
+</code></pre>
+</xml>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="mongoDB.html" class="navigation navigation-prev " aria-label="Previous page: mongoDB">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="zookeeper.html" class="navigation navigation-next " aria-label="Next page: zookeeper/一致性算法">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"dubbo","level":"1.8","depth":1,"next":{"title":"zookeeper/一致性算法","level":"1.9","depth":1,"path":"note/zookeeper.md","ref":"note/zookeeper.md","articles":[]},"previous":{"title":"mongoDB","level":"1.7","depth":1,"path":"note/mongoDB.md","ref":"note/mongoDB.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"note/dubbo.md","mtime":"2019-09-05T13:56:50.147Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-09-22T02:35:39.866Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

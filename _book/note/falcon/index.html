@@ -1,0 +1,902 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Falcon · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="../netty.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../springboot.html">
+            
+                <a href="../springboot.html">
+            
+                    
+                    springboot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../java/">
+            
+                <a href="../java/">
+            
+                    
+                    java
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../golang/">
+            
+                <a href="../golang/">
+            
+                    
+                    golang
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../kafka.html">
+            
+                <a href="../kafka.html">
+            
+                    
+                    Kafka
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../redis.html">
+            
+                <a href="../redis.html">
+            
+                    
+                    redis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../mongoDB.html">
+            
+                <a href="../mongoDB.html">
+            
+                    
+                    mongoDB
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../dubbo.html">
+            
+                <a href="../dubbo.html">
+            
+                    
+                    dubbo
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../zookeeper.html">
+            
+                <a href="../zookeeper.html">
+            
+                    
+                    zookeeper/一致性算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../mysql.html">
+            
+                <a href="../mysql.html">
+            
+                    
+                    mysql
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="../java/SPI.md">
+            
+                <span>
+            
+                    
+                    SPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="../dubbo_code/">
+            
+                <a href="../dubbo_code/">
+            
+                    
+                    dubbo源码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="../设计模式.html">
+            
+                <a href="../设计模式.html">
+            
+                    
+                    设计模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="../netty.html">
+            
+                <a href="../netty.html">
+            
+                    
+                    nettty
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.15" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Falcon
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Falcon</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>[TOC]</p>
+<h1 id="falcon">Falcon</h1>
+<p>&#x9996;&#x5148;&#x4E00;&#x4E2A;&#x9879;&#x76EE;&#x5E94;&#x8BE5;&#x4EE5;cfg&#x5165;&#x53E3;&#x3002;</p>
+<p>&#x5728;&#x4E00;&#x53F0;&#x673A;&#x5668;&#x4E0A;&#x542F;&#x52A8;&#x6240;&#x6709;&#x7684;&#x540E;&#x7AEF;&#x7EC4;&#x4EF6;:./open-falcon start</p>
+<h2 id="&#x7EC4;&#x4EF6;">&#x7EC4;&#x4EF6;</h2>
+<h3 id="agent">Agent</h3>
+<p>agent&#x7528;&#x4E8E;&#x91C7;&#x96C6;&#x673A;&#x5668;&#x8D1F;&#x8F7D;&#x76D1;&#x63A7;&#x6307;&#x6807;&#xFF0C;&#x6BD4;&#x5982;cpu.idle&#x3001;load.1min&#x3001;disk.io.util&#x7B49;&#x7B49;&#xFF0C;&#x6BCF;&#x9694;60&#x79D2;push&#x7ED9;Transfer&#x3002;agent&#x4E0E;Transfer&#x5EFA;&#x7ACB;&#x4E86;&#x957F;&#x8FDE;&#x63A5;&#xFF0C;&#x6570;&#x636E;&#x53D1;&#x9001;&#x901F;&#x5EA6;&#x6BD4;&#x8F83;&#x5FEB;&#xFF0C;agent&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;http&#x63A5;&#x53E3;/v1/push&#x7528;&#x4E8E;&#x63A5;&#x6536;&#x7528;&#x6237;&#x624B;&#x5DE5;push&#x7684;&#x4E00;&#x4E9B;&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x901A;&#x8FC7;&#x957F;&#x8FDE;&#x63A5;&#x8FC5;&#x901F;&#x8F6C;&#x53D1;&#x7ED9;Transfer&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: true,  # &#x63A7;&#x5236;&#x4E00;&#x4E9B;debug&#x4FE1;&#x606F;&#x7684;&#x8F93;&#x51FA;&#xFF0C;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x901A;&#x5E38;&#x8BBE;&#x7F6E;&#x4E3A;false
+    &quot;hostname&quot;: &quot;&quot;, # agent&#x91C7;&#x96C6;&#x4E86;&#x6570;&#x636E;&#x53D1;&#x7ED9;transfer&#xFF0C;endpoint&#x5C31;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E86;hostname&#xFF0C;&#x9ED8;&#x8BA4;&#x901A;&#x8FC7;`hostname`&#x83B7;&#x53D6;&#xFF0C;&#x5982;&#x679C;&#x914D;&#x7F6E;&#x4E2D;&#x914D;&#x7F6E;&#x4E86;hostname&#xFF0C;&#x5C31;&#x7528;&#x914D;&#x7F6E;&#x4E2D;&#x7684;
+    &quot;ip&quot;: &quot;&quot;, # agent&#x4E0E;hbs&#x5FC3;&#x8DF3;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x628A;&#x81EA;&#x5DF1;&#x7684;ip&#x5730;&#x5740;&#x53D1;&#x7ED9;hbs&#xFF0C;agent&#x4F1A;&#x81EA;&#x52A8;&#x63A2;&#x6D4B;&#x672C;&#x673A;ip&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x60F3;&#x8BA9;agent&#x81EA;&#x52A8;&#x63A2;&#x6D4B;&#xFF0C;&#x53EF;&#x4EE5;&#x624B;&#x5DE5;&#x4FEE;&#x6539;&#x8BE5;&#x914D;&#x7F6E;
+    &quot;plugin&quot;: {
+        &quot;enabled&quot;: false, # &#x9ED8;&#x8BA4;&#x4E0D;&#x5F00;&#x542F;&#x63D2;&#x4EF6;&#x673A;&#x5236;
+        &quot;dir&quot;: &quot;./plugin&quot;,  # &#x628A;&#x653E;&#x7F6E;&#x63D2;&#x4EF6;&#x811A;&#x672C;&#x7684;git repo clone&#x5230;&#x8FD9;&#x4E2A;&#x76EE;&#x5F55;
+        &quot;git&quot;: &quot;https://registry-config.tuya-inc.top:7799/devops/falcon-plugin-o&quot;, # &#x653E;&#x7F6E;&#x63D2;&#x4EF6;&#x811A;&#x672C;&#x7684;git repo&#x5730;&#x5740;
+        &quot;logs&quot;: &quot;./var&quot; # &#x63D2;&#x4EF6;&#x6267;&#x884C;&#x7684;log&#xFF0C;&#x5982;&#x679C;&#x63D2;&#x4EF6;&#x6267;&#x884C;&#x6709;&#x95EE;&#x9898;&#xFF0C;&#x53EF;&#x4EE5;&#x53BB;&#x8FD9;&#x4E2A;&#x76EE;&#x5F55;&#x770B;log
+    },
+    &quot;heartbeat&quot;: {
+        &quot;enabled&quot;: true,  # &#x6B64;&#x5904;enabled&#x8981;&#x8BBE;&#x7F6E;&#x4E3A;true
+        &quot;addr&quot;: &quot;falcon-gateway.tuya-in.net:6030&quot;, # hbs&#x7684;&#x5730;&#x5740;&#xFF0C;&#x7AEF;&#x53E3;&#x662F;hbs&#x7684;rpc&#x7AEF;&#x53E3;
+        &quot;interval&quot;: 60, # &#x5FC3;&#x8DF3;&#x5468;&#x671F;&#xFF0C;&#x5355;&#x4F4D;&#x662F;&#x79D2;
+        &quot;timeout&quot;: 1000 # &#x8FDE;&#x63A5;hbs&#x7684;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#xFF0C;&#x5355;&#x4F4D;&#x662F;&#x6BEB;&#x79D2;
+    },
+    &quot;transfer&quot;: {
+        &quot;enabled&quot;: true, 
+        &quot;addrs&quot;: [
+            &quot;falcon-gateway.tuya-in.net:8433&quot;
+        ],  # transfer&#x7684;&#x5730;&#x5740;&#xFF0C;&#x7AEF;&#x53E3;&#x662F;transfer&#x7684;rpc&#x7AEF;&#x53E3;, &#x53EF;&#x4EE5;&#x652F;&#x6301;&#x5199;&#x591A;&#x4E2A;transfer&#x7684;&#x5730;&#x5740;&#xFF0C;agent&#x4F1A;&#x4FDD;&#x8BC1;HA
+        &quot;interval&quot;: 60, # &#x91C7;&#x96C6;&#x5468;&#x671F;&#xFF0C;&#x5355;&#x4F4D;&#x662F;&#x79D2;&#xFF0C;&#x5373;agent&#x4E00;&#x5206;&#x949F;&#x91C7;&#x96C6;&#x4E00;&#x6B21;&#x6570;&#x636E;&#x53D1;&#x7ED9;transfer
+        &quot;timeout&quot;: 1000 # &#x8FDE;&#x63A5;transfer&#x7684;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#xFF0C;&#x5355;&#x4F4D;&#x662F;&#x6BEB;&#x79D2;
+    },
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,  # &#x662F;&#x5426;&#x8981;&#x76D1;&#x542C;http&#x7AEF;&#x53E3;
+        &quot;listen&quot;: &quot;:1988&quot;,
+        &quot;backdoor&quot;: false
+    },
+    &quot;collector&quot;: {
+        &quot;ifacePrefix&quot;: [&quot;eth&quot;, &quot;em&quot;], # &#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x53EA;&#x4F1A;&#x91C7;&#x96C6;&#x7F51;&#x5361;&#x540D;&#x79F0;&#x524D;&#x7F00;&#x662F;eth&#x3001;em&#x7684;&#x7F51;&#x5361;&#x6D41;&#x91CF;&#xFF0C;&#x914D;&#x7F6E;&#x4E3A;&#x7A7A;&#x5C31;&#x4F1A;&#x91C7;&#x96C6;&#x6240;&#x6709;&#x7684;&#xFF0C;lo&#x7684;&#x4E5F;&#x4F1A;&#x91C7;&#x96C6;&#x3002;&#x53EF;&#x4EE5;&#x4ECE;/proc/net/dev&#x770B;&#x5230;&#x5404;&#x4E2A;&#x7F51;&#x5361;&#x7684;&#x6D41;&#x91CF;&#x4FE1;&#x606F;
+        &quot;mountPoint&quot;: []
+    },
+    &quot;default_tags&quot;: {
+    },
+    &quot;ignore&quot;: {  # &#x9ED8;&#x8BA4;&#x91C7;&#x96C6;&#x4E86;200&#x591A;&#x4E2A;metric&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;ignore&#x8BBE;&#x7F6E;&#x4E3A;&#x4E0D;&#x91C7;&#x96C6;
+        &quot;cpu.busy&quot;: true,
+       #&#x7701;&#x7565;......
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start agent  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop agent  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor agent  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+./falcon-agent --check
+</code></pre><h3 id="transfer">Transfer</h3>
+<p>transfer&#x662F;&#x6570;&#x636E;&#x8F6C;&#x53D1;&#x670D;&#x52A1;&#x3002;&#x5B83;&#x63A5;&#x6536;agent&#x4E0A;&#x62A5;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x6309;&#x7167;&#x54C8;&#x5E0C;&#x89C4;&#x5219;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x5206;&#x7247;&#x3001;&#x5E76;&#x5C06;&#x5206;&#x7247;&#x540E;&#x7684;&#x6570;&#x636E;&#x5206;&#x522B;push&#x7ED9;graph&amp;judge&#x7B49;&#x7EC4;&#x4EF6;&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: true,
+    &quot;moduleName&quot;: &quot;transfer&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;minStep&quot;: 30,# &#x5141;&#x8BB8;&#x4E0A;&#x62A5;&#x7684;&#x6570;&#x636E;&#x6700;&#x5C0F;&#x95F4;&#x9694;&#xFF0C;&#x9ED8;&#x8BA4;&#x4E3A;30&#x79D2;
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x8BE5;http&#x7AEF;&#x53E3;&#xFF0C;&#x8BE5;&#x7AEF;&#x53E3;&#x4E3A;&#x63A7;&#x5236;&#x7AEF;&#x53E3;&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x5BF9;transfer&#x53D1;&#x9001;&#x63A7;&#x5236;&#x547D;&#x4EE4;&#x3001;&#x7EDF;&#x8BA1;&#x547D;&#x4EE4;&#x3001;debug&#x547D;&#x4EE4;&#x7B49;
+        &quot;listen&quot;: &quot;0.0.0.0:6060&quot;
+    },
+    &quot;rpc&quot;: {
+        &quot;enabled&quot;: true,# &#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x6570;&#x636E;&#x63A5;&#x6536;&#x7AEF;&#x53E3;, Agent&#x53D1;&#x9001;&#x6570;&#x636E;&#x4F7F;&#x7528;&#x7684;&#x5C31;&#x662F;&#x8BE5;&#x7AEF;&#x53E3;
+        &quot;listen&quot;: &quot;0.0.0.0:8433&quot;
+    },
+    &quot;socket&quot;: {#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x8BE5;telnet&#x65B9;&#x5F0F;&#x7684;&#x6570;&#x636E;&#x63A5;&#x6536;&#x7AEF;&#x53E3;&#xFF0C;&#x8FD9;&#x662F;&#x4E3A;&#x4E86;&#x65B9;&#x4FBF;&#x7528;&#x6237;&#x4E00;&#x884C;&#x884C;&#x7684;&#x53D1;&#x9001;&#x6570;&#x636E;&#x7ED9;transfer
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:4444&quot;,
+        &quot;timeout&quot;: 3600
+    },
+    &quot;judge&quot;: {
+        &quot;enabled&quot;: true,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x5411;judge&#x53D1;&#x9001;&#x6570;&#x636E;
+        &quot;batch&quot;: 200,#&#x6570;&#x636E;&#x8F6C;&#x53D1;&#x7684;&#x6279;&#x91CF;&#x5927;&#x5C0F;&#xFF0C;&#x53EF;&#x4EE5;&#x52A0;&#x5FEB;&#x53D1;&#x9001;&#x901F;&#x5EA6;&#xFF0C;&#x5EFA;&#x8BAE;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;&#x503C;
+        &quot;connTimeout&quot;: 1000,#&#x5355;&#x4F4D;&#x662F;&#x6BEB;&#x79D2;&#xFF0C;&#x4E0E;&#x540E;&#x7AEF;&#x5EFA;&#x7ACB;&#x8FDE;&#x63A5;&#x7684;&#x8D85;&#x65F6;&#x65F6;&#x95F4;
+        &quot;callTimeout&quot;: 5000,#&#x5355;&#x4F4D;&#x662F;&#x6BEB;&#x79D2;&#xFF0C;&#x53D1;&#x9001;&#x6570;&#x636E;&#x7ED9;&#x540E;&#x7AEF;&#x7684;&#x8D85;&#x65F6;&#x65F6;&#x95F4;
+        &quot;maxConns&quot;: 32,#&#x8FDE;&#x63A5;&#x6C60;&#x76F8;&#x5173;&#x914D;&#x7F6E;&#xFF0C;&#x6700;&#x5927;&#x8FDE;&#x63A5;&#x6570;&#xFF0C;&#x5EFA;&#x8BAE;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;
+        &quot;maxIdle&quot;: 32,#&#x8FDE;&#x63A5;&#x6C60;&#x76F8;&#x5173;&#x914D;&#x7F6E;&#xFF0C;&#x6700;&#x5927;&#x7A7A;&#x95F2;&#x8FDE;&#x63A5;&#x6570;&#xFF0C;&#x5EFA;&#x8BAE;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;
+        &quot;replicas&quot;: 500,#&#x4E00;&#x81F4;&#x6027;hash&#x7B97;&#x6CD5;&#x9700;&#x8981;&#x7684;&#x8282;&#x70B9;&#x526F;&#x672C;&#x6570;&#x91CF;
+        &quot;cluster&quot;: {#&#x540E;&#x7AEF;&#x7684;judge&#x5217;&#x8868;&#xFF0C;&#x5176;&#x4E2D;key&#x4EE3;&#x8868;&#x540E;&#x7AEF;judge&#x540D;&#x5B57;&#xFF0C;value&#x4EE3;&#x8868;&#x7684;&#x662F;&#x5177;&#x4F53;&#x7684;ip:port
+            &quot;judge-00&quot; : &quot;127.0.0.1:6080&quot;
+        }
+    },
+    &quot;graph&quot;: {
+        &quot;enabled&quot;: true,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x5411;graph&#x53D1;&#x9001;&#x6570;&#x636E;
+        &quot;batch&quot;: 200,#&#x6570;&#x636E;&#x8F6C;&#x53D1;&#x7684;&#x6279;&#x91CF;&#x5927;&#x5C0F;&#xFF0C;&#x53EF;&#x4EE5;&#x52A0;&#x5FEB;&#x53D1;&#x9001;&#x901F;&#x5EA6;&#xFF0C;&#x5EFA;&#x8BAE;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;&#x503C;
+        &quot;connTimeout&quot;: 1000,
+        &quot;callTimeout&quot;: 5000,
+        &quot;maxConns&quot;: 32,#&#x8FDE;&#x63A5;&#x6C60;&#x76F8;&#x5173;&#x914D;&#x7F6E;&#xFF0C;&#x6700;&#x5927;&#x8FDE;&#x63A5;&#x6570;&#xFF0C;&#x5EFA;&#x8BAE;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;
+        &quot;maxIdle&quot;: 32,#&#x8FDE;&#x63A5;&#x6C60;&#x76F8;&#x5173;&#x914D;&#x7F6E;&#xFF0C;&#x6700;&#x5927;&#x7A7A;&#x95F2;&#x8FDE;&#x63A5;&#x6570;&#xFF0C;&#x5EFA;&#x8BAE;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;
+        &quot;replicas&quot;: 500,
+        &quot;cluster&quot;: {#&#x8868;&#x793A;&#x540E;&#x7AEF;&#x7684;graph&#x5217;&#x8868;&#xFF0C;&#x5176;&#x4E2D;key&#x4EE3;&#x8868;&#x540E;&#x7AEF;graph&#x540D;&#x5B57;&#xFF0C;value&#x4EE3;&#x8868;&#x7684;&#x662F;&#x5177;&#x4F53;&#x7684;ip:port(&#x591A;&#x4E2A;&#x5730;&#x5740;&#x7528;&#x9017;&#x53F7;&#x9694;&#x5F00;, transfer&#x4F1A;&#x5C06;&#x540C;&#x4E00;&#x4EFD;&#x6570;&#x636E;&#x53D1;&#x9001;&#x81F3;&#x5404;&#x4E2A;&#x5730;&#x5740;&#xFF0C;&#x5229;&#x7528;&#x8FD9;&#x4E2A;&#x7279;&#x6027;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0;&#x6570;&#x636E;&#x7684;&#x591A;&#x91CD;&#x5907;&#x4EFD;)
+            &quot;graph-00&quot; : &quot;127.0.0.1:607000&quot;
+        }
+    },
+    &quot;tsdb&quot;: {#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x5411;open tsdb&#x53D1;&#x9001;&#x6570;&#x636E;
+        &quot;enabled&quot;: false,#&#x6570;&#x636E;&#x8F6C;&#x53D1;&#x7684;&#x6279;&#x91CF;&#x5927;&#x5C0F;&#xFF0C;&#x53EF;&#x4EE5;&#x52A0;&#x5FEB;&#x53D1;&#x9001;&#x901F;&#x5EA6;
+        &quot;batch&quot;: 200,
+        &quot;connTimeout&quot;: 1000,
+        &quot;callTimeout&quot;: 5000,
+        &quot;maxConns&quot;: 32,
+        &quot;maxIdle&quot;: 32,
+        &quot;retry&quot;: 3,# &#x8FDE;&#x63A5;&#x540E;&#x7AEF;&#x7684;&#x91CD;&#x8BD5;&#x6B21;&#x6570;&#x548C;&#x53D1;&#x9001;&#x6570;&#x636E;&#x7684;&#x91CD;&#x8BD5;&#x6B21;&#x6570;
+        &quot;address&quot;: &quot;127.0.0.1:8088&quot;#tsdb&#x5730;&#x5740;&#x6216;&#x8005;tsdb&#x96C6;&#x7FA4;vip&#x5730;&#x5740;, &#x901A;&#x8FC7;tcp&#x8FDE;&#x63A5;tsdb
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start transfer  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop transfer  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor transfer  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+# &#x6821;&#x9A8C;&#x670D;&#x52A1;,&#x8FD9;&#x91CC;&#x5047;&#x5B9A;&#x670D;&#x52A1;&#x5F00;&#x542F;&#x4E86;6060&#x7684;http&#x76D1;&#x542C;&#x7AEF;&#x53E3;&#x3002;&#x68C0;&#x9A8C;&#x7ED3;&#x679C;&#x4E3A;ok&#x8868;&#x660E;&#x670D;&#x52A1;&#x6B63;&#x5E38;&#x542F;&#x52A8;&#x3002;
+curl -s &quot;127.0.0.1:6060/health&quot;
+</code></pre><h3 id="graph">Graph</h3>
+<p>graph&#x662F;&#x5B58;&#x50A8;&#x7ED8;&#x56FE;&#x6570;&#x636E;&#x7684;&#x7EC4;&#x4EF6;&#x3002;graph&#x7EC4;&#x4EF6;&#x63A5;&#x6536;transfer&#x7EC4;&#x4EF6;&#x63A8;&#x9001;&#x4E0A;&#x6765;&#x7684;&#x76D1;&#x63A7;&#x6570;&#x636E;&#xFF0C;&#x540C;&#x65F6;&#x5904;&#x7406;api&#x7EC4;&#x4EF6;&#x7684;&#x67E5;&#x8BE2;&#x8BF7;&#x6C42;&#x3001;&#x8FD4;&#x56DE;&#x7ED8;&#x56FE;&#x6570;&#x636E;&#x3002;</p>
+<pre><code class="lang-json">{
+   &quot;debug&quot;: false,
+   &quot;moduleName&quot;: &quot;graph&quot;,
+   &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+   &quot;http&quot;: {
+      &quot;enabled&quot;: true,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x8BE5;http&#x7AEF;&#x53E3;&#xFF0C;&#x8BE5;&#x7AEF;&#x53E3;&#x4E3A;&#x63A7;&#x5236;&#x7AEF;&#x53E3;&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x5BF9;graph&#x53D1;&#x9001;&#x63A7;&#x5236;&#x547D;&#x4EE4;&#x3001;&#x7EDF;&#x8BA1;&#x547D;&#x4EE4;&#x3001;debug&#x547D;&#x4EE4;
+      &quot;listen&quot;: &quot;0.0.0.0:6071&quot;
+   },
+   &quot;rpc&quot;: {
+      &quot;enabled&quot;: true,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x8BE5;rpc&#x7AEF;&#x53E3;&#xFF0C;&#x8BE5;&#x7AEF;&#x53E3;&#x4E3A;&#x6570;&#x636E;&#x63A5;&#x6536;&#x7AEF;&#x53E3;
+      &quot;listen&quot;: &quot;0.0.0.0:6070&quot;
+   },
+   &quot;rrd&quot;: {
+      &quot;storage&quot;: &quot;./data/6070&quot;#&#x5386;&#x53F2;&#x6570;&#x636E;&#x7684;&#x6587;&#x4EF6;&#x5B58;&#x50A8;&#x8DEF;&#x5F84;
+   },
+   &quot;api&quot;: {
+      &quot;connect_timeout&quot;: 500,
+      &quot;request_timeout&quot;: 2000,
+      &quot;plus_api&quot;: &quot;http://127.0.0.1:8088&quot;,
+      &quot;plus_api_token&quot;: &quot;default-token-used-in-server-side&quot;
+   },
+   &quot;callTimeout&quot;: 5000,#RPC&#x8C03;&#x7528;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#xFF0C;&#x5355;&#x4F4D;ms
+   &quot;ioWorkerNum&quot;: 64,#&#x5E95;&#x5C42;io.Worker&#x7684;&#x6570;&#x91CF;
+   &quot;migrate&quot;: {#&#x6269;&#x5BB9;graph&#x65F6;&#x5386;&#x53F2;&#x6570;&#x636E;&#x81EA;&#x52A8;&#x8FC1;&#x79FB;
+      &quot;enabled&quot;: false,#&#x8868;&#x793A;graph&#x662F;&#x5426;&#x5904;&#x4E8E;&#x6570;&#x636E;&#x8FC1;&#x79FB;&#x72B6;&#x6001;
+      &quot;concurrency&quot;: 2,#&#x6570;&#x636E;&#x8FC1;&#x79FB;&#x65F6;&#x7684;&#x5E76;&#x53D1;&#x8FDE;&#x63A5;&#x6570;
+      &quot;replicas&quot;: 500,#&#x4E00;&#x81F4;&#x6027;hash&#x7B97;&#x6CD5;&#x9700;&#x8981;&#x7684;&#x8282;&#x70B9;&#x526F;&#x672C;&#x6570;&#x91CF;&#xFF0C;&#x5EFA;&#x8BAE;&#x4E0D;&#x8981;&#x53D8;&#x66F4;&#xFF0C;&#x4FDD;&#x6301;&#x9ED8;&#x8BA4;&#x5373;&#x53EF;&#xFF08;&#x5FC5;&#x987B;&#x548C;transfer&#x7684;&#x914D;&#x7F6E;&#x4E2D;&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#xFF09;
+      &quot;cluster&quot;: {#&#x672A;&#x6269;&#x5BB9;&#x524D;&#x8001;&#x7684;graph&#x5B9E;&#x4F8B;&#x5217;&#x8868;
+         &quot;graph-00&quot; : &quot;127.0.0.1:6070&quot;
+      }
+   }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start graph  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop graph  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor graph  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><h3 id="api">API</h3>
+<p>api&#x7EC4;&#x4EF6;&#xFF0C;&#x63D0;&#x4F9B;&#x7EDF;&#x4E00;&#x7684;restAPI&#x64CD;&#x4F5C;&#x63A5;&#x53E3;&#x3002;&#x6BD4;&#x5982;&#xFF1A;api&#x7EC4;&#x4EF6;&#x63A5;&#x6536;&#x67E5;&#x8BE2;&#x8BF7;&#x6C42;&#xFF0C;&#x6839;&#x636E;&#x4E00;&#x81F4;&#x6027;&#x54C8;&#x5E0C;&#x7B97;&#x6CD5;&#x53BB;&#x76F8;&#x5E94;&#x7684;graph&#x5B9E;&#x4F8B;&#x67E5;&#x8BE2;&#x4E0D;&#x540C;metric&#x7684;&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x6C47;&#x603B;&#x62FF;&#x5230;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x6700;&#x540E;&#x7EDF;&#x4E00;&#x8FD4;&#x56DE;&#x7ED9;&#x7528;&#x6237;&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;log_level&quot;: &quot;debug&quot;,
+    &quot;moduleName&quot;: &quot;api&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;database&quot;: {
+        &quot;addr&quot;: &quot;root:root@tcp(10.0.200.5:3306)/tuya_falcon?charset=utf8&amp;parseTime=True&amp;loc=Local&quot;,
+        &quot;db_bug&quot;: true
+    },
+    &quot;graphs&quot;: {#graph&#x6A21;&#x5757;&#x7684;&#x90E8;&#x7F72;&#x5217;&#x8868;&#x4FE1;&#x606F;
+        &quot;cluster&quot;: {
+            &quot;graph-00&quot;: &quot;127.0.0.1:6070&quot;
+        },
+        &quot;max_conns&quot;: 100,
+        &quot;max_idle&quot;: 100,
+        &quot;conn_timeout&quot;: 1000,
+        &quot;call_timeout&quot;: 5000,
+        &quot;numberOfReplicas&quot;: 500
+    },
+    &quot;metric_list_file&quot;: &quot;./api/data/metric&quot;,
+    &quot;web_port&quot;: &quot;:8080&quot;,#http&#x76D1;&#x542C;&#x7AEF;&#x53E3;
+    &quot;access_control&quot;: true,#&#x5982;&#x679C;&#x8BBE;&#x7F6E;&#x4E3A;false&#xFF0C;&#x90A3;&#x4E48;&#x4EFB;&#x4F55;&#x7528;&#x6237;&#x90FD;&#x53EF;&#x4EE5;&#x5177;&#x5907;&#x7BA1;&#x7406;&#x5458;&#x6743;&#x9650;
+    &quot;signup_disable&quot;: false,
+    &quot;salt&quot;: &quot;&quot;,#&#x6570;&#x636E;&#x5E93;&#x52A0;&#x5BC6;&#x5BC6;&#x7801;&#x7684;&#x65F6;&#x5019;&#x7684;salt
+    &quot;skip_auth&quot;: false,#&#x5982;&#x679C;&#x8BBE;&#x7F6E;&#x4E3A;true&#xFF0C;&#x90A3;&#x4E48;&#x8BBF;&#x95EE;api&#x5C31;&#x4E0D;&#x9700;&#x8981;&#x7ECF;&#x8FC7;&#x8BA4;&#x8BC1;
+    &quot;default_token&quot;: &quot;default-token-used-in-server-side&quot;,#&#x7528;&#x4E8E;&#x670D;&#x52A1;&#x7AEF;&#x5404;&#x6A21;&#x5757;&#x95F4;&#x7684;&#x8BBF;&#x95EE;&#x6388;&#x6743;
+    &quot;gen_doc&quot;: false,
+    &quot;gen_doc_path&quot;: &quot;doc/module.html&quot;,
+    &quot;penglai&quot;: {
+        &quot;region_api&quot;: &quot;http://101.132.46.223:8080/api/v1/open/getMachineRegion&quot;,
+        &quot;username&quot;: &quot;admin&quot;,
+        &quot;password&quot;: &quot;Abcd1234&quot;,
+        &quot;proxy&quot;: &quot;http://vpn.work.tuya-inc.com:31229&quot;
+    },
+    &quot;ela_http&quot;: &quot;127.0.0.1:9123&quot;
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start api  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop api  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor api  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><h3 id="hbs">HBS</h3>
+<p>&#x6240;&#x6709;agent&#x90FD;&#x4F1A;&#x8FDE;&#x5230;HBS&#xFF0C;&#x6BCF;&#x5206;&#x949F;&#x53D1;&#x4E00;&#x6B21;&#x5FC3;&#x8DF3;&#x8BF7;&#x6C42;&#x3002;</p>
+<p>Portal&#x7684;&#x6570;&#x636E;&#x5E93;&#x4E2D;&#x6709;&#x4E00;&#x4E2A;host&#x8868;&#xFF0C;&#x7EF4;&#x62A4;&#x4E86;&#x6240;&#x6709;&#x673A;&#x5668;&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x6BD4;&#x5982;hostname&#x3001;ip&#x7B49;&#x7B49;&#x3002;&#x8FD9;&#x4E2A;&#x8868;&#x662F;&#x4ECE;&#x516C;&#x53F8;CMDB&#x4E2D;&#x540C;&#x6B65;&#x8FC7;&#x6765;&#x7684;&#x3002;agent&#x53D1;&#x9001;&#x5FC3;&#x8DF3;&#x4FE1;&#x606F;&#x7ED9;HBS&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x628A;hostname&#x3001;ip&#x3001;agent version&#x3001;plugin version&#x7B49;&#x4FE1;&#x606F;&#x544A;&#x8BC9;HBS&#xFF0C;HBS&#x8D1F;&#x8D23;&#x66F4;&#x65B0;host&#x8868;&#x3002;</p>
+<p>&#x9664;&#x4E86;&#x8981;&#x91C7;&#x96C6;&#x8FD9;&#x4E9B;&#x57FA;&#x7840;&#x4FE1;&#x606F;&#x4E4B;&#x5916;,agent&#x5982;&#x4F55;&#x77E5;&#x9053;&#x81EA;&#x5DF1;&#x5E94;&#x8BE5;&#x91C7;&#x96C6;&#x54EA;&#x4E9B;&#x7AEF;&#x53E3;&#x548C;&#x8FDB;&#x7A0B;&#x5462;&#xFF1F;&#x5411;HBS&#x8981;&#xFF0C;HBS&#x53BB;&#x8BFB;&#x53D6;Portal&#x7684;&#x6570;&#x636E;&#x5E93;&#xFF0C;&#x8FD4;&#x56DE;&#x7ED9;agent&#x3002;</p>
+<p>Judge&#x9700;&#x8981;&#x83B7;&#x53D6;&#x6240;&#x6709;&#x7684;&#x62A5;&#x8B66;&#x7B56;&#x7565;,&#x65E2;&#x7136;HBS&#x65E0;&#x8BBA;&#x5982;&#x4F55;&#x90FD;&#x8981;&#x8BBF;&#x95EE;Portal&#x7684;&#x6570;&#x636E;&#x5E93;&#x4E86;&#xFF0C;&#x90A3;&#x5C31;&#x8BA9;HBS&#x53BB;&#x83B7;&#x53D6;&#x6240;&#x6709;&#x7684;&#x62A5;&#x8B66;&#x7B56;&#x7565;&#x7F13;&#x5B58;&#x5728;&#x5185;&#x5B58;&#x91CC;&#xFF0C;&#x7136;&#x540E;Judge&#x53BB;&#x5411;HBS&#x8BF7;&#x6C42;&#x3002;&#x8FD9;&#x6837;&#x4E00;&#x6765;&#xFF0C;&#x5BF9;Portal DB&#x7684;&#x538B;&#x529B;&#x5C31;&#x4F1A;&#x5927;&#x5927;&#x51CF;&#x5C0F;&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: true,
+    &quot;moduleName&quot;: &quot;hbs&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;database&quot;: {#Portal&#x7684;&#x6570;&#x636E;&#x5E93;&#x5730;&#x5740;
+        &quot;addr&quot; : &quot;root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&amp;parseTime=true&quot;,
+        &quot;max_idle&quot;: 20,
+        &quot;max_conn&quot;: 20
+    },
+    &quot;hosts&quot;: &quot;&quot;,
+    &quot;listen&quot;: &quot;:6030&quot;,# hbs&#x76D1;&#x542C;&#x7684;rpc&#x5730;&#x5740;
+    &quot;trustable&quot;: [&quot;&quot;],
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:6031&quot;# hbs&#x76D1;&#x542C;&#x7684;http&#x5730;&#x5740;
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start hbs  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop hbs  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor hbs  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><h3 id="judge">Judge</h3>
+<p>Judge&#x7528;&#x4E8E;&#x544A;&#x8B66;&#x5224;&#x65AD;&#xFF0C;agent&#x5C06;&#x6570;&#x636E;push&#x7ED9;Transfer&#xFF0C;Transfer&#x4E0D;&#x4F46;&#x4F1A;&#x8F6C;&#x53D1;&#x7ED9;Graph&#x7EC4;&#x4EF6;&#x6765;&#x7ED8;&#x56FE;&#xFF0C;&#x8FD8;&#x4F1A;&#x8F6C;&#x53D1;&#x7ED9;Judge&#x7528;&#x4E8E;&#x5224;&#x65AD;&#x662F;&#x5426;&#x89E6;&#x53D1;&#x544A;&#x8B66;&#x3002;</p>
+<p>&#x56E0;&#x4E3A;&#x76D1;&#x63A7;&#x7CFB;&#x7EDF;&#x6570;&#x636E;&#x91CF;&#x6BD4;&#x8F83;&#x5927;&#xFF0C;&#x4E00;&#x53F0;&#x673A;&#x5668;&#x663E;&#x7136;&#x662F;&#x641E;&#x4E0D;&#x5B9A;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x5FC5;&#x987B;&#x8981;&#x6709;&#x4E2A;&#x6570;&#x636E;&#x5206;&#x7247;&#x65B9;&#x6848;&#x3002;Transfer&#x901A;&#x8FC7;&#x4E00;&#x81F4;&#x6027;&#x54C8;&#x5E0C;&#x6765;&#x5206;&#x7247;&#xFF0C;&#x6BCF;&#x4E2A;Judge&#x5C31;&#x53EA;&#x9700;&#x8981;&#x5904;&#x7406;&#x4E00;&#x5C0F;&#x90E8;&#x5206;&#x6570;&#x636E;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#x3002;</p>
+<p>Judge&#x76D1;&#x542C;&#x4E86;&#x4E00;&#x4E2A;http&#x7AEF;&#x53E3;&#xFF0C;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;http&#x63A5;&#x53E3;&#xFF1A;/count&#xFF0C;&#x8BBF;&#x95EE;&#x4E4B;&#xFF0C;&#x53EF;&#x4EE5;&#x5F97;&#x6089;&#x5F53;&#x524D;Judge&#x5B9E;&#x4F8B;&#x5904;&#x7406;&#x4E86;&#x591A;&#x5C11;&#x6570;&#x636E;&#x91CF;&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: true,
+    &quot;moduleName&quot;: &quot;judge&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;debugHost&quot;: &quot;nil&quot;,
+    &quot;remain&quot;: 11, #&#x6307;&#x5B9A;&#x4E86;judge&#x5185;&#x5B58;&#x4E2D;&#x9488;&#x5BF9;&#x67D0;&#x4E2A;&#x6570;&#x636E;&#x5B58;&#x591A;&#x5C11;&#x4E2A;&#x70B9;&#xFF0C;&#x6BD4;&#x5982;host01&#x8FD9;&#x4E2A;&#x673A;&#x5668;&#x7684;cpu.idle&#x7684;&#x503C;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x6700;&#x591A;&#x5B58;&#x591A;&#x5C11;&#x4E2A;&#xFF0C;&#x914D;&#x7F6E;&#x62A5;&#x8B66;&#x7684;&#x65F6;&#x5019;&#x6BD4;&#x5982;all(#3)&#xFF0C;&#x8FD9;&#x4E2A;#&#x540E;&#x9762;&#x7684;&#x6570;&#x5B57;&#x4E0D;&#x80FD;&#x8D85;&#x8FC7;remain-1&#xFF0C;&#x4E00;&#x822C;&#x7EF4;&#x6301;&#x9ED8;&#x8BA4;&#x5C31;&#x591F;&#x7528;&#x4E86;.
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:6081&quot;
+    },
+    &quot;rpc&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:6080&quot;
+    },
+    &quot;hbs&quot;: {
+        &quot;servers&quot;: [&quot;127.0.0.1:6030&quot;],
+        &quot;timeout&quot;: 300,
+        &quot;interval&quot;: 60
+    },
+    &quot;alarm&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;minInterval&quot;: 300,# &#x8FDE;&#x7EED;&#x4E24;&#x4E2A;&#x62A5;&#x8B66;&#x4E4B;&#x95F4;&#x81F3;&#x5C11;&#x76F8;&#x9694;&#x7684;&#x79D2;&#x6570;&#xFF0C;&#x7EF4;&#x6301;&#x9ED8;&#x8BA4;&#x5373;&#x53EF;
+        &quot;queuePattern&quot;: &quot;event:p%v&quot;,
+        &quot;redis&quot;: {
+            &quot;dsn&quot;: &quot;127.0.0.1:6379&quot;,
+            &quot;password&quot;: &quot;&quot;,
+            &quot;maxIdle&quot;: 5,
+            &quot;connTimeout&quot;: 5000,
+            &quot;readTimeout&quot;: 5000,
+            &quot;writeTimeout&quot;: 5000
+        }
+    },
+    &quot;redis&quot;: {
+        &quot;addr&quot;: &quot;127.0.0.1:6379&quot;,
+        &quot;password&quot;: &quot;&quot;,
+        &quot;maxIdle&quot;: 5,
+        &quot;connTimeout&quot;: 5000,
+        &quot;readTimeout&quot;: 5000,
+        &quot;writeTimeout&quot;: 5000
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start judge  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop judge  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor judge  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><h3 id="alarm">Alarm</h3>
+<p>alarm&#x6A21;&#x5757;&#x662F;&#x5904;&#x7406;&#x62A5;&#x8B66;event&#x7684;&#xFF0C;judge&#x4EA7;&#x751F;&#x7684;&#x62A5;&#x8B66;event&#x5199;&#x5165;redis&#xFF0C;alarm&#x4ECE;redis&#x8BFB;&#x53D6;&#x5904;&#x7406;&#xFF0C;&#x5E76;&#x8FDB;&#x884C;&#x4E0D;&#x540C;&#x6E20;&#x9053;&#x7684;&#x53D1;&#x9001;&#x3002;</p>
+<p>&#x5728;&#x914D;&#x7F6E;&#x62A5;&#x8B66;&#x7B56;&#x7565;&#x7684;&#x65F6;&#x5019;&#x914D;&#x7F6E;&#x4E86;&#x62A5;&#x8B66;&#x7EA7;&#x522B;&#xFF0C;&#x6BD4;&#x5982;P0/P1/P2&#x7B49;&#x7B49;&#xFF0C;&#x6BCF;&#x4E2A;&#x53CA;&#x522B;&#x7684;&#x62A5;&#x8B66;&#x90FD;&#x4F1A;&#x5BF9;&#x5E94;&#x4E0D;&#x540C;&#x7684;redis&#x961F;&#x5217; alarm&#x53BB;&#x8BFB;&#x53D6;&#x8FD9;&#x4E2A;&#x6570;&#x636E;&#x7684;&#x65F6;&#x5019;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x5148;&#x8BFB;&#x53D6;P0&#x7684;&#x6570;&#x636E;&#xFF0C;&#x518D;&#x8BFB;&#x53D6;P1&#x7684;&#x6570;&#x636E;&#xFF0C;&#x6700;&#x540E;&#x8BFB;&#x53D6;P5&#x7684;&#x6570;&#x636E;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x5148;&#x5904;&#x7406;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x7684;&#x3002;&#x4E8E;&#x662F;&#xFF1A;&#x7528;&#x4E86;redis&#x7684;brpop&#x6307;&#x4EE4;&#x3002;</p>
+<p>&#x5DF2;&#x7ECF;&#x53D1;&#x9001;&#x7684;&#x544A;&#x8B66;&#x4FE1;&#x606F;&#xFF0C;alarm&#x4F1A;&#x5199;&#x5165;MySQL&#x4E2D;&#x4FDD;&#x5B58;&#xFF0C;&#x8FD9;&#x6837;&#x7528;&#x6237;&#x5C31;&#x53EF;&#x4EE5;&#x5728;dashboard&#x4E2D;&#x67E5;&#x9605;&#x5386;&#x53F2;&#x62A5;&#x8B66;&#xFF0C;&#x540C;&#x65F6;&#x9488;&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x7B56;&#x7565;&#x53D1;&#x51FA;&#x7684;&#x591A;&#x6761;&#x62A5;&#x8B66;&#xFF0C;&#x5728;MySQL&#x5B58;&#x50A8;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x805A;&#x7C7B;&#xFF1B;&#x5386;&#x53F2;&#x62A5;&#x8B66;&#x4FDD;&#x5B58;&#x7684;&#x5468;&#x671F;&#xFF0C;&#x662F;&#x53EF;&#x914D;&#x7F6E;&#x7684;&#xFF0C;&#x9ED8;&#x8BA4;&#x4E3A;7&#x5929;&#x3002;</p>
+<pre><code class="lang-json">
+{
+    &quot;log_level&quot;: &quot;debug&quot;,
+    &quot;moduleName&quot;: &quot;alarm&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:9913&quot;
+    },
+    &quot;redis&quot;: {
+        &quot;addr&quot;: &quot;127.0.0.1:6379&quot;,
+        &quot;password&quot;: &quot;&quot;,
+        &quot;maxIdle&quot;: 5,
+        &quot;highQueues&quot;: [
+            &quot;event:p0&quot;,
+            &quot;event:p1&quot;,
+            &quot;event:p2&quot;
+        ],
+        &quot;lowQueues&quot;: [
+            &quot;event:p3&quot;,
+            &quot;event:p4&quot;,
+            &quot;event:p5&quot;,
+            &quot;event:p6&quot;
+        ],
+        &quot;userIMQueue&quot;: &quot;/queue/user/im&quot;,
+        &quot;userSmsQueue&quot;: &quot;/queue/user/sms&quot;,
+        &quot;userMailQueue&quot;: &quot;/queue/user/mail&quot;,
+        &quot;syncUserFlag&quot;: &quot;/sync/userFlag&quot;,
+        &quot;syncGroupFlag&quot;: &quot;/sync/groupFlag&quot;,
+        &quot;cleanCaseFlag&quot;: &quot;/clean/caseFlag&quot;
+    },
+    &quot;api&quot;: {
+        &quot;im&quot;: &quot;http://10.0.200.3:7003/qywx.do?do=message&amp;opt=sendMessage&amp;agentId=1000006&quot;,
+        &quot;sms&quot;: &quot;http://127.0.0.1:10086/sms&quot;,
+        &quot;mail&quot;: &quot;http://127.0.0.1:10086/mail&quot;,
+        &quot;dashboard&quot;: &quot;http://127.0.0.1:8081&quot;,
+        &quot;dashboard_api&quot;:&quot;http://127.0.0.1:8080&quot;,
+        &quot;plus_api&quot;:&quot;http://127.0.0.1:8089&quot;,#falcon-plus api&#x6A21;&#x5757;&#x7684;&#x8FD0;&#x884C;&#x5730;&#x5740;
+        &quot;plus_api_token&quot;: &quot;default-token-used-in-server-side&quot;,#&#x7528;&#x4E8E;&#x548C;falcon-plus api&#x6A21;&#x5757;&#x670D;&#x52A1;&#x7AEF;&#x4E4B;&#x95F4;&#x7684;&#x901A;&#x4FE1;&#x8BA4;&#x8BC1;token
+        &quot;penglai_ops_api&quot;:&quot;http://192.168.12.92:8080/api/v1/open/getPicById?username=admin&amp;passwd=admin&quot;
+    },
+    &quot;database&quot;: {
+        &quot;addr&quot;: &quot;root:root@tcp(10.0.200.5:3306)/tuya_falcon?charset=utf8&amp;parseTime=True&amp;loc=Local&quot;,
+        &quot;max_idle&quot;: 10,
+        &quot;max_conn&quot;: 100
+    },
+    &quot;worker&quot;: {
+        &quot;im&quot;: 10,
+        &quot;sms&quot;: 10,
+        &quot;mail&quot;: 50
+    },
+    &quot;housekeeper&quot;: {
+        &quot;event_retention_days&quot;: 7,#&#x62A5;&#x8B66;&#x5386;&#x53F2;&#x4FE1;&#x606F;&#x7684;&#x4FDD;&#x7559;&#x5929;&#x6570;
+        &quot;event_delete_batch&quot;: 100
+    },
+    &quot;cron&quot;: {
+        &quot;user&quot;: &quot;0 0 0 * * 1-5&quot;,
+        &quot;user_api&quot;:&quot;http://10.0.200.3:7003/qywx.do?do=employee&amp;opt=getEmployeeAllOnTheJob&quot;,
+        &quot;group&quot;: &quot;0 0 */2 * * *&quot;,
+        &quot;app_api&quot;:&quot;http://192.168.12.92:8080/api/v1/open/getAppList?username=admin&amp;passwd=admin&quot;,
+        &quot;host_api&quot;:&quot;http://192.168.12.92:8080/api/v1/open/getMachineListById?username=admin&amp;passwd=admin&quot;
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start alarm  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop alarm  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor alarm  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><p>&#x5982;&#x679C;&#x67D0;&#x4E2A;&#x6838;&#x5FC3;&#x670D;&#x52A1;&#x6302;&#x4E86;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x9020;&#x6210;&#x5927;&#x9762;&#x79EF;&#x62A5;&#x8B66;&#xFF0C;&#x4E3A;&#x4E86;&#x51CF;&#x5C11;&#x62A5;&#x8B66;&#x77ED;&#x4FE1;&#x6570;&#x91CF;&#xFF0C;&#x6211;&#x4EEC;&#x505A;&#x4E86;&#x62A5;&#x8B66;&#x5408;&#x5E76;&#x529F;&#x80FD;&#x3002;&#x628A;&#x62A5;&#x8B66;&#x4FE1;&#x606F;&#x5199;&#x5165;dashboard&#x6A21;&#x5757;&#xFF0C;&#x7136;&#x540E;dashboard&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;url&#x5730;&#x5740;&#x7ED9;alarm&#xFF0C;alarm&#x5C06;&#x8FD9;&#x4E2A;url&#x94FE;&#x63A5;&#x53D1;&#x7ED9;&#x7528;&#x6237;&#xFF0C;&#x8FD9;&#x6837;&#x7528;&#x6237;&#x53EA;&#x8981;&#x6536;&#x5230;&#x4E00;&#x6761;&#x77ED;&#x4FE1;&#xFF08;&#x91CC;&#x8FB9;&#x662F;&#x4E2A;url&#x5730;&#x5740;&#xFF09;&#xFF0C;&#x70B9;&#x51FB;url&#x8FDB;&#x53BB;&#x5C31;&#x662F;&#x591A;&#x6761;&#x62A5;&#x8B66;&#x5185;&#x5BB9;&#x3002;</p>
+<p>highQueues&#x4E2D;&#x914D;&#x7F6E;&#x7684;&#x51E0;&#x4E2A;event&#x961F;&#x5217;&#x4E2D;&#x7684;&#x4E8B;&#x4EF6;&#x662F;&#x4E0D;&#x4F1A;&#x505A;&#x62A5;&#x8B66;&#x5408;&#x5E76;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;&#x90A3;&#x4E9B;&#x662F;&#x9AD8;&#x4F18;&#x5148;&#x7EA7;&#x7684;&#x62A5;&#x8B66;&#xFF0C;&#x62A5;&#x8B66;&#x5408;&#x5E76;&#x53EA;&#x662F;&#x9488;&#x5BF9;lowQueues&#x4E2D;&#x7684;&#x4E8B;&#x4EF6;&#x3002;&#x5982;&#x679C;&#x6240;&#x6709;&#x7684;&#x4E8B;&#x4EF6;&#x90FD;&#x4E0D;&#x60F3;&#x505A;&#x62A5;&#x8B66;&#x5408;&#x5E76;&#xFF0C;&#x5C31;&#x628A;&#x6240;&#x6709;&#x7684;event&#x961F;&#x5217;&#x90FD;&#x914D;&#x7F6E;&#x5230;highQueues&#x4E2D;&#x5373;&#x53EF;</p>
+<h3 id="task">Task</h3>
+<p>task&#x662F;&#x76D1;&#x63A7;&#x7CFB;&#x7EDF;&#x4E00;&#x4E2A;&#x5FC5;&#x8981;&#x7684;&#x8F85;&#x52A9;&#x6A21;&#x5757;&#x3002;&#x5B9A;&#x65F6;&#x4EFB;&#x52A1;&#xFF0C;&#x5B9E;&#x73B0;&#x4E86;&#x5982;&#x4E0B;&#x51E0;&#x4E2A;&#x529F;&#x80FD;&#xFF1A;</p>
+<ul>
+<li>index&#x66F4;&#x65B0;&#x3002;&#x5305;&#x62EC;&#x56FE;&#x8868;&#x7D22;&#x5F15;&#x7684;&#x5168;&#x91CF;&#x66F4;&#x65B0; &#x548C; &#x5783;&#x573E;&#x7D22;&#x5F15;&#x6E05;&#x7406;&#x3002;</li>
+<li>falcon&#x670D;&#x52A1;&#x7EC4;&#x4EF6;&#x7684;&#x81EA;&#x8EAB;&#x72B6;&#x6001;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x3002;&#x5B9A;&#x65F6;&#x4EFB;&#x52A1;&#x4E86;&#x91C7;&#x96C6;&#x4E86;transfer&#x3001;graph&#x3001;task&#x8FD9;&#x4E09;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x5185;&#x90E8;&#x72B6;&#x6001;&#x6570;&#x636E;&#x3002;</li>
+<li>falcon&#x81EA;&#x68C0;&#x63A7;&#x4EFB;&#x52A1;&#x3002;</li>
+</ul>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: false,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x8BE5;http&#x7AEF;&#x53E3;&#xFF0C;&#x8BE5;&#x7AEF;&#x53E3;&#x4E3A;&#x63A7;&#x5236;&#x7AEF;&#x53E3;&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x5BF9;task&#x53D1;&#x9001;&#x63A7;&#x5236;&#x547D;&#x4EE4;&#x3001;&#x7EDF;&#x8BA1;&#x547D;&#x4EE4;&#x3001;debug&#x547D;&#x4EE4;&#x7B49;
+    &quot;moduleName&quot;: &quot;task&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;http&quot;: {
+        &quot;enable&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:8002&quot;
+    },
+    &quot;database&quot;:{
+        &quot;addr&quot;: &quot;root:root@tcp(127.0.0.1:3306)/graph?loc=Local&amp;parseTime=true&quot;,
+        &quot;max_idle&quot;: 4
+    },
+    &quot;index&quot;: {#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;&#x7D22;&#x5F15;&#x66F4;&#x65B0;&#x4EFB;&#x52A1;
+        &quot;enable&quot;: false,
+        &quot;dsn&quot;: &quot;root:root@tcp(127.0.0.1:3306)/graph?loc=Local&amp;parseTime=true&quot;,#&#x7D22;&#x5F15;&#x670D;&#x52A1;&#x7684;MySQL&#x7684;&#x8FDE;&#x63A5;&#x4FE1;&#x606F;
+        &quot;maxIdle&quot;: 4,
+        &quot;autoDelete&quot;: false,#&#x662F;&#x5426;&#x81EA;&#x52A8;&#x5220;&#x9664;&#x5783;&#x573E;&#x7D22;&#x5F15;
+        &quot;cluster&quot;:{#&#x540E;&#x7AEF;graph&#x7D22;&#x5F15;&#x66F4;&#x65B0;&#x7684;&#x5B9A;&#x65F6;&#x4EFB;&#x52A1;&#x63CF;&#x8FF0;&#x3002;&#x4E00;&#x6761;&#x8BB0;&#x5F55;&#x7684;&#x5F62;&#x5982;: &quot;graph&#x5730;&#x5740;:&#x6267;&#x884C;&#x5468;&#x671F;&#x63CF;&#x8FF0;&quot;&#xFF0C;&#x901A;&#x8FC7;&#x8BBE;&#x7F6E;&#x4E0D;&#x540C;&#x7684;&#x6267;&#x884C;&#x5468;&#x671F;&#xFF0C;&#x6765;&#x5B9E;&#x73B0;&#x8D1F;&#x8F7D;&#x5728;&#x65F6;&#x95F4;&#x4E0A;&#x7684;&#x5747;&#x8861;&#x3002;
+            &quot;test.hostname01:6071&quot; : &quot;0 0 0 ? * 0-5&quot;,
+            &quot;test.hostname02:6071&quot; : &quot;0 30 0 ? * 0-5&quot;
+        }
+    },
+    &quot;collector&quot; : {
+        &quot;enable&quot;: true,#&#x8868;&#x793A;&#x662F;&#x5426;&#x5F00;&#x542F;falcon&#x7684;&#x81EA;&#x8EAB;&#x72B6;&#x6001;&#x91C7;&#x96C6;&#x4EFB;&#x52A1;
+        &quot;destUrl&quot; : &quot;http://127.0.0.1:1988/v1/push&quot;,#&#x76D1;&#x63A7;&#x6570;&#x636E;&#x7684;push&#x5730;&#x5740;,&#x9ED8;&#x8BA4;&#x4E3A;&#x672C;&#x673A;&#x7684;1988&#x63A5;&#x53E3;
+        &quot;srcUrlFmt&quot; : &quot;http://%s/statistics/all&quot;,# &#x76D1;&#x63A7;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x7684;url&#x683C;&#x5F0F;, %s&#x5C06;&#x7531;&#x673A;&#x5668;&#x540D;&#x6216;&#x57DF;&#x540D;&#x66FF;&#x6362;
+        &quot;cluster&quot; : [#falcon&#x540E;&#x7AEF;&#x670D;&#x52A1;&#x5217;&#x8868;&#xFF0C;&#x7528;&#x5177;&#x4F53;&#x7684;&quot;module,hostname:port&quot;&#x8868;&#x793A;&#xFF0C;module&#x53D6;&#x503C;&#x53EF;&#x4EE5;&#x4E3A;graph&#x3001;transfer&#x3001;task&#x7B49;
+            &quot;transfer,test.hostname:6060&quot;,
+            &quot;graph,test.hostname:6071&quot;,
+            &quot;task,test.hostname:8001&quot;
+        ]
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./control start &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./control stop  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+# &#x6821;&#x9A8C;&#x670D;&#x52A1;,&#x8FD9;&#x91CC;&#x5047;&#x5B9A;&#x670D;&#x52A1;&#x5F00;&#x542F;&#x4E86;8002&#x7684;http&#x76D1;&#x542C;&#x7AEF;&#x53E3;&#x3002;&#x68C0;&#x9A8C;&#x7ED3;&#x679C;&#x4E3A;ok&#x8868;&#x660E;&#x670D;&#x52A1;&#x6B63;&#x5E38;&#x542F;&#x52A8;&#x3002;
+curl -s &quot;127.0.0.1:8002/health&quot;
+</code></pre><p>&#x670D;&#x52A1;&#x542F;&#x52A8;&#x540E;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x670D;&#x52A1;&#x7684;&#x8FD0;&#x884C;&#x72B6;&#x6001;&#xFF0C;&#x65E5;&#x5FD7;&#x6587;&#x4EF6;&#x5730;&#x5740;&#x4E3A;./var/app.log&#x3002;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8C03;&#x8BD5;&#x811A;&#x672C;<code>./test/debug</code>&#x67E5;&#x770B;&#x670D;&#x52A1;&#x5668;&#x7684;&#x5185;&#x90E8;&#x72B6;&#x6001;&#x6570;&#x636E;&#xFF0C;&#x5982; &#x8FD0;&#x884C; <code>bash ./test/debug</code> &#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x670D;&#x52A1;&#x5668;&#x5185;&#x90E8;&#x72B6;&#x6001;&#x7684;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x3002;</p>
+<h4 id="&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#x6E05;&#x9664;">&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#x6E05;&#x9664;</h4>
+<p>&#x76D1;&#x63A7;&#x6570;&#x636E;&#x505C;&#x6B62;&#x4E0A;&#x62A5;&#x540E;&#xFF0C;&#x8BE5;&#x6570;&#x636E;&#x5BF9;&#x5E94;&#x7684;&#x7D22;&#x5F15;&#x4E5F;&#x4F1A;&#x505C;&#x6B62;&#x66F4;&#x65B0;&#x3001;&#x53D8;&#x4E3A;&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#x3002;&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#xFF0C;&#x5F71;&#x54CD;&#x89C6;&#x542C;&#xFF0C;&#x90E8;&#x5206;&#x7528;&#x6237;&#x5E0C;&#x671B;&#x5220;&#x9664;&#x4E4B;&#x3002;</p>
+<p>&#x539F;&#x6765;&#x7684;&#x65B9;&#x6848;&#xFF0C;&#x662F;: &#x901A;&#x8FC7;task&#x6A21;&#x5757;&#xFF0C;&#x6709;&#x6570;&#x636E;&#x4E0A;&#x62A5;&#x7684;&#x7D22;&#x5F15;&#x3001;&#x6BCF;&#x5929;&#x88AB;&#x66F4;&#x65B0;&#x4E00;&#x6B21;&#xFF0C;7&#x5929;&#x672A;&#x88AB;&#x66F4;&#x65B0;&#x7684;&#x7D22;&#x5F15;&#x3001;&#x6E05;&#x9664;&#x4E4B;&#x3002;&#x4F46;&#x662F;&#xFF0C;&#x5F88;&#x591A;&#x7528;&#x6237;&#x4E0D;&#x80FD;&#x6B63;&#x786E;&#x914D;&#x7F6E;graph&#x5B9E;&#x4F8B;&#x7684;http&#x63A5;&#x53E3;&#xFF0C;&#x5BFC;&#x81F4;&#x6B63;&#x5E38;&#x4E0A;&#x62A5;&#x7684;&#x76D1;&#x63A7;&#x6570;&#x636E;&#x7684;&#x7D22;&#x5F15; &#x65E0;&#x6CD5;&#x88AB;&#x66F4;&#x65B0;&#xFF1B;7&#x5929;&#x540E;&#xFF0C;&#x5408;&#x6CD5;&#x7D22;&#x5F15;&#x88AB;task&#x6A21;&#x5757;&#x8BEF;&#x5220;&#x9664;&#x3002;&#x4E3A;&#x4E86;&#x89E3;&#x51B3;&#x4E0A;&#x8FF0;&#x95EE;&#x9898;&#x505C;&#x6389;&#x4E86;task&#x6A21;&#x5757;&#x81EA;&#x52A8;&#x5220;&#x9664;&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#x7684;&#x529F;&#x80FD;(autoDelete=false)&#xFF1B;&#x5982;&#x679C;&#x4F60;&#x786E;&#x5B9A;&#x914D;&#x7F6E;&#x7684;index.cluster&#x6B63;&#x786E;&#x65E0;&#x8BEF;&#xFF0C;&#x53EF;&#x4EE5;&#x81EA;&#x884C;&#x6253;&#x5F00;&#x8BE5;&#x529F;&#x80FD;&#x3002;</p>
+<p>&#x624B;&#x52A8;&#x5220;&#x9664;&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#x7684;&#x65B9;&#x6CD5;:</p>
+<ol>
+<li>&#x8FDB;&#x884C;&#x4E00;&#x6B21;&#x7D22;&#x5F15;&#x6570;&#x636E;&#x7684;&#x5168;&#x91CF;&#x66F4;&#x65B0;&#x3002;&#x65B9;&#x6CD5;&#x4E3A;: &#x9488;&#x5BF9;&#x6BCF;&#x4E2A;graph&#x5B9E;&#x4F8B;&#xFF0C;&#x8FD0;&#x884C;<code>curl -s &quot;127.0.0.1:6071/index/updateAll&quot;</code>&#xFF0C;&#x5F02;&#x6B65;&#x5730;&#x89E6;&#x53D1;graph&#x5B9E;&#x4F8B;&#x7684;&#x7D22;&#x5F15;&#x5168;&#x91CF;&#x66F4;&#x65B0;(&#x8FD9;&#x91CC;&#x5047;&#x8BBE;graph&#x7684;http&#x76D1;&#x542C;&#x7AEF;&#x53E3;&#x4E3A;6071)&#xFF0C;&#x7B49;&#x5F85;&#x6240;&#x6709;&#x7684;graph&#x5B9E;&#x4F8B;&#x5B8C;&#x6210;&#x7D22;&#x5F15;&#x5168;&#x91CF;&#x66F4;&#x65B0;&#x540E; &#x8FDB;&#x884C;&#x7B2C;2&#x6B65;&#x64CD;&#x4F5C;&#x3002;&#x5355;&#x4E2A;graph&#x5B9E;&#x4F8B;&#xFF0C;&#x7D22;&#x5F15;&#x5168;&#x91CF;&#x66F4;&#x65B0;&#x7684;&#x8017;&#x65F6;&#xFF0C;&#x56E0;counter&#x6570;&#x91CF;&#x3001;mysql&#x6570;&#x636E;&#x5E93;&#x6027;&#x80FD;&#x800C;&#x4E0D;&#x540C;&#xFF0C;&#x4E00;&#x822C;&#x8017;&#x65F6;&#x4E0D;&#x5927;&#x4E8E;30min&#x3002;</li>
+<li>&#x5F85;&#x7D22;&#x5F15;&#x5168;&#x91CF;&#x66F4;&#x65B0;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x53D1;&#x8D77;&#x8FC7;&#x671F;&#x7D22;&#x5F15;&#x5220;&#x9664; <code>curl -s &quot;$Hostname.Of.Task:$Http.Port/index/delete&quot;</code>&#x3002;&#x8FD0;&#x884C;&#x7D22;&#x5F15;&#x5220;&#x9664;&#x524D;&#xFF0C;&#x8BF7;&#x52A1;&#x5FC5;<strong>&#x786E;&#x4FDD;&#x7D22;&#x5F15;&#x5168;&#x91CF;&#x66F4;&#x65B0;&#x5DF2;&#x5B8C;&#x6210;</strong>&#x3002;</li>
+</ol>
+<h3 id="nodata">Nodata</h3>
+<p>nodata&#x7528;&#x4E8E;&#x68C0;&#x6D4B;&#x76D1;&#x63A7;&#x6570;&#x636E;&#x7684;&#x4E0A;&#x62A5;&#x5F02;&#x5E38;&#x3002;nodata&#x548C;&#x5B9E;&#x65F6;&#x62A5;&#x8B66;judge&#x6A21;&#x5757;&#x534F;&#x540C;&#x5DE5;&#x4F5C;.&#x914D;&#x7F6E;&#x4E86;nodata&#x7684;&#x91C7;&#x96C6;&#x9879;&#x8D85;&#x65F6;&#x672A;&#x4E0A;&#x62A5;&#x6570;&#x636E;&#xFF0C;nodata&#x751F;&#x6210;&#x4E00;&#x6761;&#x9ED8;&#x8BA4;&#x7684;&#x6A21;&#x62DF;&#x6570;&#x636E;&#xFF1B;&#x7528;&#x6237;&#x914D;&#x7F6E;&#x76F8;&#x5E94;&#x7684;&#x62A5;&#x8B66;&#x7B56;&#x7565;&#xFF0C;&#x6536;&#x5230;mock&#x6570;&#x636E;&#x5C31;&#x4EA7;&#x751F;&#x62A5;&#x8B66;&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: true,
+    &quot;moduleName&quot;: &quot;nodata&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;extra_region&quot;: &quot;nx&quot;,
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:6090&quot;
+    },
+    &quot;plus_api&quot;:{
+        &quot;connectTimeout&quot;: 500,
+        &quot;requestTimeout&quot;: 2000,
+        &quot;addr&quot;: &quot;http://127.0.0.1:8080&quot;,#falcon-plus api&#x6A21;&#x5757;&#x7684;&#x8FD0;&#x884C;&#x5730;&#x5740;
+        &quot;token&quot;: &quot;default-token-used-in-server-side&quot;#&#x7528;&#x4E8E;&#x548C;falcon-plus api&#x6A21;&#x5757;&#x7684;&#x4EA4;&#x4E92;&#x8BA4;&#x8BC1;token
+    },
+    &quot;database&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;addr&quot;: &quot;root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&amp;parseTime=true&amp;wait_timeout=604800&quot;,
+        &quot;max_idle&quot;: 4
+    },
+    &quot;collector&quot;:{
+        &quot;enabled&quot;: true,
+        &quot;batch&quot;: 200,
+        &quot;concurrent&quot;: 10
+    },
+    &quot;sender&quot;:{
+        &quot;enabled&quot;: true,
+        &quot;connectTimeout&quot;: 500,
+        &quot;requestTimeout&quot;: 2000,
+        &quot;transferAddr&quot;: &quot;127.0.0.1:6060&quot;,#transfer&#x7684;http&#x76D1;&#x542C;&#x5730;&#x5740;,&#x4E00;&#x822C;&#x5F62;&#x5982;&quot;domain.transfer.service:6060&quot;
+        &quot;batch&quot;: 500
+    },
+    &quot;redis&quot;: {
+        &quot;addr&quot;: &quot;127.0.0.1:6379&quot;,
+        &quot;password&quot;: &quot;&quot;,
+        &quot;maxIdle&quot;: 5,
+        &quot;Flag&quot;: &quot;/falcon/nodata/flag&quot;
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start nodata  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop nodata  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor nodata  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><h3 id="aggregator">Aggregator</h3>
+<p>&#x96C6;&#x7FA4;&#x805A;&#x5408;&#x6A21;&#x5757;&#x3002;&#x805A;&#x5408;&#x67D0;&#x96C6;&#x7FA4;&#x4E0B;&#x7684;&#x6240;&#x6709;&#x673A;&#x5668;&#x7684;&#x67D0;&#x4E2A;&#x6307;&#x6807;&#x7684;&#x503C;&#xFF0C;&#x63D0;&#x4F9B;&#x4E00;&#x79CD;&#x96C6;&#x7FA4;&#x89C6;&#x89D2;&#x7684;&#x76D1;&#x63A7;&#x4F53;&#x9A8C;&#x3002;</p>
+<pre><code class="lang-json">{
+    &quot;debug&quot;: true,
+    &quot;moduleName&quot;: &quot;aggregator&quot;,
+    &quot;apolloURL&quot;:&quot;http://in-mousika-config.tuya-inc.top:8181/configs/falcon-backend-s/default/&quot;,
+    &quot;http&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;listen&quot;: &quot;0.0.0.0:6055&quot;
+    },
+    &quot;database&quot;: {
+        &quot;addr&quot;: &quot;root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&amp;parseTime=true&quot;,
+        &quot;max_idle&quot;: 10,
+        &quot;ids&quot;: [1, -1],
+        &quot;interval&quot;: 55
+    },
+    &quot;api&quot;: {
+        &quot;connect_timeout&quot;: 500,
+        &quot;request_timeout&quot;: 2000,
+        &quot;plus_api&quot;: &quot;http://127.0.0.1:8080&quot;,#falcon-plus api&#x6A21;&#x5757;&#x7684;&#x8FD0;&#x884C;&#x5730;&#x5740;
+        &quot;plus_api_token&quot;: &quot;default-token-used-in-server-side&quot;,#&#x548C;falcon-plus api &#x6A21;&#x5757;&#x4EA4;&#x4E92;&#x7684;&#x8BA4;&#x8BC1;token
+        &quot;push_api&quot;: &quot;http://127.0.0.1:1988/v1/push&quot; #push&#x6570;&#x636E;&#x7684;http&#x63A5;&#x53E3;&#xFF0C;&#x8FD9;&#x662F;agent&#x63D0;&#x4F9B;&#x7684;&#x63A5;&#x53E3;
+    },
+    &quot;redis&quot;: {
+        &quot;addr&quot;: &quot;127.0.0.1:6379&quot;,
+        &quot;password&quot;: &quot;&quot;,
+        &quot;maxIdle&quot;: 5,
+        &quot;maxWorker&quot;:5,
+        &quot;flag&quot;: &quot;/falcon/aggregator/flag&quot;,
+        &quot;queue&quot;:&quot;/falcon/aggregator/queue&quot;
+    }
+}
+</code></pre>
+<h4 id="&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;">&#x8FDB;&#x7A0B;&#x7BA1;&#x7406;</h4>
+<pre><code>./open-falcon start aggregator  &#x542F;&#x52A8;&#x8FDB;&#x7A0B;
+./open-falcon stop aggregator  &#x505C;&#x6B62;&#x8FDB;&#x7A0B;
+./open-falcon monitor aggregator  &#x67E5;&#x770B;&#x65E5;&#x5FD7;
+</code></pre><h2 id="&#x6E90;&#x7801;&#x76F8;&#x5173;&#x89E3;&#x8BFB;">&#x6E90;&#x7801;&#x76F8;&#x5173;&#x89E3;&#x8BFB;</h2>
+<p><a href="Sender.md">&#x62A5;&#x8B66;&#x53D1;&#x9001;&#x539F;&#x7406;</a></p>
+<p><a href="HBS.md">HBS&#x539F;&#x7406;</a></p>
+<p><a href="judge.md">&#x62A5;&#x8B66;&#x5224;&#x65AD;&#x539F;&#x7406;</a></p>
+<p><a href="Alarm.md">&#x62A5;&#x8B66;&#x539F;&#x7406;</a></p>
+<p><a href="Transfer.md">&#x53D1;&#x9001;&#x6570;&#x636E;&#x70B9;&#x539F;&#x7406;</a></p>
+<p><a href="Agent.md">agent&#x539F;&#x7406;</a></p>
+<p><a href="Graph.md">&#x7ED8;&#x56FE;&#x539F;&#x7406;</a></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../netty.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: nettty">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Falcon","level":"1.15","depth":1,"previous":{"title":"nettty","level":"1.14","depth":1,"path":"note/netty.md","ref":"note/netty.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"note/falcon/README.md","mtime":"2019-09-19T15:26:17.227Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-09-22T02:35:39.866Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

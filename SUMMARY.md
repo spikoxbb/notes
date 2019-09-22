@@ -6,7 +6,7 @@
 
 * [java](note/java/README.md)
 
-* [golang](note/go/README.md)
+* [golang](note/golang/README.md)
 
 * [Kafka](note/kafka.md)
 
