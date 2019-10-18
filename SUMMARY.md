@@ -2,6 +2,8 @@
 
 * [Introduction](README.md)
 
+* [BBR算法](bbr.md)
+
 * [springboot](note/springboot.md)
 
 * [java](note/java/README.md)
