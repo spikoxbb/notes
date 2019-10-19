@@ -94,7 +94,195 @@ MIME协议用于定义复杂邮件体的格式，它可以表达多段平行的�
 MIME邮件在RFC822文档中定义的邮件头字段的基础上，扩充了一些自己专用的邮件头字段，例如，使用MIME-Version头字段指定MIME协议的版本，使用Content-Type头字段指定邮件体的MIME类型，使用Content-Transfer-Encoding头字段指定编码方法，如下所示： 　　　
 
 ```json
-`MIME-Version:``1.0` `Content-Type:multipart/mixed;boundary=``"----=_NextPart_000_0050_01C"`
+MIME-Version:1.0 Content-Type:multipart/mixed;boundary="----=_NextPart_000_0050_01C"
 ```
 
 “multipart/mixed”部分说明邮件体中包含有多段数据，每段数据之间使用boundary属性中指定的字符文本作为分隔标识符。另外，MIME邮件也扩展了RFC822文档中已经定义了的邮件头字段的内涵，例如，定义了subject头字段中的值内容的格式，以便通过编码的方式让邮件主题中也可以使用非ASCII码的字符。subject头字段中的值嵌套在一对“=?”和“?=”标记符之间，标记符之间的内容由三部分组成：邮件主题的原始内容的字符集、当前采用的编码方式、编码后的结果.
+
+# javaMail
+
+## API
+
+- Message 类:javax.mail.Message 类是创建和解析邮件的核心 API，这是一个抽象类，通常使用它的子类javax.mail.internet.MimeMessage 类。它的实例对象表示一份电子邮件。
+- Transport 类：javax.mail.Transport 类是发送邮件的核心API 类，它的实例对象代表实现了某个邮件发送协议的邮件发送对象，例如 SMTP 协议。
+- javax.mail.Store 类是接收邮件的核心 API 类，它的实例对象代表实现了某个邮件接收协议的邮件接收对象，例如 POP3 协议。
+- Session 类：javax.mail.Session 类用于定义整个应用程序所需的环境信息，以及收集客户端与邮件服务器建立网络连接的会话信息，例如邮件服务器的主机名、端口号、采用的邮件发送和接收协议等。Session 对象根据这些信息构建用于邮件收发的 Transport 和 Store 对象。
+
+## 使用 JavaMail 发送邮件
+
+```java
+public class Test {
+    //发件人地址
+    public static String senderAddress = "xx@qq.com";
+    //收件人地址
+    public static String recipientAddress = "xx@qq.com";
+    //发件人账户名
+    public static String senderAccount = "xx@qq.com";
+    //发件人账户密码
+    public static String senderPassword = "xx";
+
+    public static void main(String[] args) throws Exception {
+        //1、连接邮件服务器的参数配置
+        Properties props = new Properties();
+        //设置用户的认证方式
+        props.setProperty("mail.smtp.auth", "true");
+        //设置传输协议
+        props.setProperty("mail.transport.protocol", "smtp");
+        //设置发件人的SMTP服务器地址
+        props.setProperty("mail.smtp.host", "smtp.qq.com");
+        //2、创建定义整个应用程序所需的环境信息的 Session 对象
+        Session session = Session.getInstance(props);
+        //设置调试信息在控制台打印出来
+        session.setDebug(true);
+        //3、创建邮件的实例对象
+        Message msg = getMimeMessage(session);
+        //4、根据session对象获取邮件传输对象Transport
+        Transport transport = session.getTransport();
+        //设置发件人的账户名和密码
+        transport.connect(senderAccount, senderPassword);
+        //发送邮件，并发送到所有收件人地址，message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人
+        transport.sendMessage(msg,msg.getAllRecipients());
+
+        //如果只想发送给指定的人，可以如下写法
+        //transport.sendMessage(msg, new Address[]{new InternetAddress("xxx@qq.com")});
+
+        //5、关闭邮件连接
+        transport.close();
+    }
+
+    public static MimeMessage getMimeMessage(Session session) throws Exception{
+        //创建一封邮件的实例对象
+        MimeMessage msg = new MimeMessage(session);
+        //设置发件人地址
+        msg.setFrom(new InternetAddress(senderAddress));
+        /**
+         * 设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行
+         * MimeMessage.RecipientType.TO:发送
+         * MimeMessage.RecipientType.CC：抄送
+         * MimeMessage.RecipientType.BCC：密送
+         */
+        msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
+        //设置邮件主题
+        msg.setSubject("jAVA MAIL","UTF-8");
+        //设置邮件正文
+        msg.setContent("java mail", "text/html;charset=UTF-8");
+        //设置邮件的发送时间,默认立即发送
+        msg.setSentDate(new Date());
+
+        return msg;
+    }
+}
+```
+
+## 使用 JavaMail 接收邮件
+
+```java
+ public void receive() throws Exception {
+        //1、连接邮件服务器的参数配置
+        Properties props = new Properties();
+        //设置传输协议
+        props.setProperty("mail.store.protocol", "pop3");
+        //设置收件人的POP3服务器
+        props.setProperty("mail.pop3.host", "pop.qq.com");
+        //2、创建定义整个应用程序所需的环境信息的 Session 对象
+        Session session = Session.getInstance(props);
+        //设置调试信息在控制台打印出来
+        //session.setDebug(true);
+
+        Store store = session.getStore("pop3");
+        //连接收件人POP3服务器
+        store.connect(senderAccount, senderPassword);
+        //获得用户的邮件账户，注意通过pop3协议获取某个邮件夹的名称只能为inbox
+        Folder folder = store.getFolder("inbox");
+        //设置对邮件账户的访问权限
+        folder.open(Folder.READ_WRITE);
+
+        //得到邮件账户的所有邮件信息
+        Message [] messages = folder.getMessages();
+        for(int i = 0 ; i < messages.length ; i++){
+            //获得邮件主题
+            String subject = messages[i].getSubject();
+            //获得邮件发件人
+            Address[] from = messages[i].getFrom();
+            //获取邮件内容（包含邮件内容的html代码）
+            Object content = messages[i].getContent();
+        }
+
+        System.out.println("count===================="+messages.length);
+        //关闭邮件夹对象
+        folder.close();
+        //关闭连接对象
+        store.close();
+    }
+```
+
+## 使用 JavaMail 发送带图片、附件的邮件
+
+```java
+ public MimeMessage getMimeMessage(Session session) throws Exception{
+        //创建一封邮件的实例对象
+        MimeMessage msg = new MimeMessage(session);
+        //设置发件人地址
+        msg.setFrom(new InternetAddress(senderAddress));
+        /**
+         * 设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行
+         * MimeMessage.RecipientType.TO:发送
+         * MimeMessage.RecipientType.CC：抄送
+         * MimeMessage.RecipientType.BCC：密送
+         */
+        msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
+        //设置邮件主题
+        msg.setSubject("jAVA MAIL","UTF-8");
+        //设置邮件正文
+        //msg.setContent("java mail", "text/html;charset=UTF-8");
+
+        // 5. 创建图片"节点"
+        MimeBodyPart image = new MimeBodyPart();
+        // 读取本地文件
+        DataHandler dh = new DataHandler(new FileDataSource("src/main/test/wje.jpg"));
+        // 将图片数据添加到"节点"
+        image.setDataHandler(dh);
+        // 为"节点"设置一个唯一编号（在文本"节点"将引用该ID）
+        image.setContentID("pic");
+
+        // 6. 创建文本"节点"
+        MimeBodyPart text = new MimeBodyPart();
+        // 这里添加图片的方式是将整个图片包含到邮件内容中, 实际上也可以以 http 链接的形式添加网络图片
+        text.setContent("这是一张图片<br/><img src='cid:pic'/>", "text/html;charset=UTF-8");
+
+        // 7. （文本+图片）设置 文本 和 图片"节点"的关系（将 文本 和 图片"节点"合成一个混合"节点"）
+        MimeMultipart mm_text_image = new MimeMultipart();
+        mm_text_image.addBodyPart(text);
+        mm_text_image.addBodyPart(image);
+        mm_text_image.setSubType("related");    // 关联关系
+
+        // 8. 将 文本+图片 的混合"节点"封装成一个普通"节点"
+        // 最终添加到邮件的 Content 是由多个 BodyPart 组成的 Multipart, 所以我们需要的是 BodyPart,
+        // 上面的 mailTestPic 并非 BodyPart, 所有要把 mm_text_image 封装成一个 BodyPart
+        MimeBodyPart text_image = new MimeBodyPart();
+        text_image.setContent(mm_text_image);
+
+        // 9. 创建附件"节点"
+        MimeBodyPart attachment = new MimeBodyPart();
+        // 读取本地文件
+        DataHandler dh2 = new DataHandler(new FileDataSource("src/main/test/wje.jpg"));
+        // 将附件数据添加到"节点"
+        attachment.setDataHandler(dh2);
+        // 设置附件的文件名（需要编码）
+        attachment.setFileName(MimeUtility.encodeText(dh2.getName()));
+
+        // 10. 设置（文本+图片）和 附件 的关系（合成一个大的混合"节点" / Multipart ）
+        MimeMultipart mm = new MimeMultipart();
+        mm.addBodyPart(text_image);
+        mm.addBodyPart(attachment);     // 如果有多个附件，可以创建多个多次添加
+        mm.setSubType("mixed");         // 混合关系
+
+        // 11. 设置整个邮件的关系（将最终的混合"节点"作为邮件的内容添加到邮件对象）
+        msg.setContent(mm);
+        //设置邮件的发送时间,默认立即发送
+        msg.setSentDate(new Date());
+
+        return msg;
+    }
+```
+
