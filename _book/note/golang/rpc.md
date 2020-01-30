@@ -314,7 +314,6 @@ type methodType struct {
     numCalls   uint              //调用次数
 }
 
-
 type service struct {
     name   string                 // 服务名,这里通常为register时的对象名或自定义对象名
     rcvr   reflect.Value          // 服务的接收者的反射值
@@ -422,9 +421,7 @@ type Response struct {
 }
 ```
 
-取出请求,并得到相应函数的调用参数
-
-
+取出请求,并得到相应函数的调用参数:
 
 ```go
 func (server *Server) readRequestHeader(codec ServerCodec) (svc *service, mtype *methodType, req *Request, keepReading bool, err error) {
