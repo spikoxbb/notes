@@ -41,3 +41,53 @@ java的内存屏障通常所谓的四种即LoadLoad,StoreStore,LoadStore,StoreLo
 
 **在每个volatile写操作前插入StoreStore屏障，在写操作后插入StoreLoad屏障； 在每个volatile读操作前插入LoadLoad屏障，在读操作后插入LoadStore屏障；**
 
+## 逸出
+
+指不应该发布的对象被发布，如返回私有数组。
+
+### 内部类导致逸出
+
+```java
+public class A {
+    public A(B b){
+        f2(C c){       
+            new D(){
+                public void f3(E e){......}
+            }
+        }
+    }
+}
+```
+
+1. A发布D时隐含地发布了A实例本身，因为内部类持有外部类的引用。
+2. 从构造函数中发布对象时如上，发布了尚未构造完成的对象（如上，this引用在构造过程中逸出）。
+
+#### 为什么内部类持有外部类的引用
+
+编译器自动为内部类添加一个成员变量(this$0), 这个成员变量的类型和外部类的类型相同， 编译器自动为内部类的构造方法添加一个参数， 参数的类型是外部类的类型， 在构造方法内部使用这个参数为内部类中添加的成员变量赋值；在调用内部类的构造函数初始化内部类对象时，会默认传入外部类的引用。
+
+## 线程封闭
+
+仅在单线程内访问数据，不需要同步。如connection隐含地被封闭于线程中（安全），connection返回之前，连接池不会将它分配于其他线程。
+
+#### Ad-hoc线程封闭
+
+指维护线程封闭性的职责完全由程序实现来承担。Ad-hoc线程封闭是非常脆弱的，因为没有任何一种语言特性，例如可见性修饰符或局部变量，能将对象封闭到目标线程上。
+
+#### ThreadLocal封闭
+
+ThreadLocal对每一个使用该变量的线程都存有一份副本。
+
+JDBC初始化Connection对象，避免在每调用一个方法时传递一个connection对象。
+
+```java
+private static ThreadLocal<Connection> connectionHolder = new ThreadLocal<connection>(){
+    public Connection initialValue(){
+		return DriverManager.getConnection(url);
+    }
+}
+public Connection getConnection(){
+    return connectionHolder.get();
+}
+```
+
