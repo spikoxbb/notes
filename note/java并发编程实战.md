@@ -41,6 +41,8 @@ java的内存屏障通常所谓的四种即LoadLoad,StoreStore,LoadStore,StoreLo
 
 **在每个volatile写操作前插入StoreStore屏障，在写操作后插入StoreLoad屏障； 在每个volatile读操作前插入LoadLoad屏障，在读操作后插入LoadStore屏障；**
 
+# 安全发布
+
 ## 逸出
 
 指不应该发布的对象被发布，如返回私有数组。
@@ -91,3 +93,55 @@ public Connection getConnection(){
 }
 ```
 
+## 不可变对象
+
+创建后不再更改；均为final域；创建时this未逸出。
+
+String不可变，在String类中有个私有实例字段hash表示该串的哈希值，在第一次调用hashCode方法时，字符串的哈希值被计算并且赋值给hash字段，之后再调用hashCode方法便可以直接取hash字段返回。final只是在编译期，jvm是没有final的，因此可用反射更改。
+
+### 未被正确发布对象，其他线程看到的域为空引用或旧值
+
+```java
+public class Holder {
+  private int n; 
+  public Holder(int n){
+      this.n = n;
+  }
+  public void assertSanity() { 
+    if (n != n) {
+        throw new AssertionError("This statement is false"); 
+    }
+  }
+}
+
+// Unsafe publication
+public Holder holder;
+public void initialize() {
+     holder = new Holder(42);
+}
+```
+
+其他线程可能看到的Holder域是一个空引用或者之前的旧值。
+
+在构造函数内对一个final域的写入,与随后把这个被构造对象的引用赋值给一个引用变量,这两个操作之间不能重排序.
+
+**`final`在对象的构造函数中设置对象的字段；并且不要在对象的构造函数完成之前在另一个线程可以看到它的地方编写对正在构造的对象的引用。如果执行此操作，则当另一个线程看到该对象时，该线程将始终看到该对象`final`字段的正确构造版本。它还将看到那些`final` 字段所引用的任何对象或数组的版本至少与这些`final`字段一样最新。**
+
+### 安全发布
+
+对象的引用，状态需同时可见。
+
+- 在静态初始化函数中初始化一个对象引用
+- 对象引用存入volatile域或AtomicReferance中
+- 对象引用存入某个正确的构造的对象的final域中
+- 对象引用存入一个由锁保护的域中（包括线程安全容器，如copyOnWriteArrayList）
+
+**安全发布，对象可见，状态也可见，若状态不改变，则访问安全。**
+
+##　实例封闭
+
+1. 包装器工厂方法，如Collections.synchronizedList(装饰器模式)，包装器对象拥有底层对象的唯一引用。
+2. java监视器模式，封装可变对象，由内置锁保护。
+3. 如Collections.unmodifiableMap(...)【赋值final域，防止容器对象被修改】
+
+车辆追踪，map与point均未发布：
