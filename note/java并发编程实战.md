@@ -127,6 +127,11 @@ public void initialize() {
 
 **`final`在对象的构造函数中设置对象的字段；并且不要在对象的构造函数完成之前在另一个线程可以看到它的地方编写对正在构造的对象的引用。如果执行此操作，则当另一个线程看到该对象时，该线程将始终看到该对象`final`字段的正确构造版本。它还将看到那些`final` 字段所引用的任何对象或数组的版本至少与这些`final`字段一样最新。**
 
+1. JMM 禁止编译器把 final 域的**写重排序到构造函数之外。**
+2. **编译器会在 final 域的写之后，构造函数 return 之前，插入一个 StoreStore 屏障。**这个屏障禁止处理器把 final 域的写重排序到构造函数之外。
+3. 写普通域的操作可能被编译器重排序到了构造函数之外
+4. "初次读对象引用"与"初次读该对象包含的 final 域"，JMM 禁止处理器重排序这两个操作， **编译器会在读 final 域操作的前面插入一个 LoadLoad 屏障。**初次读对象引用与初次读该对象包含的 final 域，这两个操作之间存在间接依赖关系。由于编译器遵守间接依赖关系，因此编译器不会重排序这两个操作（**读引用|loadload|读final域**）。大多数处理器也会遵守间接依赖，大多数处理器也不会重排序这两个操作。但有少数处理器允许对存在间接依赖关系的操作做重排序（比如 alpha 处理器），这个规则就是专门用来针对这种处理器（ **alpha 处理器因此可能出现先读普通域再读引用导致值不对**）。
+
 ### 安全发布
 
 对象的引用，状态需同时可见。
@@ -145,3 +150,49 @@ public void initialize() {
 3. 如Collections.unmodifiableMap(...)【赋值final域，防止容器对象被修改】
 
 车辆追踪，map与point均未发布：
+
+```java
+//一致却不实时，数据极大时降低性能
+return map --> deepCopy,Collections.unmodifiableMap(new HashMap(......));
+//unmodifiableMap不能防止修改容器中的对象，因此复制point对象本身 copy point then put it in map1 then return unmodifiableMap(map1)
+return point -->new point(map.get(id).x/y......); 
+
+//若类中各组件安全，可能不需要额外的线程安全层，如point中 --> final x, y
+return point --> return map.get(id)
+//不可修改却实时
+return map --> deepCopy,Collections.unmodifiableMap(map);
+```
+
+## 客户端加锁
+
+```java
+List list = new ArrayList();
+//list依旧不安全
+synchronized void f (E e){ 　----------> synchronized(list){......}
+	boolean b=!list.contains(e)
+    if(b) {list.add(e);}
+    ......
+}
+```
+
+## 迭代器的及时失败的检查是在未同步的情况下进行的
+
+**迭代期间对容器加锁？**
+
+如果容器的规模很大， 或者在每个元素上执行操作的时间很长， 那么这些线程将长时间等待，持有锁的时间越长，锁上的竞争就可能越激烈， 这将会极大地降低吞吐率。
+
+**克隆容器迭代副本（克隆时加锁）？**
+
+由于副本被封闭在线程内， 因此其他线程不会在选代期间对其进行修改。在克隆容器时存在显著的性能开销，比如容器过大。
+
+### 容器的隐藏迭代
+
+1. 容器的toString()、hashCode()和equals()方法（容器作为另一个容器的元素或者键或值可能会调用；containsAll()、removeAll()、retainAll()等方法）　
+2. System.out.print(set) [调用了set.toString()方法，toString()会迭代容器]，StringBuildre.append(Object)会调用toString()
+3. 把容器作为参数的**容器的**构造函数（会拷贝此容器中的所有元素）。
+
+## 并发容器
+
+java5.0增加了concurrentHashMap,CopyOnWriteArrayList,并增加了新容器类型Queue和BlockingQueue.
+
+java6引入了concurrentSkipListMap和concurrentSkipListSet.(同步的SortedMap和SortedSet)
