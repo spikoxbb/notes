@@ -235,3 +235,62 @@ Java8中主要做了如下优化:
 1.将Segment抛弃掉了，直接采用Node（继承自Map.Entry）作为table元素。
 2.修改时，不再采用ReentrantLock加锁，直接用内置synchronized加锁，java8的内置锁比之前版本优化了很多，相较ReentrantLock，性能不并差。
 3.size方法优化，增加了CounterCell内部类，用于并行计算每个bucket的元素数量。
+
+## 弱一致性
+
+ 同一个Segment实例中的put操作是加了锁的，而对应的get却没有。  put操作可以分为两种情况，一是key已经存在，修改对应的value；二是key不存在，将一个新的Entry加入底层数据结构。 
+
+### put-get
+
+- key已经存在的情况：if (e != null)部分，前面已经说过HashEntry的value是个volatile变量，当线程1给value赋值后，会立马对执行get的线程2可见，而不用等到put方法结束。
+
+- key不存在的情况：![](E:\notes\img\1582011468(1).png) tab变量是一个普通的变量，虽然给它赋值的是volatile的table。另外，虽然引用类型（数组类型）的变量table是volatile的，但table中的元素不是volatile的，因此⑧只是一个普通的写操作 。
+
+  ![](E:\notes\img\1582011560(1).png)
+
+ 也就是说，如果某个Segment实例中的put将一个Entry加入到了table中，在未执行count赋值（ volatile写 ）操作之前有另一个线程执行了同一个Segment实例中的get，来获取这个刚加入的Entry中的value，那么是有可能取不到的！。
+
+### clear
+
+```java
+public void clear() {
+    for (int i = 0; i < segments.length; ++i)
+        segments[i].clear();
+}
+```
+
+因为没有全局的锁，在清除完一个segments之后，正在清理下一个segments的时候，已经清理segments可能又被加入了数据，因此clear返回的时候，ConcurrentHashMap中是可能存在数据的。因此，clear方法是弱一致的。
+
+###  **迭代器** 
+
+ConcurrentHashMap中的迭代器主要包括entrySet、keySet、values方法。它们大同小异，这里选择entrySet解释。当我们调用entrySet返回值的iterator方法时，返回的是EntryIterator，在EntryIterator上调用next方法时，最终实际调用到了HashIterator.advance()方法，看下这个方法：
+
+final void advance() {
+    if (nextEntry != null && (nextEntry = nextEntry.next) != null)
+        return;
+
+```java
+while (nextTableIndex >= 0) {
+    if ( (nextEntry = currentTable[nextTableIndex--]) != null)
+        return;
+}
+
+while (nextSegmentIndex >= 0) {
+    Segment<K,V> seg = segments[nextSegmentIndex--];
+    if (seg.count != 0) {
+        currentTable = seg.table;
+        for (int j = currentTable.length - 1; j >= 0; --j) {
+            if ( (nextEntry = currentTable[j]) != null) {
+                nextTableIndex = j - 1;
+                return;
+            }
+        }
+    }
+}
+```
+
+
+这个方法在遍历底层数组。在遍历过程中，如果已经遍历的数组上的内容变化了，迭代器不会抛出ConcurrentModificationException异常。如果未遍历的数组上的内容发生了变化，则有可能反映到迭代过程中。
+
+
+因为没有全局的锁，在清除完一个segments之后，正在清理下一个segments的时候，已经清理segments可能又被加入了数据，因此clear返回的时候，ConcurrentHashMap中是可能存在数据的。因此，clear方法是弱一致的。
