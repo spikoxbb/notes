@@ -196,3 +196,77 @@ synchronized void f (E e){ 　----------> synchronized(list){......}
 java5.0增加了concurrentHashMap,CopyOnWriteArrayList,并增加了新容器类型Queue和BlockingQueue.
 
 java6引入了concurrentSkipListMap和concurrentSkipListSet.(同步的SortedMap和SortedSet)
+
+- ConcurrentHashMap与其他并发容器一起增强了同步容器类：它们提供的迭代器不会抛出ConcurrentModificationException，因此不需要再迭代过程中对容器加锁。ConcurrentHashMap返回的迭代器具有*弱一致性（Weakly Consistent）*，而并非“及时失败”**。弱一致性的容器可以容忍并发的修改，当创建迭代器时会遍历已有的元素，并可以但不保证在迭代器被构造后将修改操作反映给容器(因副本原因)。**
+- CopyOnWriteArrayList修改时发布一个新的容器副本。仅当读远多于写的时候使用。
+
+## 阻塞队列
+
+> 阻塞队列适用于生产-消费模式，合理设计队列（使用阻塞队列），以免消费者赶不上生产者从而累计任务消耗内存。如果一个是I/O密集型，一个是CPU密集型，并发执行效率要高于串行。
+
+### 常用阻塞队列
+
+BlockingQueue:
+
+- LinkedBlockingQueue
+- ArrayBlockingQueue
+- PriorityBlockingQueue
+- SynchronousQueue 不为队列中元素维护存储空间，直接交付，降低从生产者移动到消费者的时延迟，适用于生产者消费者相匹敌时。
+
+### 双端队列
+
+java6新增Deque：
+
+- ArrayDeque
+- LinkedBlockingDeque
+
+适用于工作密取， 在生产者-消费者设计中，所有消费者有一个共享的工作队列，而在工作密取设计中，每个消费者都有各自的双端队列。 适用于既是生产者又是消费者的情况——当执行某个工作时可能导致更多的工作出现（如网页爬虫，爬取时会有更多页面需要处理；如垃圾回收阶段对堆标记——go的三色标记）。
+
+### 阻塞，中断
+
+BlockingQueue的put/take等方法可能抛出InterruptedException，**InterruptedException被抛出意味着这是一个阻塞方法，如果方法被中断，将尝试结束阻塞并提前返回。**
+
+#### 处理中断
+
+1. 向上抛出
+2. 处理后恢复中断
+   - 处理后抛出，如玩家匹配，抛出前将玩家放回队列以免其游戏请求丢失。
+   - 代码是Runnable的部分不可抛出InterruptedException，但方法**抛出时会清除中断状态**，此时catch中要保留中断证据，使用Thread.currentThread().interrupt().
+
+> interrupt()会设置线程的中断状态。一个线程不应该由其他线程来强制中断或停止，而是应该由线程自己自行停止。所以，Thread.stop, Thread.suspend, Thread.resume 都已经被废弃了。而 Thread.interrupt 的作用是「通知线程应该中断了」。
+>
+> 当对一个线程，调用 interrupt() 时：
+> ① 如果线程处于被阻塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常。
+> ② 如果线程处于正常活动状态，那么会将该线程的中断标志设置为 true，被设置中断标志的线程将继续正常运行，不受影响。
+>
+>  一个线程如果有被断的需求，可以这样做：
+> ① 在正常运行任务时，经常检查本线程的中断标志位，如果被设置了中断标志就自行停止线程。
+> ② 在调用阻塞方法时正确处理InterruptedException异常。（例如，catch异常后就结束线程。） 
+
+## 同步工具类
+
+同步工具类可以是任何一个对象，只要其可根据自身的状态来协调线程的控制流，如**阻塞队列，semaphore，Barrier，Latch（闭锁）。**
+
+### Latch(闭锁)
+
+延迟线程的进度直到达到终止状态。
+
+1. CountDownLactch，闭锁状态含有一个计数器，表示需要等待事件数量。
+
+2. FutureTask，通过callable来实现，也可作为闭锁，future.get()阻塞直至任务完成。
+
+   >  FutureTask实现了RunnableFuture接口，即Runnable接口和Future接口。 
+
+### Semaphore
+
+用来控制访问某个特定资源的操作数量，可用作实现资源池，也可用其将任何一种容器变为有界阻塞容器。
+
+### Barrier
+
+所有线程必须同时到达栅栏位置才能执行，均到达后所以线程执行，栅栏被重置供下次使用。闭锁进入终止状态后不可重置。
+
+> 为什么闭锁不能复用，栅栏可以？
+>
+> 闭锁直接使用AQS实现，它没有考虑复用问题，一旦资源数为0，就唤醒等待的线程就结束了。而栅栏基于Reentrantlock，它的实现中的generation分代属性，栅栏可打破等配合很优雅的实现了复用。
+
+若await阻塞的线程中断，所有被阻塞的await线程终止并抛出BrokenBarrierException；成功则为每个线程返回唯一到达索引号。
