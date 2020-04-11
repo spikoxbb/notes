@@ -270,3 +270,130 @@ BlockingQueue的put/take等方法可能抛出InterruptedException，**Interrupte
 > 闭锁直接使用AQS实现，它没有考虑复用问题，一旦资源数为0，就唤醒等待的线程就结束了。而栅栏基于Reentrantlock，它的实现中的generation分代属性，栅栏可打破等配合很优雅的实现了复用。
 
 若await阻塞的线程中断，所有被阻塞的await线程终止并抛出BrokenBarrierException；成功则为每个线程返回唯一到达索引号。
+
+- 某步骤中的计算可并行执行，但必须等到这些计算都完成才能进入下一步。CyclicBarrier构造函数可以传入Runnable，**当所有线程都到达时且都释放时会在一个子任务线程中执行。**如各线程计算值，所有线程计算完，栅栏提交这些新值（构造函数中的Runnable）。
+
+- 另一种栅栏Exchanger，是一种两方栅栏，各方在栅栏处交换数据,如一个线程写入数据另一个线程取数据，将满的缓存区和空的交换。
+
+  > `V exchange(V v)：`等待另一个线程到达此交换点（除非当前线程被中断），然后将给定的对象传送给该线?程，并接收该线程的对象。`
+  >
+  > `V exchange(V v, long timeout, TimeUnit unit)：`等待另一个线程到达此交换点（除非当前线程被中断或超出了指定的等待时间），然后将给定的对象传送给该线程，并接收该线程的对象
+
+### 设计一个缓存
+
+1. cache ==> HashMap<A,V>
+
+   ```java
+Synchronized V compute(A arg){
+     V res = cache.get(arg);
+     if(res == null){
+       res = c.compute(arg);
+       cache.put(arg, res);
+     }
+     return res;
+   }
+   ```
+   
+   性能低，只有一个线程参与计算如果一个线程在计算，其他调用compute的线程可能被阻塞很长时间，**多个线程被阻塞可能不如没有缓存的方法。**
+   
+2. HashMap<A,V>  ===> ConcurrentHashMap<A,V>，**去掉Synchronized。**
+
+   较优的并发行为，**但是漏洞就是可能导致多个线程调用都参与运算得到相同的结果，失去了缓存的意义。**如果计算时间很长会很低效。
+
+3. **希望如下：线程A在计算f(1),另一线程查找f(1)时知道线程A在计算并等待其计算结束在得到结果-----FutureTask。HashMap<A,V>  ===> ConcurrentHashMap<A,FutureTask<V>>**
+
+   ```java
+   V compute(final A arg){ 
+   	Future<V> f = cache.get(arg);
+     if(f == null){
+       Callable<V> eva1 = new Callable<V>(){
+         public V call() throw InterruptedException{
+           return c.compute(arg);
+         }
+       }
+       FutureTask<V> ft = new FutureTask<V>(eva1);
+       f = ft;
+       cache.put(arg, ft);
+       ft.run();
+     }
+     try{
+       return f.get();
+     }catch(ExecutionException e){
+       ......
+     }
+   }
+   ```
+
+4.  cache.put(arg, ft)可能导致重复计算，因此
+
+   ``` java
+   V compute(final A arg){ 
+   	Future<V> f = cache.get(arg);
+     if(f == null){
+       Callable<V> eva1 = new Callable<V>(){
+         public V call() throw InterruptedException{
+           return c.compute(arg);
+         }
+       }
+       FutureTask<V> ft = new FutureTask<V>(eva1);
+       //putIfAbsent是ConcurrentHashMap的原子方法
+       f = cache.putIfAbsent(arg, ft);
+       if(f == null){
+         f = ft;
+         ft.run();
+       }
+     }
+     try{
+       return f.get();
+     }catch(CancellationException e){
+       //缓存污染问题，如果某个计算被取消或者失败，需要移除缓存
+       cache.remove(arg, f)
+     }catch(ExecutionException e){
+       ......
+     }
+   }
+   
+   ```
+
+
+## 任务执行
+
+### Executor
+
+**Executor是一个简单的接口。**
+
+```java
+void	execute(Runnable command)
+```
+
+
+
+### ExecutorService
+
+ExecutorService**接口**扩展了Executor**接口**，添加了生命周期管理的方法以及一些用于任务提交的便利方法。
+
+ExecutorService关闭后提交的任务由**拒绝执行处理器**来处理，**它会抛弃任务，或者使execute方法抛出RejectedExecutionException。**执行完所有任务到达终止状态。
+
+> 执行器框架提供了一个类**RejectedExecutionHandler**，来让我们自定义一些被拒绝任务的处理逻辑。默认的拒绝策略是抛出异常。
+>
+> ```java
+> public class RejectedTaskController implements RejectedExecutionHandler {
+>     @Override
+>     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+>         ......
+>     }
+> }
+> ```
+
+> **shutdown方法：将线程池状态置为SHUTDOWN。平滑的关闭ExecutorService，当此方法被调用时，ExecutorService停止接收新的任务并且等待已经提交的任务（包含提交正在执行和提交未执行）执行完成。当所有提交任务执行完毕，线程池即被关闭。**
+>
+> **awaitTermination方法：接收timeout和TimeUnit两个参数，用于设定超时时间及单位。当等待超过设定时间时，会监测ExecutorService是否已经关闭，若关闭则返回true，否则返回false。一般情况下会和shutdown方法组合使用。**
+>
+> **shutdownNow方法：将线程池状态置为STOP。跟shutdown()一样，先停止接收外部提交的任务，忽略队列里等待的任务，尝试将正在跑的任务interrupt中断，返回未执行的任务列表。**
+
+-  **shutdown()后，不能再提交新的任务进去；但是awaitTermination()后，可以继续提交。awaitTermination()是阻塞的，返回结果是线程池是否已停止（true/false）；shutdown()不阻塞。**
+- **awaitTermination该方法调用会被阻塞，直到所有任务执行完毕并且shutdown请求被调用，或者参数中定义的timeout时间到达或者当前线程被打断，这几种情况任意一个发生了就会导致该方法的执行。当调用awaitTermination时，首先该方法会被阻塞，这时会执行子线程中的任务，子线程执行完毕后该方法仍然会被阻塞，因为shutdown()方法还未被调用，如果将shutdown的请求放在了awaitTermination之后，这样就导致了只有awaitTermination方法执行完毕后才会执行shutdown请求，这样就造成了死锁。**
+
+### Timer
+
+Timer执行所有任务只会创建一个任务。如果某个任务执行过长将破坏其他TimerTask的定时的精准性。

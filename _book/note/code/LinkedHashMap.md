@@ -191,14 +191,6 @@ LinkedHashMap没有重写entrySet方法,LinkedHashMap中EntryIterator的定义�
     }
 ```
 
-```java
- private class EntryIterator extends LinkedHashIterator<Map.Entry<K,V>> {
-        public Map.Entry<K,V> next() { 
-          return nextEntry();
-        }
-    }
-```
-
 该类是继承LinkedHashIterator，并重写了next方法；而HashMap中是继承HashIterator。LinkedHashIterator的定义：
 
 ```java
