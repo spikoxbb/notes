@@ -246,7 +246,7 @@ Java8中主要做了如下优化:
 
 - key不存在的情况：![](E:\notes\img\1582011468(1).png) tab变量是一个普通的变量，虽然给它赋值的是volatile的table。另外，虽然引用类型（数组类型）的变量table是volatile的，但table中的元素不是volatile的，因此⑧只是一个普通的写操作 。
 
-  ![](E:\notes\img\1582011560(1).png)
+  ![](../../img/1582011560(1).png)
 
  也就是说，如果某个Segment实例中的put将一个Entry加入到了table中，在未执行count赋值（ volatile写 ）操作之前有另一个线程执行了同一个Segment实例中的get，来获取这个刚加入的Entry中的value，那么是有可能取不到的！。
 

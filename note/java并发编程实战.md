@@ -394,6 +394,7 @@ ExecutorService关闭后提交的任务由**拒绝执行处理器**来处理，*
 -  **shutdown()后，不能再提交新的任务进去；但是awaitTermination()后，可以继续提交。awaitTermination()是阻塞的，返回结果是线程池是否已停止（true/false）；shutdown()不阻塞。**
 - **awaitTermination该方法调用会被阻塞，直到所有任务执行完毕并且shutdown请求被调用，或者参数中定义的timeout时间到达或者当前线程被打断，这几种情况任意一个发生了就会导致该方法的执行。当调用awaitTermination时，首先该方法会被阻塞，这时会执行子线程中的任务，子线程执行完毕后该方法仍然会被阻塞，因为shutdown()方法还未被调用，如果将shutdown的请求放在了awaitTermination之后，这样就导致了只有awaitTermination方法执行完毕后才会执行shutdown请求，这样就造成了死锁。**
 
-### Timer
+### Timer 
 
 Timer执行所有任务只会创建一个任务。如果某个任务执行过长将破坏其他TimerTask的定时的精准性。
+

@@ -336,6 +336,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.20" data-path="高性能MYSQL.html">
+            
+                <a href="高性能MYSQL.html">
+            
+                    
+                    高性能MYSQL
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -601,6 +614,111 @@ invokespecial&#x6307;&#x4EE4;&#x7528;&#x4E8E;&#x8C03;&#x7528;&#x5B9E;&#x4F8B;&#x
 <p>&#x95ED;&#x9501;&#x76F4;&#x63A5;&#x4F7F;&#x7528;AQS&#x5B9E;&#x73B0;&#xFF0C;&#x5B83;&#x6CA1;&#x6709;&#x8003;&#x8651;&#x590D;&#x7528;&#x95EE;&#x9898;&#xFF0C;&#x4E00;&#x65E6;&#x8D44;&#x6E90;&#x6570;&#x4E3A;0&#xFF0C;&#x5C31;&#x5524;&#x9192;&#x7B49;&#x5F85;&#x7684;&#x7EBF;&#x7A0B;&#x5C31;&#x7ED3;&#x675F;&#x4E86;&#x3002;&#x800C;&#x6805;&#x680F;&#x57FA;&#x4E8E;Reentrantlock&#xFF0C;&#x5B83;&#x7684;&#x5B9E;&#x73B0;&#x4E2D;&#x7684;generation&#x5206;&#x4EE3;&#x5C5E;&#x6027;&#xFF0C;&#x6805;&#x680F;&#x53EF;&#x6253;&#x7834;&#x7B49;&#x914D;&#x5408;&#x5F88;&#x4F18;&#x96C5;&#x7684;&#x5B9E;&#x73B0;&#x4E86;&#x590D;&#x7528;&#x3002;</p>
 </blockquote>
 <p>&#x82E5;await&#x963B;&#x585E;&#x7684;&#x7EBF;&#x7A0B;&#x4E2D;&#x65AD;&#xFF0C;&#x6240;&#x6709;&#x88AB;&#x963B;&#x585E;&#x7684;await&#x7EBF;&#x7A0B;&#x7EC8;&#x6B62;&#x5E76;&#x629B;&#x51FA;BrokenBarrierException&#xFF1B;&#x6210;&#x529F;&#x5219;&#x4E3A;&#x6BCF;&#x4E2A;&#x7EBF;&#x7A0B;&#x8FD4;&#x56DE;&#x552F;&#x4E00;&#x5230;&#x8FBE;&#x7D22;&#x5F15;&#x53F7;&#x3002;</p>
+<ul>
+<li><p>&#x67D0;&#x6B65;&#x9AA4;&#x4E2D;&#x7684;&#x8BA1;&#x7B97;&#x53EF;&#x5E76;&#x884C;&#x6267;&#x884C;&#xFF0C;&#x4F46;&#x5FC5;&#x987B;&#x7B49;&#x5230;&#x8FD9;&#x4E9B;&#x8BA1;&#x7B97;&#x90FD;&#x5B8C;&#x6210;&#x624D;&#x80FD;&#x8FDB;&#x5165;&#x4E0B;&#x4E00;&#x6B65;&#x3002;CyclicBarrier&#x6784;&#x9020;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x4F20;&#x5165;Runnable&#xFF0C;<strong>&#x5F53;&#x6240;&#x6709;&#x7EBF;&#x7A0B;&#x90FD;&#x5230;&#x8FBE;&#x65F6;&#x4E14;&#x90FD;&#x91CA;&#x653E;&#x65F6;&#x4F1A;&#x5728;&#x4E00;&#x4E2A;&#x5B50;&#x4EFB;&#x52A1;&#x7EBF;&#x7A0B;&#x4E2D;&#x6267;&#x884C;&#x3002;</strong>&#x5982;&#x5404;&#x7EBF;&#x7A0B;&#x8BA1;&#x7B97;&#x503C;&#xFF0C;&#x6240;&#x6709;&#x7EBF;&#x7A0B;&#x8BA1;&#x7B97;&#x5B8C;&#xFF0C;&#x6805;&#x680F;&#x63D0;&#x4EA4;&#x8FD9;&#x4E9B;&#x65B0;&#x503C;&#xFF08;&#x6784;&#x9020;&#x51FD;&#x6570;&#x4E2D;&#x7684;Runnable&#xFF09;&#x3002;</p>
+</li>
+<li><p>&#x53E6;&#x4E00;&#x79CD;&#x6805;&#x680F;Exchanger&#xFF0C;&#x662F;&#x4E00;&#x79CD;&#x4E24;&#x65B9;&#x6805;&#x680F;&#xFF0C;&#x5404;&#x65B9;&#x5728;&#x6805;&#x680F;&#x5904;&#x4EA4;&#x6362;&#x6570;&#x636E;,&#x5982;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5199;&#x5165;&#x6570;&#x636E;&#x53E6;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x53D6;&#x6570;&#x636E;&#xFF0C;&#x5C06;&#x6EE1;&#x7684;&#x7F13;&#x5B58;&#x533A;&#x548C;&#x7A7A;&#x7684;&#x4EA4;&#x6362;&#x3002;</p>
+<blockquote>
+<p><code>V exchange(V v)&#xFF1A;</code>&#x7B49;&#x5F85;&#x53E6;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5230;&#x8FBE;&#x6B64;&#x4EA4;&#x6362;&#x70B9;&#xFF08;&#x9664;&#x975E;&#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x88AB;&#x4E2D;&#x65AD;&#xFF09;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x5BF9;&#x8C61;&#x4F20;&#x9001;&#x7ED9;&#x8BE5;&#x7EBF;?&#x7A0B;&#xFF0C;&#x5E76;&#x63A5;&#x6536;&#x8BE5;&#x7EBF;&#x7A0B;&#x7684;&#x5BF9;&#x8C61;&#x3002;`</p>
+<p><code>V exchange(V v, long timeout, TimeUnit unit)&#xFF1A;</code>&#x7B49;&#x5F85;&#x53E6;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5230;&#x8FBE;&#x6B64;&#x4EA4;&#x6362;&#x70B9;&#xFF08;&#x9664;&#x975E;&#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x88AB;&#x4E2D;&#x65AD;&#x6216;&#x8D85;&#x51FA;&#x4E86;&#x6307;&#x5B9A;&#x7684;&#x7B49;&#x5F85;&#x65F6;&#x95F4;&#xFF09;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x7ED9;&#x5B9A;&#x7684;&#x5BF9;&#x8C61;&#x4F20;&#x9001;&#x7ED9;&#x8BE5;&#x7EBF;&#x7A0B;&#xFF0C;&#x5E76;&#x63A5;&#x6536;&#x8BE5;&#x7EBF;&#x7A0B;&#x7684;&#x5BF9;&#x8C61;</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="&#x8BBE;&#x8BA1;&#x4E00;&#x4E2A;&#x7F13;&#x5B58;">&#x8BBE;&#x8BA1;&#x4E00;&#x4E2A;&#x7F13;&#x5B58;</h3>
+<ol>
+<li><p>cache ==&gt; HashMap<a,v></a,v></p>
+<pre><code class="lang-java"><span class="hljs-function">Synchronized V <span class="hljs-title">compute</span><span class="hljs-params">(A arg)</span></span>{
+  V res = cache.get(arg);
+  <span class="hljs-keyword">if</span>(res == <span class="hljs-keyword">null</span>){
+    res = c.compute(arg);
+    cache.put(arg, res);
+  }
+  <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+<p>&#x6027;&#x80FD;&#x4F4E;&#xFF0C;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x53C2;&#x4E0E;&#x8BA1;&#x7B97;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5728;&#x8BA1;&#x7B97;&#xFF0C;&#x5176;&#x4ED6;&#x8C03;&#x7528;compute&#x7684;&#x7EBF;&#x7A0B;&#x53EF;&#x80FD;&#x88AB;&#x963B;&#x585E;&#x5F88;&#x957F;&#x65F6;&#x95F4;&#xFF0C;<strong>&#x591A;&#x4E2A;&#x7EBF;&#x7A0B;&#x88AB;&#x963B;&#x585E;&#x53EF;&#x80FD;&#x4E0D;&#x5982;&#x6CA1;&#x6709;&#x7F13;&#x5B58;&#x7684;&#x65B9;&#x6CD5;&#x3002;</strong></p>
+</li>
+<li><p>HashMap<a,v>  ===&gt; ConcurrentHashMap<a,v>&#xFF0C;<strong>&#x53BB;&#x6389;Synchronized&#x3002;</strong></a,v></a,v></p>
+<p>&#x8F83;&#x4F18;&#x7684;&#x5E76;&#x53D1;&#x884C;&#x4E3A;&#xFF0C;<strong>&#x4F46;&#x662F;&#x6F0F;&#x6D1E;&#x5C31;&#x662F;&#x53EF;&#x80FD;&#x5BFC;&#x81F4;&#x591A;&#x4E2A;&#x7EBF;&#x7A0B;&#x8C03;&#x7528;&#x90FD;&#x53C2;&#x4E0E;&#x8FD0;&#x7B97;&#x5F97;&#x5230;&#x76F8;&#x540C;&#x7684;&#x7ED3;&#x679C;&#xFF0C;&#x5931;&#x53BB;&#x4E86;&#x7F13;&#x5B58;&#x7684;&#x610F;&#x4E49;&#x3002;</strong>&#x5982;&#x679C;&#x8BA1;&#x7B97;&#x65F6;&#x95F4;&#x5F88;&#x957F;&#x4F1A;&#x5F88;&#x4F4E;&#x6548;&#x3002;</p>
+</li>
+<li><p><strong>&#x5E0C;&#x671B;&#x5982;&#x4E0B;&#xFF1A;&#x7EBF;&#x7A0B;A&#x5728;&#x8BA1;&#x7B97;f(1),&#x53E6;&#x4E00;&#x7EBF;&#x7A0B;&#x67E5;&#x627E;f(1)&#x65F6;&#x77E5;&#x9053;&#x7EBF;&#x7A0B;A&#x5728;&#x8BA1;&#x7B97;&#x5E76;&#x7B49;&#x5F85;&#x5176;&#x8BA1;&#x7B97;&#x7ED3;&#x675F;&#x5728;&#x5F97;&#x5230;&#x7ED3;&#x679C;-----FutureTask&#x3002;HashMap<a,v>  ===&gt; ConcurrentHashMap<a,futuretask<v>&gt;</a,futuretask<v></a,v></strong></p>
+<pre><code class="lang-java"><span class="hljs-function">V <span class="hljs-title">compute</span><span class="hljs-params">(<span class="hljs-keyword">final</span> A arg)</span></span>{ 
+    Future&lt;V&gt; f = cache.get(arg);
+  <span class="hljs-keyword">if</span>(f == <span class="hljs-keyword">null</span>){
+    Callable&lt;V&gt; eva1 = <span class="hljs-keyword">new</span> Callable&lt;V&gt;(){
+      <span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">call</span><span class="hljs-params">()</span> throw InterruptedException</span>{
+        <span class="hljs-keyword">return</span> c.compute(arg);
+      }
+    }
+    FutureTask&lt;V&gt; ft = <span class="hljs-keyword">new</span> FutureTask&lt;V&gt;(eva1);
+    f = ft;
+    cache.put(arg, ft);
+    ft.run();
+  }
+  <span class="hljs-keyword">try</span>{
+    <span class="hljs-keyword">return</span> f.get();
+  }<span class="hljs-keyword">catch</span>(ExecutionException e){
+    ......
+  }
+}
+</code></pre>
+</li>
+<li><p>cache.put(arg, ft)&#x53EF;&#x80FD;&#x5BFC;&#x81F4;&#x91CD;&#x590D;&#x8BA1;&#x7B97;&#xFF0C;&#x56E0;&#x6B64;</p>
+<pre><code class="lang-java"><span class="hljs-function">V <span class="hljs-title">compute</span><span class="hljs-params">(<span class="hljs-keyword">final</span> A arg)</span></span>{ 
+   Future&lt;V&gt; f = cache.get(arg);
+ <span class="hljs-keyword">if</span>(f == <span class="hljs-keyword">null</span>){
+   Callable&lt;V&gt; eva1 = <span class="hljs-keyword">new</span> Callable&lt;V&gt;(){
+     <span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">call</span><span class="hljs-params">()</span> throw InterruptedException</span>{
+       <span class="hljs-keyword">return</span> c.compute(arg);
+     }
+   }
+   FutureTask&lt;V&gt; ft = <span class="hljs-keyword">new</span> FutureTask&lt;V&gt;(eva1);
+   <span class="hljs-comment">//putIfAbsent&#x662F;ConcurrentHashMap&#x7684;&#x539F;&#x5B50;&#x65B9;&#x6CD5;</span>
+   f = cache.putIfAbsent(arg, ft);
+   <span class="hljs-keyword">if</span>(f == <span class="hljs-keyword">null</span>){
+     f = ft;
+     ft.run();
+   }
+ }
+ <span class="hljs-keyword">try</span>{
+   <span class="hljs-keyword">return</span> f.get();
+ }<span class="hljs-keyword">catch</span>(CancellationException e){
+   <span class="hljs-comment">//&#x7F13;&#x5B58;&#x6C61;&#x67D3;&#x95EE;&#x9898;&#xFF0C;&#x5982;&#x679C;&#x67D0;&#x4E2A;&#x8BA1;&#x7B97;&#x88AB;&#x53D6;&#x6D88;&#x6216;&#x8005;&#x5931;&#x8D25;&#xFF0C;&#x9700;&#x8981;&#x79FB;&#x9664;&#x7F13;&#x5B58;</span>
+   cache.remove(arg, f)
+ }<span class="hljs-keyword">catch</span>(ExecutionException e){
+   ......
+ }
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="&#x4EFB;&#x52A1;&#x6267;&#x884C;">&#x4EFB;&#x52A1;&#x6267;&#x884C;</h2>
+<h3 id="executor">Executor</h3>
+<p><strong>Executor&#x662F;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x63A5;&#x53E3;&#x3002;</strong></p>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">void</span>    <span class="hljs-title">execute</span><span class="hljs-params">(Runnable command)</span>
+</span></code></pre>
+<h3 id="executorservice">ExecutorService</h3>
+<p>ExecutorService<strong>&#x63A5;&#x53E3;</strong>&#x6269;&#x5C55;&#x4E86;Executor<strong>&#x63A5;&#x53E3;</strong>&#xFF0C;&#x6DFB;&#x52A0;&#x4E86;&#x751F;&#x547D;&#x5468;&#x671F;&#x7BA1;&#x7406;&#x7684;&#x65B9;&#x6CD5;&#x4EE5;&#x53CA;&#x4E00;&#x4E9B;&#x7528;&#x4E8E;&#x4EFB;&#x52A1;&#x63D0;&#x4EA4;&#x7684;&#x4FBF;&#x5229;&#x65B9;&#x6CD5;&#x3002;</p>
+<p>ExecutorService&#x5173;&#x95ED;&#x540E;&#x63D0;&#x4EA4;&#x7684;&#x4EFB;&#x52A1;&#x7531;<strong>&#x62D2;&#x7EDD;&#x6267;&#x884C;&#x5904;&#x7406;&#x5668;</strong>&#x6765;&#x5904;&#x7406;&#xFF0C;<strong>&#x5B83;&#x4F1A;&#x629B;&#x5F03;&#x4EFB;&#x52A1;&#xFF0C;&#x6216;&#x8005;&#x4F7F;execute&#x65B9;&#x6CD5;&#x629B;&#x51FA;RejectedExecutionException&#x3002;</strong>&#x6267;&#x884C;&#x5B8C;&#x6240;&#x6709;&#x4EFB;&#x52A1;&#x5230;&#x8FBE;&#x7EC8;&#x6B62;&#x72B6;&#x6001;&#x3002;</p>
+<blockquote>
+<p>&#x6267;&#x884C;&#x5668;&#x6846;&#x67B6;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x7C7B;<strong>RejectedExecutionHandler</strong>&#xFF0C;&#x6765;&#x8BA9;&#x6211;&#x4EEC;&#x81EA;&#x5B9A;&#x4E49;&#x4E00;&#x4E9B;&#x88AB;&#x62D2;&#x7EDD;&#x4EFB;&#x52A1;&#x7684;&#x5904;&#x7406;&#x903B;&#x8F91;&#x3002;&#x9ED8;&#x8BA4;&#x7684;&#x62D2;&#x7EDD;&#x7B56;&#x7565;&#x662F;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RejectedTaskController</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">RejectedExecutionHandler</span> </span>{
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">rejectedExecution</span><span class="hljs-params">(Runnable r, ThreadPoolExecutor executor)</span> </span>{
+        ......
+    }
+}
+</code></pre>
+<p><strong>shutdown&#x65B9;&#x6CD5;&#xFF1A;&#x5C06;&#x7EBF;&#x7A0B;&#x6C60;&#x72B6;&#x6001;&#x7F6E;&#x4E3A;SHUTDOWN&#x3002;&#x5E73;&#x6ED1;&#x7684;&#x5173;&#x95ED;ExecutorService&#xFF0C;&#x5F53;&#x6B64;&#x65B9;&#x6CD5;&#x88AB;&#x8C03;&#x7528;&#x65F6;&#xFF0C;ExecutorService&#x505C;&#x6B62;&#x63A5;&#x6536;&#x65B0;&#x7684;&#x4EFB;&#x52A1;&#x5E76;&#x4E14;&#x7B49;&#x5F85;&#x5DF2;&#x7ECF;&#x63D0;&#x4EA4;&#x7684;&#x4EFB;&#x52A1;&#xFF08;&#x5305;&#x542B;&#x63D0;&#x4EA4;&#x6B63;&#x5728;&#x6267;&#x884C;&#x548C;&#x63D0;&#x4EA4;&#x672A;&#x6267;&#x884C;&#xFF09;&#x6267;&#x884C;&#x5B8C;&#x6210;&#x3002;&#x5F53;&#x6240;&#x6709;&#x63D0;&#x4EA4;&#x4EFB;&#x52A1;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#xFF0C;&#x7EBF;&#x7A0B;&#x6C60;&#x5373;&#x88AB;&#x5173;&#x95ED;&#x3002;</strong></p>
+<p><strong>awaitTermination&#x65B9;&#x6CD5;&#xFF1A;&#x63A5;&#x6536;timeout&#x548C;TimeUnit&#x4E24;&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x7528;&#x4E8E;&#x8BBE;&#x5B9A;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#x53CA;&#x5355;&#x4F4D;&#x3002;&#x5F53;&#x7B49;&#x5F85;&#x8D85;&#x8FC7;&#x8BBE;&#x5B9A;&#x65F6;&#x95F4;&#x65F6;&#xFF0C;&#x4F1A;&#x76D1;&#x6D4B;ExecutorService&#x662F;&#x5426;&#x5DF2;&#x7ECF;&#x5173;&#x95ED;&#xFF0C;&#x82E5;&#x5173;&#x95ED;&#x5219;&#x8FD4;&#x56DE;true&#xFF0C;&#x5426;&#x5219;&#x8FD4;&#x56DE;false&#x3002;&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;&#x4F1A;&#x548C;shutdown&#x65B9;&#x6CD5;&#x7EC4;&#x5408;&#x4F7F;&#x7528;&#x3002;</strong></p>
+<p><strong>shutdownNow&#x65B9;&#x6CD5;&#xFF1A;&#x5C06;&#x7EBF;&#x7A0B;&#x6C60;&#x72B6;&#x6001;&#x7F6E;&#x4E3A;STOP&#x3002;&#x8DDF;shutdown()&#x4E00;&#x6837;&#xFF0C;&#x5148;&#x505C;&#x6B62;&#x63A5;&#x6536;&#x5916;&#x90E8;&#x63D0;&#x4EA4;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x5FFD;&#x7565;&#x961F;&#x5217;&#x91CC;&#x7B49;&#x5F85;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x5C1D;&#x8BD5;&#x5C06;&#x6B63;&#x5728;&#x8DD1;&#x7684;&#x4EFB;&#x52A1;interrupt&#x4E2D;&#x65AD;&#xFF0C;&#x8FD4;&#x56DE;&#x672A;&#x6267;&#x884C;&#x7684;&#x4EFB;&#x52A1;&#x5217;&#x8868;&#x3002;</strong></p>
+</blockquote>
+<ul>
+<li><strong>shutdown()&#x540E;&#xFF0C;&#x4E0D;&#x80FD;&#x518D;&#x63D0;&#x4EA4;&#x65B0;&#x7684;&#x4EFB;&#x52A1;&#x8FDB;&#x53BB;&#xFF1B;&#x4F46;&#x662F;awaitTermination()&#x540E;&#xFF0C;&#x53EF;&#x4EE5;&#x7EE7;&#x7EED;&#x63D0;&#x4EA4;&#x3002;awaitTermination()&#x662F;&#x963B;&#x585E;&#x7684;&#xFF0C;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x662F;&#x7EBF;&#x7A0B;&#x6C60;&#x662F;&#x5426;&#x5DF2;&#x505C;&#x6B62;&#xFF08;true/false&#xFF09;&#xFF1B;shutdown()&#x4E0D;&#x963B;&#x585E;&#x3002;</strong></li>
+<li><strong>awaitTermination&#x8BE5;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x4F1A;&#x88AB;&#x963B;&#x585E;&#xFF0C;&#x76F4;&#x5230;&#x6240;&#x6709;&#x4EFB;&#x52A1;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x5E76;&#x4E14;shutdown&#x8BF7;&#x6C42;&#x88AB;&#x8C03;&#x7528;&#xFF0C;&#x6216;&#x8005;&#x53C2;&#x6570;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;timeout&#x65F6;&#x95F4;&#x5230;&#x8FBE;&#x6216;&#x8005;&#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x88AB;&#x6253;&#x65AD;&#xFF0C;&#x8FD9;&#x51E0;&#x79CD;&#x60C5;&#x51B5;&#x4EFB;&#x610F;&#x4E00;&#x4E2A;&#x53D1;&#x751F;&#x4E86;&#x5C31;&#x4F1A;&#x5BFC;&#x81F4;&#x8BE5;&#x65B9;&#x6CD5;&#x7684;&#x6267;&#x884C;&#x3002;&#x5F53;&#x8C03;&#x7528;awaitTermination&#x65F6;&#xFF0C;&#x9996;&#x5148;&#x8BE5;&#x65B9;&#x6CD5;&#x4F1A;&#x88AB;&#x963B;&#x585E;&#xFF0C;&#x8FD9;&#x65F6;&#x4F1A;&#x6267;&#x884C;&#x5B50;&#x7EBF;&#x7A0B;&#x4E2D;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x5B50;&#x7EBF;&#x7A0B;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x540E;&#x8BE5;&#x65B9;&#x6CD5;&#x4ECD;&#x7136;&#x4F1A;&#x88AB;&#x963B;&#x585E;&#xFF0C;&#x56E0;&#x4E3A;shutdown()&#x65B9;&#x6CD5;&#x8FD8;&#x672A;&#x88AB;&#x8C03;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x5C06;shutdown&#x7684;&#x8BF7;&#x6C42;&#x653E;&#x5728;&#x4E86;awaitTermination&#x4E4B;&#x540E;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x5BFC;&#x81F4;&#x4E86;&#x53EA;&#x6709;awaitTermination&#x65B9;&#x6CD5;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x540E;&#x624D;&#x4F1A;&#x6267;&#x884C;shutdown&#x8BF7;&#x6C42;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x9020;&#x6210;&#x4E86;&#x6B7B;&#x9501;&#x3002;</strong></li>
+</ul>
+<h3 id="timer">Timer</h3>
+<p>Timer&#x6267;&#x884C;&#x6240;&#x6709;&#x4EFB;&#x52A1;&#x53EA;&#x4F1A;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x3002;&#x5982;&#x679C;&#x67D0;&#x4E2A;&#x4EFB;&#x52A1;&#x6267;&#x884C;&#x8FC7;&#x957F;&#x5C06;&#x7834;&#x574F;&#x5176;&#x4ED6;TimerTask&#x7684;&#x5B9A;&#x65F6;&#x7684;&#x7CBE;&#x51C6;&#x6027;&#x3002;</p>
 
                                 
                                 </section>
@@ -644,7 +762,7 @@ invokespecial&#x6307;&#x4EE4;&#x7528;&#x4E8E;&#x8C03;&#x7528;&#x5B9E;&#x4F8B;&#x
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"java并发编程实战","level":"1.17","depth":1,"next":{"title":"Spring源码解析","level":"1.18","depth":1,"path":"note/Spring源码解析.md","ref":"note/Spring源码解析.md","articles":[]},"previous":{"title":"Falcon","level":"1.16","depth":1,"path":"note/falcon/README.md","ref":"note/falcon/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"note/java并发编程实战.md","mtime":"2020-03-01T03:47:59.024Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-03-25T09:36:20.554Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"java并发编程实战","level":"1.17","depth":1,"next":{"title":"Spring源码解析","level":"1.18","depth":1,"path":"note/Spring源码解析.md","ref":"note/Spring源码解析.md","articles":[]},"previous":{"title":"Falcon","level":"1.16","depth":1,"path":"note/falcon/README.md","ref":"note/falcon/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"note/java并发编程实战.md","mtime":"2020-04-21T15:45:00.470Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-07-09T11:36:41.427Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

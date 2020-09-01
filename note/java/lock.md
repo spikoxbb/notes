@@ -20,7 +20,7 @@ Java对象头里的Mark Word里默认的存放的对象的Hashcode,分代年龄�
 
 synchronized与java.util.concurrent包中的ReentrantLock相比，由于JDK1.6中加入了针对锁的优化措施，使得synchronized与ReentrantLock的性能基本持平ReentrantLock只是提供了synchronized更丰富的功能，而不一定有更优的性能，所以在synchronized能实现需求的情况下，优先考虑使用synchronized来进行同步。
 
-![](/home/spiko/notes/img/微信图片_20190911112549.jpg)
+![](../../img/微信图片_20190911112549.jpg)
 
 **偏向锁的获取**
 
