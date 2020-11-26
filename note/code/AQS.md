@@ -848,7 +848,7 @@ protected final boolean tryReleaseShared(int releases) {
 }
 ```
 
-#### # StampedLock
+## StampedLock
 
 StampedLock是Java8中新增的一个锁，是对读写锁的改进。读写锁虽然分离了读与写的功能，但是它在处理读与写的并发上，采取的是一种悲观的策略，这就导致了，当读取的情况很多而写入的情况很少时，写入线程可能迟迟无法竞争到锁并被阻塞，遭遇饥饿问题。
 
